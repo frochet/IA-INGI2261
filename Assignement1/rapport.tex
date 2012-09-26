@@ -1,0 +1,48 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french] {babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{ulem}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage[a4paper]{geometry}
+\geometry{hscale=0.7,vscale=0.7,centering}
+\usepackage{vmargin}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{moreverb}
+\usepackage{listings}
+\newtheorem{theorem}{Théorème}[section]
+\newtheorem{defi}{Définition}[section] 
+\newtheorem{prop}{Propriété}[section] 
+\usepackage{color}
+\definecolor{gris}{rgb}{0.95,0.95,0.95}
+\lstset{numbers=left, tabsize=4, backgroundcolor=\color{gris},
+frame=single, breaklines=true,
+keywordstyle=\color{black},
+stringstyle=\ttfamily,
+framexleftmargin=6mm, xleftmargin=6mm}
+%opening
+\title{LINGI 2261 : Artificial Intelligence \\
+Assignement 1}
+\author{Cappart Quentin} 
+\date{Année académique 2011-2012}
+
+\begin{document}
+
+	\section{Python AIMA}
+	
+	\subsection{In order to perform a search, what are the classes that you must define or extend ? What are they used for ?}
+	We have to create a subclass to the class "Problem" given in the AIMA library. This subclass must implement the method successor, and possibly $ \_\_init\_\_$, $goal\_test$, and $path\_cost$. When this is done, we can use the search method on an instance of this subclass.
+	\subsection{In graph\_search and tree\_search, what is the effect of the instruction fringe.extend(node.expand(problem)). What are the classes and methods involved ?}
+	
+	The method extend is used on a FIFOQueue to add elements at the end of this queue. This elements are the elements returned successively through the yield by node.expand(problem). \\
+	The role of the expand method defined in the class Node is in term to reach all the children nodes accessible from one particular node. \\
+	The classes involved are FIFOQueue and more precisely the method extend, the class Node to access the method expand and a Problem's subclass.
+	
+	
+\end{document}

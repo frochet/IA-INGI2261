@@ -11,8 +11,18 @@ class Test:
     '''
 
 
-    def __init__(self):
+    def __init__(self) :
         '''
         Constructor
         '''
+        self.name = "boup"
+        
+    def toString(self) :
+        print(self.name+" est son nom")
+
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.toString()
 
