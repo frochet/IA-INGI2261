@@ -6,8 +6,8 @@
 <path>/Assignement1</path>
 </pydev_pathproperty>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 3.0</pydev_property>
-<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">python3.2</pydev_property>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Python32</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
-<path>/Users/Florentin/Documents/Cours/Q7/Artificial Intelligence/IA-INGI2261/aima-python3</path>
+<path>/home/inekar/workspace/IA-INGI2261/aima-python3</path>
 </pydev_pathproperty>
 </pydev_project>

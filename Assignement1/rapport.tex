@@ -68,7 +68,7 @@ used?}
 		\item \textbf{iterative deepening} The strategy of this one is to perform a search on each level one after the previous one using the depth first method, which is following one path at the time. It keeps the advantages of the depth limited way without the disadvantage that we don't know the depth of the goal.
 		The inconvenient of using this method is that it generate slightly more node than the breadth first method.
 		\item \textbf{uniform cost} It is a nice way to proceed when some actions are more costly than others. It is basically a breadth first search, although instead of a FIFO Queue, a priority queue is used.
-		While convenient when costs are involved, this method is expensive in space as well as in time.
+		While convenient when costs are involved, this method is expensive in space as well as in time.\\
 	\end{itemize}
 	In order to solve the given problem, we'll choose the breadth first strategy over the other realistic which is the iterative deepening search because we're working on computer with enough memory so that we prefer to minimize the computation time.
 	
