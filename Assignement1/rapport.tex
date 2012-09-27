@@ -40,15 +40,23 @@ Assignement 1}
 	We have to create a subclass to the class "Problem" given in the AIMA library. This subclass must implement the method successor, and possibly $ \_\_init\_\_$, $goal\_test$, and $path\_cost$. When this is done, we can use the search method on an instance of this subclass.
 	\subsection{In graph\_search and tree\_search, what is the effect of the instruction fringe.extend(node.expand(problem)). What are the classes and methods involved ?}
 	
-	The method extend is used on a FIFOQueue to add elements at the end of this queue. This elements are the elements returned successively through the yield by node.expand(problem). \\
+	The method extend is used on a FIFOQueue to add elements at the end of this queue. These elements are the elements returned successively through the yield by node.expand(problem). \\
 	The role of the expand method defined in the class Node is in term to reach all the children nodes accessible from one particular node. \\
 	The classes involved are FIFOQueue and more precisely the method extend, the class Node to access the method expand and a Problem's subclass.
 	
-	\subsection{Both breadth_first_graph and depth_first_search are making a call to the same function. How s their fundamental difference implemented}
+	\subsection{Both breadth\_first\_graph and depth\_first\_search are making a call to the same function. How s their fundamental difference implemented}
+	
+	The differences lies in the way that fringe is constructed. If we have a FIFOQueue, then the new elements are put in the end of the list, which involve a breadth first traversal. At the opposite, if we have a stack, the traversal will be depth first search because tree\_search fill the stack with children nodes to the current. Thus pop call return the child, until the depth one.
+	
+	\subsection{How is the closed list implemented in graph\_search? What is it used for? What
+is the technical difference with the fringe? Why are those two specific structures
+used?}
+	
+	the closest list contains True or False (nothing is False) associated with keys which are the node's state. It's used to keep a trace of which node are already explored. The technical difference with fringe is that fringe contains node which are already been explored or unexplored and the closed list contains True value for nodes that already been explored. \\ A specific structure is used for fringe to allow breadth first graph search or a depth first graph search. And closed is a simple list which map each node to a boolean value in order to know if they are explored or not.
 	
 	
-	\section{The Sliding Puzzle Problem}
-	
+\section{The Sliding Puzzle Problem}
+
 	\subsection{Explain the advantages and weaknesses of each search strategy on this problem (depth first, breadth first, depth limited, iterative deepening, uniform cost). Which one would you choose to solve this problem?}
 	
 	\begin{itemize}
