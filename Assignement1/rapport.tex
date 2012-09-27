@@ -1,4 +1,4 @@
-\ref{•}\documentclass[a4paper,10pt]{article}
+\documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[french] {babel}
 \usepackage[T1]{fontenc}
@@ -52,7 +52,7 @@ Assignement 1}
 is the technical difference with the fringe? Why are those two specific structures
 used?}
 	
-	the closest list contains True or False (nothing is False) associated with keys which are the node's state. It's used to keep a trace of which node are already explored. The technical difference with fringe is that fringe contains node which are already been explored or unexplored and the closed list contains True value for nodes that already been explored. \\ A specific structure is used for fringe to allow breadth first graph search or a depth first graph search. And closed is a simple list which map each node to a boolean value in order to know if they are explored or not.
+	the closest list contains True or False (nothing is False) associated with keys which are the node's state. It's used to keep a trace of which node are already explored. The technical difference with fringe is that fringe contains node which are already been explored or unexplored and the closed list is a Dictionary that contains True value for nodes that already been explored. \\ A specific structure is used for fringe to allow breadth first graph search or a depth first graph search. And closed is a Dictionary which map each node to a boolean value in order to know if they are explored or not.
 	
 	
 \section{The Sliding Puzzle Problem}
