@@ -52,7 +52,15 @@ Assignement 1}
 is the technical difference with the fringe? Why are those two specific structures
 used?}
 	
-	the closest list contains True or False (nothing is False) associated with keys which are the node's state. It's used to keep a trace of which node are already explored. The technical difference with fringe is that fringe contains node which are already been explored or unexplored and the closed list contains True value for nodes that already been explored. \\ A specific structure is used for fringe to allow breadth first graph search or a depth first graph search. And closed is a simple list which map each node to a boolean value in order to know if they are explored or not.
+	The closest list contains True or False (nothing is False) associated with keys which are the node's state. It's used to keep a trace of which node are already explored. The technical difference with fringe is that fringe contains node which are already been explored or unexplored and the closed list is a Dictionary that contains True value for nodes that already been explored. \\ A specific structure is used for fringe to allow breadth first graph search or a depth first graph search. And closed is a Dictionary which map each node to a boolean value in order to know if they are explored or not.
+	
+	\subsection{How technically are the elements in the closed list searched? What are themethods involved? What properties must its elements have?}
+	
+	They are searched by the instruction "if node.state not in closed" which is the same that "if node.state not in closed.keys()" which search with an iterator among the keys if node.state isn't among them. Implicitly, we think that the  methods involved are the method \_\_iter\_\_() and the method keys(). They are handle by Python.\\
+	The properties of the elements are couples of key->value.
+	
+	\subsection{How technically can you use the implementation of the closed list to deal with symmetrical states ? (hint: if two symmetrical states are considered to be the same, they will not be visited twice)}
+	
 	
 	
 \section{The Sliding Puzzle Problem}
