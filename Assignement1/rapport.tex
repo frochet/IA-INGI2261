@@ -70,10 +70,11 @@ used?}
 		\item \textbf{uniform cost} It is a nice way to proceed when some actions are more costly than others. It is basically a breadth first search, although instead of a FIFO Queue, a priority queue is used.
 		While convenient when costs are involved, this method is expensive in space as well as in time.
 	\end{itemize}
+	In order to solve the given problem, we'll choose the breadth first strategy over the other realistic which is the iterative deepening search because we're working on computer with enough memory so that we prefer to minimize the computation time.
 	
 	\subsection{Are there symmetrical (equivalent) states in this problem? What are the potential consequences on the search?}
 	
-	There may be many situation where symmetrical states occurs. The consequences of this in the treatment of this problem	is that we me build several times the same tree and explore it as many times. It would constitute a useless usage of memory and a loss of time considering it generates and analyses the redundant states before reaching the goal state.
+	There may be many situations where symmetrical states occur. The consequences of this in the treatment of this problem	is that we may build several times the same tree and explore it as many times. It would constitute a useless usage of memory and a loss of time considering it generates and analyses the redundant states before reaching the goal state.
 	
 	\subsection{How are you dealing with those symmetrical states?}
 	
@@ -81,8 +82,7 @@ used?}
 	
 	\subsection{What are the advantages and disadvantages of using the tree and graph search for this problem. Which approach would you choose? Which approach allows you to avoid expending twice symmetrical states?}
 
-	As said above, the graph search present an advantage in comparison to the tree search which is to consider same states only once (this statement is only true in the case of redundancy like in our case). But compared to the algorithms above (cfr q1), those searches do not present that much advantages, though they don't require particular data structures or recursive implementation. Their main disadvantages are either they use to much space, either, they use to much time.
-	For this particular project we'll use the \{breath first or iterative deepening method SELON CE QU'ON CHOISIT DEMAIN EN SALLE INTEL JE SAIS PAS A QUELLE HEURE\}. 
-	The best way to avoid twins states, is the breath first for it is the only one (with the uniform cost search) among the strategy proposed at question one that cares about avoiding treating multiple times the same state.
+	As said above, the graph search present an advantage in comparison to the tree search which is to consider same states only once (this statement is only true in the case of redundancy like in our case). But compared to the algorithms above (cfr q1), those searches do not present that much advantages, though they don't require particular data structures or recursive implementation. Their main disadvantages are either they use to much space, either they use to much time.
+	The graph search is the one of the two that can avoid treating symmetrical states because it tests if the state has already been generated earlier.
 	
 \end{document}
