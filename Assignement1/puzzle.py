@@ -17,6 +17,21 @@ class PuzzleProblem(Problem):
         
     def successor(self, state):
         pass
+    
+    """
+    Convertis la representation interne d'une configuration en celle donnée 
+    
+    """ 
+    def printConf(self):
+        pass
+    
+    """
+    Parse une configuration reçue en entrée en une represation valide pour l'utilisation 
+    du programme.
+    """
+    def parseInit(self):
+        pass
+        
         
 
 
