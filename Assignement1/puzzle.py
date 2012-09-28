@@ -59,6 +59,22 @@ class PuzzleProblem(Problem):
             self.initial[i] = linestate
             i += 1
             
+    def sol_format(self, nodeList):
+        """
+        Crée les lignes à entrer dans le fichier solution sous forme de string
+        et les yield successivement, en ajoutant une ligne vide pour chaque
+        changement de noeud.
+        """
+        for node in nodeList:
+            
+            for line in node.state:
+                outLine = ""
+                for char in line:
+                    outLine += char
+                yield outLine
+            yield ""
+        
+            
             
 
 ###################### Launch the search #########################
