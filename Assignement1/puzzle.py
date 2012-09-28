@@ -1,13 +1,20 @@
 '''NAMES OF THE AUTHOR(S): ...'''
 
 from search import *
-
+import IO
+from state import State
 
 ######################  Implement the search #######################
 
 class PuzzleProblem(Problem):
 
-    def __init__(self,init):
+    def __init__(self, goal):
+        """ 
+        goal to be precised 
+        """
+        self.initial = {}
+        self.parse_init()
+        Problem.__init__(State(self.initial), goal)
         pass
 
     
@@ -16,26 +23,43 @@ class PuzzleProblem(Problem):
 
         
     def successor(self, state):
+        """
+        Regarde tous les zéros dans le state et pour chaque zéro, demande un
+        mouvement vers chaque direction, envoie un couple (action, state) si
+        le mouvement est valide.
+        """
         pass
     
-    """
-    Convertis la representation interne d'une configuration en celle donnée 
+
+    def print_conf(self):
+        """
+        Convertis la representation interne d'une configuration en celle donnée 
     
-    """ 
-    def printConf(self):
+        """ 
         pass
     
-    """
-    Parse une configuration reçue en entrée en une represation valide pour l'utilisation 
-    du programme.
-    """
-    def parseInit(self):
-        pass
+    
+    def parse_init(self):
+        """
+        Parse une configuration reçue en entrée en une represation valide pour
+        l'utilisation du programme.
+        """
+        IO = IO(path)
+        i = 0
+        IO.init_reader()
         
-        
-
-
-
+        for line in IO.file:
+            j = 0
+            linestate = {}
+            
+            for char in line:
+                linestate [j] = char
+                j += 1
+                
+            self.initial[i] = linestate
+            i += 1
+            
+            
 
 ###################### Launch the search #########################
     
