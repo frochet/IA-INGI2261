@@ -54,7 +54,8 @@ used?}
 	
 	The closest list contains True or False (nothing is False) associated with keys which are the node's state. It's used to keep a trace of which node are already explored. The technical difference with fringe is that fringe contains node which are already been explored or unexplored and the closed list is a Dictionary that contains True value for nodes that already been explored. \\ A specific structure is used for fringe to allow breadth first graph search or a depth first graph search. And closed is a Dictionary which map each node to a boolean value in order to know if they are explored or not.
 	
-	\subsection{How technically are the elements in the closed list searched? What are themethods involved? What properties must its elements have?}
+	\subsection{How technically are the elements in the closed list searched? What are the
+methods involved? What properties must its elements have?}
 	
 	They are searched by the instruction "if node.state not in closed" which is the same that "if node.state not in closed.keys()" which search with an iterator among the keys if node.state isn't among them. Implicitly, we think that the  methods involved are the method \_\_iter\_\_() and the method keys(). They are handle by Python.\\
 	The properties of the elements are couples of key->value.
@@ -78,7 +79,7 @@ used?}
 		\item \textbf{uniform cost} It is a nice way to proceed when some actions are more costly than others. It is basically a breadth first search, although instead of a FIFO Queue, a priority queue is used.
 		While convenient when costs are involved, this method is expensive in space as well as in time.\\
 	\end{itemize}
-	In order to solve the given problem, we'll choose the breadth first strategy over the other realistic which is the iterative deepening search because we're working on computer with enough memory so that we prefer to minimize the computation time.
+	In order to solve the given problem, we'll choose the iterative deepening strategy over the others for the reason that it is the best algorithm because of its both time and space complexity.
 	
 	\subsection{Are there symmetrical (equivalent) states in this problem? What are the potential consequences on the search?}
 	
@@ -90,7 +91,7 @@ used?}
 	
 	\subsection{What are the advantages and disadvantages of using the tree and graph search for this problem. Which approach would you choose? Which approach allows you to avoid expending twice symmetrical states?}
 
-	As said above, the graph search present an advantage in comparison to the tree search which is to consider same states only once (this statement is only true in the case of redundancy like in our case). But compared to the algorithms above (cfr q1), those searches do not present that much advantages, though they don't require particular data structures or recursive implementation. Their main disadvantages are either they use to much space, either they use to much time.
+	As said above, the graph search present an advantage in comparison to the tree search which is to consider same states but the build of a graph is very costly in term of memory The approach that we shall use is the tree search via the iterative deepening because the space complexity is linear instead of exponential in the case of a graph search.
 	The graph search is the one of the two that can avoid treating symmetrical states because it tests if the state has already been generated earlier.
 	
 \end{document}
