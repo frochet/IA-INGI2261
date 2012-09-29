@@ -16,40 +16,103 @@ class State:
     def __init__(self, state):
         self.state = state
         
+    def get_state(self):
+        return self.state
+        
+    def move_vertical(self, x, y, direction, i):
+        if direction == "north":
+            dirmul = -1
+            isInBound = x > 1
+        elif direction == "south":
+            dirmul = 1
+            isInBound = x < 3
+
+        if i == 10:
+            if isInBound and self.state[x+dirmul][y] == self.state[x+2*dirmul][y]:
+                """
+                Test if the piece is a vertical 2bloc piece
+                """
+                diff = 2
+            else:
+                """
+                Il s'agit d'une piece 1*1
+                """
+                diff = 1
+            self.state[x][y], self.state[x+dirmul*diff][y] = \
+            self.state[x+dirmul*diff][y], self.state[x][y]
+        else:            
+            if i == -1:
+                mul = -1
+            elif i == 1:
+                mul = 1
+            if isInBound and self.state[x+dirmul][y] == self.state[x+2*dirmul][y] \
+            and self.state[x+dirmul][y] == self.state[x+2*dirmul][y+mul]:
+                """
+                Case in which it is the square 2*2
+                """
+                diff = 2
+            else:
+                """
+                Case in which it is an horizontal 2*1
+                """
+                diff = 1
+            self.state[x][y], self.state[x+dirmul*diff][y] = \
+            self.state[x+dirmul*diff][y], self.state[x][y]
+            self.state[x][y+mul], self.state[x+dirmul*diff][y+mul] = \
+            self.state[x+dirmul*diff][y+mul], self.state[x][y+mul]
+            
+            
+    def move_horizontal(self, x, y, direction, i):
+        if direction == "east":
+            dirmul = -1
+            isInBound = y > 1
+        elif direction == "west":
+            dirmul = 1
+            isInBound = y < 2
+
+        if i == 10:
+            if isInBound and self.state[x][y+dirmul] == self.state[x][y+2*dirmul]:
+                """
+                Test if the piece is a vertical 2bloc piece
+                """
+                diff = 2
+            else:
+                """
+                Il s'agit d'une piece 1*1
+                """
+                diff = 1
+            self.state[x][y], self.state[x][y+dirmul*diff] = \
+            self.state[x][y+dirmul*diff], self.state[x][y]
+        else:            
+            if i == -1:
+                mul = -1
+            elif i == 1:
+                mul = 1
+            if isInBound and self.state[x][y+dirmul] == self.state[x][y+2*dirmul] \
+            and self.state[x][y+dirmul] == self.state[x+mul][y+2*dirmul]:
+                """
+                Case in which it is the square 2*2
+                """
+                diff = 2
+            else:
+                """
+                Case in which it is an horizontal 2*1
+                """
+                diff = 1
+            self.state[x][y], self.state[x][y+dirmul*diff] = \
+            self.state[x][y+dirmul*diff], self.state[x][y]
+            self.state[x+mul][y], self.state[x+mul][y+dirmul*diff] = \
+            self.state[x+mul][y+dirmul*diff], self.state[x+mul][y]
+            
+            
     def move(self, x, y, direction):
         i = self.is_possible(x, y, direction)
         if i:
-            if direction == "north":
-                if i == 10:
-                    pass
-                elif i == -1:
-                    pass
-                elif i == 1:
-                    pass
+            if direction == "north" or direction == "south":
+                self.move_vertical(x, y, direction, i)
             
-            if direction == "east":
-                if i == 10:
-                    pass
-                elif i == -1:
-                    pass
-                elif i == 1:
-                    pass
-                
-            if direction == "south":
-                if i == 10:
-                    pass
-                elif i == -1:
-                    pass
-                elif i == 1:
-                    pass
-                
-            if direction == "west":
-                if i == 10:
-                    pass
-                elif i == -1:
-                    pass
-                elif i == 1:
-                    pass
+            if direction == "east" or direction == "west":
+                self.move_horizontal(x, y, direction, i)
             
             else:
                 pass
@@ -61,7 +124,7 @@ class State:
         Return False if the move is impossible, then
         -1 means that the >= 2bloc piece is towards the top or left
         +1 means that the >= 2bloc piece is towards the bottom or right
-        10 means that it is a 1*1 piece
+        10 means that it is a piece with width = 1 in the direction
         """
         if direction == "north":
             if x == 0:
@@ -80,7 +143,7 @@ class State:
                         return -1
                     else:
                         return False
-                elif y != 4 and self.state[x-1][y] == self.state[x-1][y+1]:
+                elif y != 3 and self.state[x-1][y] == self.state[x-1][y+1]:
                     """
                     Cas ou c'est une piece de deux (ou quatre) 
                     en (x-1,{y, y+1})
@@ -97,7 +160,7 @@ class State:
                     return 10
                 
         elif direction == "east":
-            if y == 4:
+            if y == 3:
                 return False
             else:
                 if x != 0 and self.state[x][y+1] == self.state[x-1][y+1]:
@@ -138,7 +201,7 @@ class State:
                         return -1
                     else:
                         return False
-                elif y != 4 and self.state[x+1][y] == self.state[x+1][y+1]:
+                elif y != 3 and self.state[x+1][y] == self.state[x+1][y+1]:
                     """
                     Cas ou c'est une piece de deux (ou quatre) 
                     en (x-1,{y, y+1})
