@@ -93,16 +93,22 @@ class State:
 
     def move(self, x, y, direction):    
         """Return a new  state which represent the move. if the
-        move is impossible, move return false"""    
-        i = self.is_possible(x, y, direction)
-        if i:
-            if direction == "north" or direction == "south":
-                self.move_vertical(x, y, direction, i)
-            if direction == "west" or direction == "east":
-                self.move_horizontal(x, y, direction, i)
+        move is impossible, move return false"""  
+        if self.state[x][y] == "0":  
+            i = self.is_possible(x, y, direction)
+            if i:
+                if direction == "north" or direction == "south":
+                    self.move_vertical(x, y, direction, i)
+                    return self.state
+                elif direction == "west" or direction == "east":
+                    self.move_horizontal(x, y, direction, i)
+                    return self.state
+                else:
+                    return False
             else:
-                pass
-    
+                return False
+        else:
+            return False
     
     def is_possible(self, x, y, direction):
         """Return False if the move is impossible, then
@@ -117,7 +123,7 @@ class State:
             elif direction == "south":
                 isInBound = x == 4
                 dirmul = 1
-            if isInBound:
+            if isInBound or self.state[x+dirmul][y] == "0":
                 """Il ne peux pas y avoir de piece au dessus d'une case vide 
                 qui est en haut de la grille ou une piece en dessous d'une 
                 case vide en bas de la grille"""
@@ -146,10 +152,10 @@ class State:
             if direction == "west":
                 isInBound = y == 0
                 dirmul = -1
-            elif direction == "south":
+            elif direction == "east":
                 isInBound = y == 3
                 dirmul = 1
-            if isInBound:
+            if isInBound or self.state[x][y+dirmul] == "0":
                 return False
             else:
                 if x != 0 and self.state[x][y+dirmul] == self.state[x-1][y+dirmul]:

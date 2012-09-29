@@ -12,7 +12,7 @@ class PuzzleProblem(Problem):
         """ 
         goal to be precised 
         """
-        self.initial = {}
+        self.initial = []
         self.parse_init()
         Problem.__init__(State(self.initial), goal)
         pass
@@ -24,7 +24,7 @@ class PuzzleProblem(Problem):
         
     def successor(self, state):
         """
-        Regarde tous les zéros dans le state et pour chaque zéro, demande un
+        Regarde tous les z��ros dans le state et pour chaque z��ro, demande un
         mouvement vers chaque direction, envoie un couple (action, state) si
         le mouvement est valide.
         In this problem, each move cost 1. We don't need to specify the action since
@@ -41,7 +41,7 @@ class PuzzleProblem(Problem):
 
     def print_conf(self):
         """
-        Convertis la representation interne d'une configuration en celle donnée 
+        Convertis la representation interne d'une configuration en celle donn��e 
     
         """ 
         pass
@@ -49,27 +49,23 @@ class PuzzleProblem(Problem):
     
     def parse_init(self):
         """
-        Parse une configuration reçue en entrée en une represation valide pour
+        Parse une configuration re��ue en entr��e en une represation valide pour
         l'utilisation du programme.
         """
         IO = IO(path)
-        i = 0
         IO.init_reader()
         
         for line in IO.file:
-            j = 0
-            linestate = {}
+            linestate = []
             
             for char in line:
-                linestate [j] = char
-                j += 1
+                linestate += char
                 
-            self.initial[i] = linestate
-            i += 1
+            self.initial += linestate
             
     def sol_format(self, nodeList):
         """
-        Crée les lignes à entrer dans le fichier solution sous forme de string
+        Cr��e les lignes �� entrer dans le fichier solution sous forme de string
         et les yield successivement, en ajoutant une ligne vide pour chaque
         changement de noeud.
         """
