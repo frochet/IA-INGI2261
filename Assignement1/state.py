@@ -16,14 +16,7 @@ class State:
     """
     def __init__(self, state):
         self.state = state
-    
-    
-    def generate_next_state(self, x,y,direction):
-        """
-            return a new state base on the previous position x, y and the direction.
-            Assume that the move is valid.
-        """
-        pass
+
     def move(self, x, y, direction):
              
         """
