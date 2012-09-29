@@ -27,8 +27,16 @@ class PuzzleProblem(Problem):
         Regarde tous les zéros dans le state et pour chaque zéro, demande un
         mouvement vers chaque direction, envoie un couple (action, state) si
         le mouvement est valide.
+        In this problem, each move cost 1. We don't need to specify the action since
+        it's no relevant to the compute of the path cost. So successor will yield (None, state)
         """
-        pass
+        direction = ["north", "south","ouest","est"]
+        for x in state.state.keys() :
+            for y in state.state[x] :
+                for direc in direction :
+                    newState = state.move(x,y,direc)
+                    if(newState):
+                        yield (None,newState)
     
 
     def print_conf(self):
