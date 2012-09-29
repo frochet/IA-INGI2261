@@ -67,18 +67,17 @@ dict4 = {\
 
 testState = State(dict1)
 #print(testState.get_state())
-for dic in testState.get_state():
+for dic in testState.state:
     print(dic)
 
 print("")
     
-bool = testState.move(2, 0, "east")
+boole = testState.move(2, 0, "west")
 #print(testState.get_state())
 
-for dic in testState.get_state():
+for dic in testState.state:
     print(dic)
-    
-if not bool:
-    print(bool)
+
+print(boole)
     
     

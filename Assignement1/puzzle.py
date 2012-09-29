@@ -9,17 +9,16 @@ from state import State
 class PuzzleProblem(Problem):
 
     def __init__(self, goal):
-        """ 
-        goal to be precised 
-        """
+        
+        self.goal = goal
         self.initial = []
         self.parse_init()
         Problem.__init__(State(self.initial), goal)
-        pass
-
+        #move's direction allowed :
+        self.direction = ["north", "south","west","east"]
     
     def goal_test(self, state):
-        pass
+        return state == self.goal
 
         
     def successor(self, state):
@@ -30,23 +29,37 @@ class PuzzleProblem(Problem):
         In this problem, each move cost 1. We don't need to specify the action since
         it's no relevant to the compute of the path cost. So successor will yield (None, state)
         """
-        direction = ["north", "south","ouest","est"]
-        for x in state.state.keys() :
-            for y in state.state[x] :
-                for direc in direction :
-                    newState = state.move(x,y,direc)
-                    if(newState):
-                        yield (None,newState)
+        x = 0
+        y = 0
+        while x < len(state):
+            while y < len(state[x]) :
+                if (state[x][y] == "0"):
+                    for direc in self.direction :
+                        newState = state.move(x,y,direc)
+                        if(newState):
+                            yield (None,newState)
+                y+=1
+            x+=1
     
 
-    def print_conf(self):
+    def print_conf(self,state, path=None):
         """
-        Convertis la representation interne d'une configuration en celle donn��e 
-    
-        """ 
-        pass
-    
-    
+            print the state
+        """   
+        if path==None :
+            for liste in state :
+                for elem in liste :
+                    print(elem+" ")
+                print("\n")
+        else :
+            io = IO(path)
+            io.init_writter()
+            for liste in state :
+                for elem in liste :
+                    print(elem+" ",io.file)
+                print("\n",io.file)
+            
+                   
     def parse_init(self):
         """
         Parse une configuration re��ue en entr��e en une represation valide pour
@@ -63,21 +76,21 @@ class PuzzleProblem(Problem):
                 
             self.initial += linestate
             
-    def sol_format(self, nodeList):
-        """
-        Cr��e les lignes �� entrer dans le fichier solution sous forme de string
-        et les yield successivement, en ajoutant une ligne vide pour chaque
-        changement de noeud.
-        """
-        for node in nodeList:
-            
-            for line in node.state:
-                outLine = ""
-                for char in line:
-                    outLine += char
-                yield outLine
-            yield ""
-        
+#    def sol_format(self, nodeList):
+#        """
+#        Cr��e les lignes �� entrer dans le fichier solution sous forme de string
+#        et les yield successivement, en ajoutant une ligne vide pour chaque
+#        changement de noeud.
+#        """
+#        for node in nodeList:
+#            
+#            for line in node.state:
+#                outLine = ""
+#                for char in line:
+#                    outLine += char
+#                yield outLine
+#            yield ""
+#        
             
             
 

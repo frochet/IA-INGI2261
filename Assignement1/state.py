@@ -97,22 +97,19 @@ class State:
     def move(self, x, y, direction):    
         """Return a new  state which represent the move. if the
         move is impossible, move return false"""  
-        if self.state[x][y] == "0":  
-            i = self.is_possible(x, y, direction)
-            if i:
-                if direction == "north" or direction == "south":
-                    self.move_vertical(x, y, direction, i)
-                    return self.state
-                elif direction == "west" or direction == "east":
-                    self.move_horizontal(x, y, direction, i)
-                    return self.state
-                else:
-                    return False
+        i = self.is_possible(x, y, direction)
+        if i:
+            if direction == "north" or direction == "south":
+                self.move_vertical(x, y, direction, i)
+                return self.state
+            elif direction == "west" or direction == "east":
+                self.move_horizontal(x, y, direction, i)
+                return self.state
             else:
                 raise WrongDirectionException(x,y,direction,"in move")
         else:
             return False
-
+ 
     
     def is_possible(self, x, y, direction):
         """Return False if the move is impossible, then
