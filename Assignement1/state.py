@@ -27,7 +27,8 @@ class State:
         elif direction == "south":
             dirmul = 1
             isInBound = x < 3
-
+        else:
+            raise WrongDirectionException(x,y,direction,"move_vertical")
         if i == 10:
             if isInBound and self.state[x+dirmul][y] == self.state[x+2*dirmul][y]:
                 """Test if the piece is a vertical 2bloc piece"""
@@ -62,6 +63,8 @@ class State:
         elif direction == "east":
             dirmul = 1
             isInBound = y < 2
+        else:
+            raise WrongDirectionException(x,y,direction,"move_horizontal")
 
         if i == 10:
             if isInBound and self.state[x][y+dirmul] == self.state[x][y+2*dirmul]:
@@ -101,7 +104,9 @@ class State:
             if direction == "west" or direction == "east":
                 self.move_horizontal(x, y, direction, i)
             else:
-                pass
+                raise WrongDirectionException(x,y,direction,"in move")
+        else:
+            return False
     
     
     def is_possible(self, x, y, direction):
