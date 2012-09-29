@@ -13,7 +13,16 @@ class IO:
         """
         Initialize the reader. You must do it before to use any method to read in the file
         """
-        self.file = open(self.path,"r")
+        try :
+            self.file = open(self.path,"r")
+        except IOError:
+            print("An error occured when opening the file in read mode")
+    
+    def init_writter(self):
+        try :
+            self.file = open(self.path,"w")
+        except IOError :
+            print("An error occured when opening the file in write mode")
     
     def read_line(self):
         """
@@ -21,6 +30,11 @@ class IO:
         """
         return self.file.readline()
     
+    def write_line(self, line):
+        try:
+            self.file.writeline(line)
+        except IOError :
+            print("An error occured when writting in the file")
     
     def close(self):
         self.file.close()

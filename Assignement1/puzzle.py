@@ -27,8 +27,8 @@ class PuzzleProblem(Problem):
         Regarde tous les zéros dans le state et pour chaque zéro, demande un
         mouvement vers chaque direction, envoie un couple (action, state) si
         le mouvement est valide.
-        In this problem, each move cost 1. We don't need to specified the action since
-        it's no relevant to compute the path cost. So succesor will return (None, state)
+        In this problem, each move cost 1. We don't need to specify the action since
+        it's no relevant to the compute of the path cost. So successor will yield (None, state)
         """
         pass
     
