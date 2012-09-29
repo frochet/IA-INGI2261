@@ -8,19 +8,61 @@ import IO
 
 class State:
     """
-    Pour certaines méthodes de cette classe, il est nécaissaire d'utiliser
-    un système de coordonnées, étant donné que le choix pour state est un
+    Pour certaines m��thodes de cette classe, il est n��caissaire d'utiliser
+    un syst��me de coordonn��es, ��tant donn�� que le choix pour state est un
     dictionnaire colonne contenant des dictionnaires lignes, la varibale
-    x représente la coordonnée verticale et y la coordonnée horizontale
+    x repr��sente la coordonn��e verticale et y la coordonn��e horizontale
     """
     def __init__(self, state):
         self.state = state
         
     def move(self, x, y, direction):
-        if(self.is_possible(x, y, direction)):
-            pass
+        i = self.is_possible(x, y, direction)
+        if i:
+            if direction == "north":
+                if i == 10:
+                    pass
+                elif i == -1:
+                    pass
+                elif i == 1:
+                    pass
+            
+            if direction == "east":
+                if i == 10:
+                    pass
+                elif i == -1:
+                    pass
+                elif i == 1:
+                    pass
+                
+            if direction == "south":
+                if i == 10:
+                    pass
+                elif i == -1:
+                    pass
+                elif i == 1:
+                    pass
+                
+            if direction == "west":
+                if i == 10:
+                    pass
+                elif i == -1:
+                    pass
+                elif i == 1:
+                    pass
+            
+            else:
+                pass
+    
+    
     
     def is_possible(self, x, y, direction):
+        """
+        Return False if the move is impossible, then
+        -1 means that the >= 2bloc piece is towards the top or left
+        +1 means that the >= 2bloc piece is towards the bottom or right
+        10 means that it is a 1*1 piece
+        """
         if direction == "north":
             if x == 0:
                 """
@@ -31,20 +73,20 @@ class State:
             else:
                 if y != 0 and self.state[x-1][y] == self.state[x-1][y-1]:
                     """
-                    Cas où c'est une piece de deux (ou quatre) 
+                    Cas ou c'est une piece de deux (ou quatre) 
                     en (x-1,{y-1, y})
                     """
                     if self.state[x][y-1] == "0":
-                        return True
+                        return -1
                     else:
                         return False
                 elif y != 4 and self.state[x-1][y] == self.state[x-1][y+1]:
                     """
-                    Cas où c'est une piece de deux (ou quatre) 
+                    Cas ou c'est une piece de deux (ou quatre) 
                     en (x-1,{y, y+1})
                     """
                     if self.state[x][y+1] == "0":
-                        return True
+                        return +1
                     else:
                         return False
                 else:
@@ -52,26 +94,99 @@ class State:
                     La piece dans ce cas fait seulement 1 de large
                     (1*1) ou (2*1) vertical
                     """
-                    return True
+                    return 10
                 
         elif direction == "east":
             if y == 4:
                 return False
             else:
-                pass
+                if x != 0 and self.state[x][y+1] == self.state[x-1][y+1]:
+                    """
+                    Cas ou c'est une piece de deux (ou quatre) 
+                    en ({x-1, x}, y+1)
+                    """
+                    if self.state[x-1][y] == "0":
+                        return -1
+                    else:
+                        return False
+                elif x != 4 and self.state[x][y+1] == self.state[x+1][y+1]:
+                    """
+                    Cas ou c'est une piece de deux (ou quatre) 
+                    en ({x, x+1}, y+1)
+                    """
+                    if self.state[x+1][y] == "0":
+                        return +1
+                    else:
+                        return False
+                else:
+                    """
+                    La piece dans ce cas fait seulement 1 de large
+                    (1*1) ou (2*1) vertical
+                    """
+                    return 10
                     
         elif direction == "south":
             if x == 4:
                 return False
             else:
-                pass
+                if y != 0 and self.state[x+1][y] == self.state[x+1][y-1]:
+                    """
+                    Cas ou c'est une piece de deux (ou quatre) 
+                    en (x+1,{y-1, y})
+                    """
+                    if self.state[x][y-1] == "0":
+                        return -1
+                    else:
+                        return False
+                elif y != 4 and self.state[x+1][y] == self.state[x+1][y+1]:
+                    """
+                    Cas ou c'est une piece de deux (ou quatre) 
+                    en (x-1,{y, y+1})
+                    """
+                    if self.state[x][y+1] == "0":
+                        return +1
+                    else:
+                        return False
+                else:
+                    """
+                    La piece dans ce cas fait seulement 1 de large
+                    (1*1) ou (2*1) vertical
+                    """
+                    return 10
             
         elif direction == "west":
             if y == 0:
                 return False
             else:
-                pass
+                if x != 0 and self.state[x][y-1] == self.state[x-1][y-1]:
+                    """
+                    Cas ou c'est une piece de deux (ou quatre) 
+                    en ({x-1, x}, y+1)
+                    """
+                    if self.state[x-1][y] == "0":
+                        return -1
+                    else:
+                        return False
+                elif x != 4 and self.state[x][y-1] == self.state[x+1][y-1]:
+                    """
+                    Cas ou c'est une piece de deux (ou quatre) 
+                    en ({x, x+1}, y+1)
+                    """
+                    if self.state[x+1][y] == "0":
+                        return 
+                    else:
+                        return False
+                else:
+                    """
+                    La piece dans ce cas fait seulement 1 de large
+                    (1*1) ou (2*1) vertical
+                    """
+                    return 10
         
         else:
+            """
+            Mauvaise direction entrée.
+            """
             pass
-        pass
+
+
