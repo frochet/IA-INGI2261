@@ -178,7 +178,7 @@ class State:
         
         else:
             """Mauvaise direction entrée."""
-            raise WrongDirectionException(x,y,direction)
+            raise WrongDirectionException(x,y,direction,"in is_possible")
     
     #
     # GETTERS AND SETTERS
