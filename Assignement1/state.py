@@ -5,6 +5,7 @@ Created on Sep 28, 2012
 '''
 
 import IO
+import WrongDirectionException
 
 class State:
     """
@@ -15,8 +16,21 @@ class State:
     """
     def __init__(self, state):
         self.state = state
-        
+    
+    
+    def generate_next_state(self, x,y,direction):
+        """
+            return a new state base on the previous position x, y and the direction.
+            Assume that the move is valid.
+        """
+        pass
     def move(self, x, y, direction):
+             
+        """
+            Return a new  state which represent the move. if the
+            move is impossible, move return false
+            
+        """    
         i = self.is_possible(x, y, direction)
         if i:
             if direction == "north":
@@ -27,7 +41,7 @@ class State:
                 elif i == 1:
                     pass
             
-            if direction == "east":
+            elif direction == "east":
                 if i == 10:
                     pass
                 elif i == -1:
@@ -35,7 +49,7 @@ class State:
                 elif i == 1:
                     pass
                 
-            if direction == "south":
+            elif direction == "south":
                 if i == 10:
                     pass
                 elif i == -1:
@@ -43,18 +57,15 @@ class State:
                 elif i == 1:
                     pass
                 
-            if direction == "west":
+            elif direction == "west":
                 if i == 10:
                     pass
                 elif i == -1:
                     pass
                 elif i == 1:
                     pass
-            
-            else:
-                pass
-    
-    
+        else:
+            return False
     
     def is_possible(self, x, y, direction):
         """
@@ -62,6 +73,8 @@ class State:
         -1 means that the >= 2bloc piece is towards the top or left
         +1 means that the >= 2bloc piece is towards the bottom or right
         10 means that it is a 1*1 piece
+        
+        Remind : x is vertical coordonate, y is horizontal 
         """
         if direction == "north":
             if x == 0:
@@ -187,6 +200,7 @@ class State:
             """
             Mauvaise direction entrée.
             """
-            pass
+            raise WrongDirectionException(x,y,direction)
+        
 
 
