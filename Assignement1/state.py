@@ -56,10 +56,10 @@ class State:
             
             
     def move_horizontal(self, x, y, direction, i):
-        if direction == "east":
+        if direction == "west":
             dirmul = -1
             isInBound = y > 1
-        elif direction == "west":
+        elif direction == "east":
             dirmul = 1
             isInBound = y < 2
 
@@ -98,7 +98,7 @@ class State:
         if i:
             if direction == "north" or direction == "south":
                 self.move_vertical(x, y, direction, i)
-            if direction == "east" or direction == "west":
+            if direction == "west" or direction == "east":
                 self.move_horizontal(x, y, direction, i)
             else:
                 pass
@@ -110,20 +110,27 @@ class State:
         +1 means that the >= 2bloc piece is towards the bottom or right
         10 means that it is a piece with width = 1 in the direction
         Remind : x is vertical coordonate, y is horizontal"""
-        if direction == "north":
-            if x == 0:
+        if direction == "north" or direction == "south":
+            if direction == "north":
+                isInBound = x == 0
+                dirmul = -1
+            elif direction == "south":
+                isInBound = x == 4
+                dirmul = 1
+            if isInBound:
                 """Il ne peux pas y avoir de piece au dessus d'une case vide 
-                qui est en haut de la grille"""
+                qui est en haut de la grille ou une piece en dessous d'une 
+                case vide en bas de la grille"""
                 return False
             else:
-                if y != 0 and self.state[x-1][y] == self.state[x-1][y-1]:
+                if y != 0 and self.state[x+dirmul][y] == self.state[x+dirmul][y-1]:
                     """Cas ou c'est une piece de deux (ou quatre) 
                     en (x-1,{y-1, y})"""
                     if self.state[x][y-1] == "0":
                         return -1
                     else:
                         return False
-                elif y != 3 and self.state[x-1][y] == self.state[x-1][y+1]:
+                elif y != 3 and self.state[x+dirmul][y] == self.state[x+dirmul][y+1]:
                     """Cas ou c'est une piece de deux (ou quatre) 
                     en (x-1,{y, y+1})"""
                     if self.state[x][y+1] == "0":
@@ -134,72 +141,29 @@ class State:
                     """La piece dans ce cas fait seulement 1 de large
                     (1*1) ou (2*1) vertical"""
                     return 10
-         
-         
-        elif direction == "south":
-            if x == 4:
+                         
+        elif direction == "west" or direction == "east":
+            if direction == "west":
+                isInBound = y == 0
+                dirmul = -1
+            elif direction == "south":
+                isInBound = y == 3
+                dirmul = 1
+            if isInBound:
                 return False
             else:
-                if y != 0 and self.state[x+1][y] == self.state[x+1][y-1]:
-                    """Cas ou c'est une piece de deux (ou quatre) 
-                    en (x+1,{y-1, y})"""
-                    if self.state[x][y-1] == "0":
-                        return -1
-                    else:
-                        return False
-                elif y != 3 and self.state[x+1][y] == self.state[x+1][y+1]:
-                    """Cas ou c'est une piece de deux (ou quatre) 
-                    en (x-1,{y, y+1})"""
-                    if self.state[x][y+1] == "0":
-                        return +1
-                    else:
-                        return False
-                else:
-                    """La piece dans ce cas fait seulement 1 de large
-                    (1*1) ou (2*1) vertical"""
-                    return 10
-                
-                        
-        elif direction == "east":
-            if y == 3:
-                return False
-            else:
-                if x != 0 and self.state[x][y+1] == self.state[x-1][y+1]:
+                if x != 0 and self.state[x][y+dirmul] == self.state[x-1][y+dirmul]:
                     """Cas ou c'est une piece de deux (ou quatre) 
                     en ({x-1, x}, y+1)"""
                     if self.state[x-1][y] == "0":
                         return -1
                     else:
                         return False
-                elif x != 4 and self.state[x][y+1] == self.state[x+1][y+1]:
+                elif x != 4 and self.state[x][y+dirmul] == self.state[x+1][y+dirmul]:
                     """Cas ou c'est une piece de deux (ou quatre) 
                     en ({x, x+1}, y+1)"""
                     if self.state[x+1][y] == "0":
                         return +1
-                    else:
-                        return False
-                else:
-                    """La piece dans ce cas fait seulement 1 de large
-                    (1*1) ou (2*1) vertical"""
-                    return 10
-                    
-            
-        elif direction == "west":
-            if y == 0:
-                return False
-            else:
-                if x != 0 and self.state[x][y-1] == self.state[x-1][y-1]:
-                    """Cas ou c'est une piece de deux (ou quatre) 
-                    en ({x-1, x}, y+1)"""
-                    if self.state[x-1][y] == "0":
-                        return -1
-                    else:
-                        return False
-                elif x != 4 and self.state[x][y-1] == self.state[x+1][y-1]:
-                    """Cas ou c'est une piece de deux (ou quatre) 
-                    en ({x, x+1}, y+1)"""
-                    if self.state[x+1][y] == "0":
-                        return 
                     else:
                         return False
                 else:
