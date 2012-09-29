@@ -15,7 +15,7 @@ class State:
     x repr��sente la coordonn��e verticale et y la coordonn��e horizontale
     """
     def __init__(self, state):
-        self.state = state
+        self._state = state
 
     def move(self, x, y, direction):
              
@@ -194,6 +194,17 @@ class State:
             Mauvaise direction entrée.
             """
             raise WrongDirectionException(x,y,direction)
+    
+    #
+    # GETTERS AND SETTERS
+    #
+    
+    def _get_state(self):
+        return self._state
+    
+    def _set_state(self,state):
+        self._state = state
         
 
-
+    state = property(_get_state,_set_state)
+    
