@@ -42,7 +42,7 @@ class PuzzleProblem(Problem):
                     for direc in self.direction :
                         newState = state.move(x,y,direc)
                         if(newState):
-                            self.print_conf(newState.state)
+                            self.print_conf(newState.state,"response.txt")
                             yield (None,newState)
                 y+=1
             y=0
@@ -63,9 +63,9 @@ class PuzzleProblem(Problem):
             io = IO(path)
             io.init_writter()
             for liste in state :
-                for elem in liste :
-                    print(elem,io.file)
-                print("\n",io.file)
+                io.write_line(str(liste))
+                io.write_line("\n")
+            io.close()
             
                    
     def parse_init(self, path):
