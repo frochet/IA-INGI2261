@@ -42,7 +42,7 @@ class PuzzleProblem(Problem):
                     for direc in self.direction :
                         newState = state.move(x,y,direc)
                         if(newState):
-                            self.print_conf(newState.state,"response.txt")
+                            #self.print_conf(newState.state)
                             yield (None,newState)
                 y+=1
             y=0
