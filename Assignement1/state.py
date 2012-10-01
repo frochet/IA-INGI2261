@@ -17,8 +17,20 @@ class State:
     """
     def __init__(self, state):
         self.state = state
+        self.representation = self.make_representation()
         
     def __hash__(self):
+       
+        result = hash(self.make_representation())
+        #print(result)
+        return result
+                
+    
+    def __eq__(self,other):
+        return self.representation == other.representation
+     
+    def make_representation(self):
+        
         """ Horiz == 2
         Vert == 3"""
         list = []
@@ -56,13 +68,9 @@ class State:
         result = ""
         for elem in hashedlist:
             result += str(elem)
-        print(result)
-        return hash(result)
-                
+        return result
     
-    def get_state(self):
-        return self.state
-        
+    
     def move_vertical(self, x, y, direction, i):
         if direction == "north":
             dirmul = -1
