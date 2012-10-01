@@ -54,7 +54,7 @@ class PuzzleProblem(Problem):
         if path==None :
             for liste in state :
                 for elem in liste :
-                    sys.stdout.write(elem+" ")
+                    sys.stdout.write(elem)
                # print("\n")
             print("\n")
         else :
