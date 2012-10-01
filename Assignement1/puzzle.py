@@ -19,7 +19,6 @@ class PuzzleProblem(Problem):
         self.direction = ["north", "south","west","east"]
     
     def goal_test(self, state):
-        print("avant [3][1]")
         self.print_conf(state.state)
         print(state.state[2][0])
         return state.state[3][1] == "1" and state.state[3][2] == "1" and \
@@ -46,6 +45,7 @@ class PuzzleProblem(Problem):
                         if(newState):
                             yield (None,newState)
                 y+=1
+            y=0
             x+=1
     
 
