@@ -68,9 +68,9 @@ class State:
         result = ""
         for elem in hashedlist:
             result += str(elem)
-        return result
-    
-    
+
+        return hash(result)
+                    
     def move_vertical(self, x, y, direction, i):
         if direction == "north":
             dirmul = -1
