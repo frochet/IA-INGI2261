@@ -1,25 +1,27 @@
 '''NAMES OF THE AUTHOR(S): ...'''
 
 from search import *
-import IO
+from IO import IO
 from state import State
+import sys
 
 ######################  Implement the search #######################
 
 class PuzzleProblem(Problem):
 
-    def __init__(self, goal=None):
+    def __init__(self,initial = [], goal=None):
         
         self.goal = goal
-        self.initial = []
+        self.initial = initial
         self.parse_init("init_example.txt")
-        Problem.__init__(State(self.initial))
+        Problem.__init__(self,State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
     
     def goal_test(self, state):
-        return state.state[3][1] == 1 and state.state[3][2] == 1 and \
-        state.state[4][1] == 1 and state.state[4][2] == 1
+        self.print_conf(state.state)
+        return state.state[3][1] == "1" and state.state[3][2] == "1" and \
+        state.state[4][1] == "1" and state.state[4][2] == "1"
 
         #return state == self.goal
 
@@ -52,14 +54,15 @@ class PuzzleProblem(Problem):
         if path==None :
             for liste in state :
                 for elem in liste :
-                    print(elem+" ")
-                print("\n")
+                    sys.stdout.write(elem+" ")
+               # print("\n")
+            print("\n")
         else :
             io = IO(path)
             io.init_writter()
             for liste in state :
                 for elem in liste :
-                    print(elem+" ",io.file)
+                    print(elem,io.file)
                 print("\n",io.file)
             
                    
@@ -68,10 +71,10 @@ class PuzzleProblem(Problem):
         Parse une configuration re��ue en entr��e en une represation valide pour
         l'utilisation du programme.
         """
-        IO = IO(path)
-        IO.init_reader()
+        Io = IO(path)
+        Io.init_reader()
         
-        for line in IO.file:
+        for line in Io.file:
             linestate = []
             
             for char in line:
@@ -102,6 +105,7 @@ class PuzzleProblem(Problem):
     
 problem=PuzzleProblem()
 #example of bfs search
+problem.print_conf(problem.initial.state)
 node=breadth_first_graph_search(problem)
 #example of print
 path=node.path()
