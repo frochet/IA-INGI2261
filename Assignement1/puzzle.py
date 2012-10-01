@@ -63,9 +63,9 @@ class PuzzleProblem(Problem):
             io = IO(path)
             io.init_writter()
             for liste in state :
-                for elem in liste :
-                    print(elem,io.file)
-                print("\n",io.file)
+                io.write_line(str(liste))
+                io.write_line("\n")
+            io.close()
             
                    
     def parse_init(self, path):

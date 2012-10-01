@@ -32,7 +32,7 @@ class IO:
     
     def write_line(self, line):
         try:
-            self.file.writeline(line)
+            self.file.write(line)
         except IOError :
             print("An error occured when writting in the file")
     
