@@ -27,10 +27,10 @@ class State:
         hashedlist = list[:]
         i = 0
         while i < len(list):
-            if list[i] != 0:
+            if list[i] != "0":
                 if list.count(list[i]) == 1:
                     hashedlist[i] = 1
-                elif list.count(list[1]) == 4:
+                elif list.count(list[i]) == 4:
                     hashedlist[i] = 4
                 elif list.count(list[i]) == 2:
                     if i == 0:
@@ -56,6 +56,7 @@ class State:
         result = ""
         for elem in hashedlist:
             result += str(elem)
+        print(result)
         return hash(result)
                 
     
