@@ -18,7 +18,10 @@ class PuzzleProblem(Problem):
         self.direction = ["north", "south","west","east"]
     
     def goal_test(self, state):
-        return state == self.goal
+        return state.state[3][1] == 1 and state.state[3][2] == 1 and \
+        state.state[4][1] == 1 and state.state[4][2] == 1
+
+        #return state == self.goal
 
         
     def successor(self, state):
