@@ -8,12 +8,12 @@ from state import State
 
 class PuzzleProblem(Problem):
 
-    def __init__(self, goal):
+    def __init__(self, goal=None):
         
         self.goal = goal
         self.initial = []
         self.parse_init()
-        Problem.__init__(State(self.initial), goal=None)
+        Problem.__init__(State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
     
@@ -100,7 +100,7 @@ class PuzzleProblem(Problem):
 
 ###################### Launch the search #########################
     
-problem=PuzzleProblem(sys.argv[1])
+problem=PuzzleProblem()
 #example of bfs search
 node=breadth_first_graph_search(problem)
 #example of print
