@@ -13,7 +13,7 @@ class PuzzleProblem(Problem):
         self.goal = goal
         self.initial = []
         self.parse_init()
-        Problem.__init__(State(self.initial), goal)
+        Problem.__init__(State(self.initial), goal=None)
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
     
