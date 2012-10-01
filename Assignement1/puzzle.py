@@ -18,6 +18,7 @@ class PuzzleProblem(Problem):
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
     
+
     def goal_test(self, nodestate):
         return nodestate.state[3][1] == "1" and nodestate.state[3][2] == "1" and \
         nodestate.state[4][1] == "1" and nodestate.state[4][2] == "1"
@@ -44,6 +45,7 @@ class PuzzleProblem(Problem):
                             #self.print_conf(newState.state)
                             yield (None,newState)
                 y+=1
+            y=0
             x+=1
     
 
