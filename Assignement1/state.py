@@ -18,6 +18,47 @@ class State:
     def __init__(self, state):
         self.state = state
         
+    def __hash__(self):
+        """ Horiz == 2
+        Vert == 3"""
+        list = []
+        for line in self.state:
+            list += line
+        hashedlist = list[:]
+        i = 0
+        while i < len(list):
+            if list[i] != 0:
+                if list.count(list[i]) == 1:
+                    hashedlist[i] = 1
+                elif list.count(list[1]) == 4:
+                    hashedlist[i] = 4
+                elif list.count(list[i]) == 2:
+                    if i == 0:
+                        if list[i] == list[i+1]:
+                            hashedlist[i] = 2
+                    elif i == 19:
+                        if list[i] == list[i-1]:
+                            hashedlist[i] = 2
+                    else:
+                        if list[i] == list[i-1] or list[i] == list[i+1]:
+                            hashedlist[i] = 2
+                    if i < 4:
+                        if list[i] == list[i+4]:
+                            hashedlist[i] = 3
+                    elif i > 15:
+                        if list[i] == list[i-4]:
+                            hashedlist[i] = 3
+                    else:
+                        if list[i] == list[i-4] or list[i] == list[i+4]:
+                            hashedlist[i] = 3
+            i += 1
+            
+        result = ""
+        for elem in hashedlist:
+            result += str(elem)
+        return hash(result)
+                
+    
     def get_state(self):
         return self.state
         

@@ -114,5 +114,6 @@ path=node.path()
 path.reverse()
 for n in path:
     print(n.state) #assume that the __str__ function of states output the correct format
+    problem.print_conf(n.state.state)
 
         
