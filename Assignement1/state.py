@@ -6,6 +6,7 @@ Created on Sep 28, 2012
 
 import IO
 import WrongDirectionException
+import copy
 
 class State:
     """
@@ -99,13 +100,13 @@ class State:
         move is impossible, move return false"""  
         i = self.is_possible(x, y, direction)
         if i:
-            copy = State(self.state)
+            localState = State(copy.deepcopy(self.state))
             if direction == "north" or direction == "south":
-                copy.move_vertical(x, y, direction, i)
-                return copy
+                localState.move_vertical(x, y, direction, i)
+                return localState
             elif direction == "west" or direction == "east":
-                self.move_horizontal(x, y, direction, i)
-                return copy
+                localState.move_horizontal(x, y, direction, i)
+                return localState
             else:
                 raise WrongDirectionException(x,y,direction,"in move")
         else:
