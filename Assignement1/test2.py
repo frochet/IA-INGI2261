@@ -72,12 +72,12 @@ for dic in testState.state:
 
 print("")
     
-boole = testState.move(2, 0, "west")
+boole = testState.move(2, 1, "east")
 #print(testState.get_state())
 
 for dic in testState.state:
     print(dic)
 
-print(boole)
+#print(boole)
     
     
