@@ -75,7 +75,8 @@ class PuzzleProblem(Problem):
             linestate = []
             
             for char in line:
-                linestate += char
+                if char != " ":
+                    linestate += char
                 
             self.initial += linestate
             
