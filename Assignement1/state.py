@@ -56,7 +56,6 @@ class State:
         result = ""
         for elem in hashedlist:
             result += str(elem)
-        print(result)
         return hash(result)
                 
     
