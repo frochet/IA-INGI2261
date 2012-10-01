@@ -19,7 +19,9 @@ class PuzzleProblem(Problem):
         self.direction = ["north", "south","west","east"]
     
     def goal_test(self, state):
+        print("avant [3][1]")
         self.print_conf(state.state)
+        print(state.state[2][0])
         return state.state[3][1] == "1" and state.state[3][2] == "1" and \
         state.state[4][1] == "1" and state.state[4][2] == "1"
 
@@ -36,9 +38,9 @@ class PuzzleProblem(Problem):
         """
         x = 0
         y = 0
-        while x < len(state):
-            while y < len(state[x]) :
-                if (state[x][y] == "0"):
+        while x < len(state.state):
+            while y < len(state.state[x]) :
+                if (state.state[x][y] == "0"):
                     for direc in self.direction :
                         newState = state.move(x,y,direc)
                         if(newState):
@@ -54,8 +56,8 @@ class PuzzleProblem(Problem):
         if path==None :
             for liste in state :
                 for elem in liste :
-                    sys.stdout.write(elem)
-               # print("\n")
+                    sys.stdout.write(elem+" ")
+                print("\n")
             print("\n")
         else :
             io = IO(path)
@@ -78,10 +80,11 @@ class PuzzleProblem(Problem):
             linestate = []
             
             for char in line:
-                if char != " ":
+                if char != " " and char != "\n":
                     linestate += char
                 
-            self.initial += linestate
+            self.initial.append(linestate)
+        print(self.initial)
             
 #    def sol_format(self, nodeList):
 #        """
