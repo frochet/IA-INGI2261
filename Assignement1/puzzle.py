@@ -12,7 +12,7 @@ class PuzzleProblem(Problem):
         
         self.goal = goal
         self.initial = []
-        self.parse_init()
+        self.parse_init("init_example.txt")
         Problem.__init__(State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
@@ -63,7 +63,7 @@ class PuzzleProblem(Problem):
                 print("\n",io.file)
             
                    
-    def parse_init(self):
+    def parse_init(self, path):
         """
         Parse une configuration re��ue en entr��e en une represation valide pour
         l'utilisation du programme.
