@@ -99,12 +99,13 @@ class State:
         move is impossible, move return false"""  
         i = self.is_possible(x, y, direction)
         if i:
+            copy = State(self.state)
             if direction == "north" or direction == "south":
-                self.move_vertical(x, y, direction, i)
-                return self.state
+                copy.move_vertical(x, y, direction, i)
+                return copy
             elif direction == "west" or direction == "east":
                 self.move_horizontal(x, y, direction, i)
-                return self.state
+                return copy
             else:
                 raise WrongDirectionException(x,y,direction,"in move")
         else:

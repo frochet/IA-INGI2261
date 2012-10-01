@@ -18,12 +18,9 @@ class PuzzleProblem(Problem):
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
     
-    def goal_test(self, state):
-        print("avant [3][1]")
-        self.print_conf(state.state)
-        print(state.state[2][0])
-        return state.state[3][1] == "1" and state.state[3][2] == "1" and \
-        state.state[4][1] == "1" and state.state[4][2] == "1"
+    def goal_test(self, nodestate):
+        return nodestate.state[3][1] == "1" and nodestate.state[3][2] == "1" and \
+        nodestate.state[4][1] == "1" and nodestate.state[4][2] == "1"
 
         #return state == self.goal
 
@@ -37,19 +34,20 @@ class PuzzleProblem(Problem):
         it's no relevant to the compute of the path cost. So successor will yield (None, state)
         """
         x = 0
-        y = 0
         while x < len(state.state):
+            y = 0
             while y < len(state.state[x]) :
                 if (state.state[x][y] == "0"):
                     for direc in self.direction :
                         newState = state.move(x,y,direc)
                         if(newState):
+                            self.print_conf(newState.state)
                             yield (None,newState)
                 y+=1
             x+=1
     
 
-    def print_conf(self,state, path=None):
+    def print_conf(self, state, path=None):
         """
             print the state
         """   
@@ -84,7 +82,6 @@ class PuzzleProblem(Problem):
                     linestate += char
                 
             self.initial.append(linestate)
-        print(self.initial)
             
 #    def sol_format(self, nodeList):
 #        """
@@ -108,7 +105,7 @@ class PuzzleProblem(Problem):
     
 problem=PuzzleProblem()
 #example of bfs search
-problem.print_conf(problem.initial.state)
+#problem.print_conf(problem.initial.state)
 node=breadth_first_graph_search(problem)
 #example of print
 path=node.path()
