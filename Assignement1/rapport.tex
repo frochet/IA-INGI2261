@@ -71,19 +71,20 @@ methods involved? What properties must its elements have?}
 	\begin{itemize}
 		\item \textbf{depth first} The main advantage of using a depth first search is its space complexity which is better than other because the algorithm is such as only one path must be in memory at a given time. 
 		Though, if the tree is infinite, the path also becomes infinite and thus, it is possible to never find the goal and a major part of the tree is unexplored.
-		\item \textbf{breadth first} While using this approach, we ensure that we will find the shallowest goal in our tree (which is the one that requires the less actions) but at the cost that all the different states generated during the execution are kept in memory which leads to an exponential time complexity.
-		\item \textbf{depth limited} This one acts like the depth first algorithm, though it gets rid of the infinite path problem by setting a maximum depth. It is then possible to explore all the tree up to a certain depth. 
+		\item \textbf{breadth first} While using this approach, we ensure that we will find the shallowest goal in our tree (which is the one that requires the less actions) but at the cost that all the different states generated during the execution are kept in memory which leads to an exponential space complexity.
+		\item \textbf{depth limited} This one acts like the depth first algorithm, though it gets rid of the infinite path problem by setting a maximum depth. It is then possible to explore all the nodes up to a certain depth. 
 		Sadly it only works well when we have a good idea of the depth of the goal or at least an upper bound.
-		\item \textbf{iterative deepening} The strategy of this one is to perform a search on each level one after the previous one using the depth first method, which is following one path at the time. It keeps the advantages of the depth limited way without the disadvantage that we don't know the depth of the goal.
+		\item \textbf{iterative deepening} The strategy of this one is to perform a search on each level, one after the previous one, using the depth first method, which is following one path at the time. It keeps the advantages of the depth limited way without the disadvantage that we don't know the depth of the goal.
 		The inconvenient of using this method is that it generate slightly more node than the breadth first method.
 		\item \textbf{uniform cost} It is a nice way to proceed when some actions are more costly than others. It is basically a breadth first search, although instead of a FIFO Queue, a priority queue is used.
 		While convenient when costs are involved, this method is expensive in space as well as in time.\\
 	\end{itemize}
-	In order to solve the given problem, we'll choose the iterative deepening strategy over the others for the reason that it is the best algorithm because of its both time and space complexity.
+	To solve the given problem, the best approach seems to be the breadth first search because we want the solution using the fewer steps and because calculating states and comparing them is expensive. That's why we won't go for the iterative deepening although it was our first choice because it generates more nodes and performs more comparisons.
+	And of course, we'll use the version of the BFS that uses a graph search because we want to avoid symmetrical states in our search.
 	
 	\subsection{Are there symmetrical (equivalent) states in this problem? What are the potential consequences on the search?}
 	
-	There may be many situations where symmetrical states occur. The consequences of this in the treatment of this problem	is that we may build several times the same tree and explore it as many times. It would constitute a useless usage of memory and a loss of time considering it generates and analyses the redundant states before reaching the goal state.
+	There may be many situations where symmetrical states occur. The consequences of this in the treatment of this problem is that it maylead to building several times the same subtree and explore it as many times. It would constitute a useless usage of memory and a loss of time considering it generates and analyses the redundant states before reaching the goal state.
 	
 	\subsection{How are you dealing with those symmetrical states?}
 	
@@ -91,59 +92,118 @@ methods involved? What properties must its elements have?}
 	
 	\subsection{What are the advantages and disadvantages of using the tree and graph search for this problem. Which approach would you choose? Which approach allows you to avoid expending twice symmetrical states?}
 
-	As said above, the graph search present an advantage in comparison to the tree search which is to consider same states but the build of a graph is very costly in term of memory The approach that we shall use is the tree search via the iterative deepening because the space complexity is linear instead of exponential in the case of a graph search.
+	As said above, the graph search presents an advantage in comparison to the tree search which treats symmetrical states as different ones. The approach that we shall use is the graph search via the BFS because the redundancy would cause the computing time to explode as will show the tests later on.
 	The graph search is the one of the two that can avoid treating symmetrical states because it tests if the state has already been generated earlier.
 	
 	\subsection{Implement this problem in Python3. Extend the Problem class and implement the necessary methods and other class(es) if necessary. Your file must be named puzzle.py. Your program must print to the standard output a solution to the puzzle satisfying the above format}
 	
+	For the implementation of the solver, we extended the problem class and created two others which are IO and State. The IO has for goal to read and write files while the State class implements an state of the puzzle with all the useful methods. Comments inside the code will help to understand its design.
+	
 	\subsection{Experiments must be realized with the 10 instances of the puzzle problem provided. Report in a table the results on the 10 instances for depth-first and breadth first strategies on both tree and graph search (4 settings). You must report the time, the number of explored nodes and the number of steps from root to solution. When no solution can be found by a strategy in a reasonable time (3 min), explain the reason (time-out and/or swap of the memory}
 	
-	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+	\begin{tabular}{|c||c|c|c|}
 		\hline 
-		\textbf{BFS Tree} & \textbf{init1} & \textbf{init2} & \textbf{init3} & \textbf{init4} & \textbf{init5} & \textbf{init6} & \textbf{init7} & \textbf{init8} & \textbf{init9} & \textbf{init10} \\ 
+		\textbf{BFS Graph} & \textbf{Time [s]} & \textbf{Steps} & \textbf{Nodes} \\ 
 		\hline 
-		\textbf{Time [s]} & • & • & • & • & • & • & • & • & • & • \\ 
+		init1 & 43.69 & 113 & 278791 \\ 
 		\hline 
-		\textbf{Steps} & • & • & • & • & • & • & • & • & • & • \\ 
+		init2 & 2.95 & 28 & 25100 \\ 
 		\hline 
-		\textbf{Nodes} & • & • & • & • & • & • & • & • & • & • \\ 
+		init3 & 46.78 & 47 & 339023 \\ 
+		\hline 
+		init4 & 66.93 & 46 & 451824 \\ 
+		\hline 
+		init5 & 132.42 & 57 & 890489 \\ 
+		\hline 
+		init6 & 47.97 & 47 & 311785 \\ 
+		\hline 
+		init7 & 114.11 & 65 & 726119 \\ 
+		\hline 
+		init8 & 45.28 & 117 & 283315 \\ 
+		\hline 
+		init9 & 55.59 & 139 & 347982 \\ 
+		\hline 
+		init10 & 64.94 & 159 & 414054 \\ 
+		\hline 
+	\end{tabular}
+	\hspace{0.5cm}
+	\begin{tabular}{|c||c|c|c|}
+		\hline 
+		\textbf{BFS Tree} & \textbf{Time [s]} & \textbf{Steps} & \textbf{Nodes} \\ 
+		\hline 
+		init1 & / & / & / \\ 
+		\hline 
+		init2 & / & / & / \\ 
+		\hline 
+		init3 & / & / & / \\ 
+		\hline 
+		init4 & / & / & / \\ 
+		\hline 
+		init5 & / & / & / \\ 
+		\hline 
+		init6 & / & / & / \\ 
+		\hline 
+		init7 & / & / & / \\ 
+		\hline 
+		init8 & / & / & / \\ 
+		\hline 
+		init9 & / & / & / \\ 
+		\hline 
+		init10 & / & / & / \\ 
+		\hline 
+	\end{tabular}\\
+	\vspace{1cm}
+	
+	\begin{tabular}{|c||c|c|c|}
+		\hline 
+		\textbf{DF Graph} & \textbf{Time [s]} & \textbf{Steps} & \textbf{Nodes} \\ 
+		\hline 
+		init1 & 27.1 & 18015 & 150547 \\ 
+		\hline 
+		init2 & 1.53 & 1916 & 8990 \\ 
+		\hline 
+		init3 & 11.7 & 15254 & 62456 \\ 
+		\hline 
+		init4 & 17.89 & 24137 & 88555 \\ 
+		\hline 
+		init5 & 39.64 & 53677 & 201382 \\ 
+		\hline 
+		init6 & 5.96 & 8572 & 29634 \\ 
+		\hline 
+		init7 & 27.53 & 34353 & 141058 \\ 
+		\hline 
+		init8 & 7.4 & 6069 & 41725 \\ 
+		\hline 
+		init9 & 20.3 & 21690 & 105246 \\ 
+		\hline 
+		init10 & 30.94 & 31470 & 157045 \\ 
 		\hline 
 	\end{tabular} 
-	
-	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+	\hspace{0.5cm}
+	\begin{tabular}{|c||c|c|c|}
 		\hline 
-		\textbf{BFS Graph} & \textbf{init1} & \textbf{init2} & \textbf{init3} & \textbf{init4} & \textbf{init5} & \textbf{init6} & \textbf{init7} & \textbf{init8} & \textbf{init9} & \textbf{init10} \\ 
+		\textbf{DF Tree} & \textbf{Time [s]} & \textbf{Steps} & \textbf{Nodes} \\ 
 		\hline 
-		\textbf{Time [s]} & 43.69 & 2.95 & 46.78 & • & • & • & • & • & • & • \\ 
+		init1 & • & • & • \\ 
 		\hline 
-		\textbf{Steps} & 113 & 28 & 47 & • & • & • & • & • & • & • \\ 
+		init2 & • & • & • \\ 
 		\hline 
-		\textbf{Nodes} & 278791 & 25100 & 339023 & • & • & • & • & • & • & • \\ 
+		init3 & • & • & • \\ 
 		\hline 
-	\end{tabular} 
-	
-	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		init4 & • & • & • \\ 
 		\hline 
-		\textbf{DF Tree} & \textbf{init1} & \textbf{init2} & \textbf{init3} & \textbf{init4} & \textbf{init5} & \textbf{init6} & \textbf{init7} & \textbf{init8} & \textbf{init9} & \textbf{init10} \\ 
+		init5 & • & • & • \\ 
 		\hline 
-		\textbf{Time [s]} & • & • & • & • & • & • & • & • & • & • \\ 
+		init6 & • & • & • \\ 
 		\hline 
-		\textbf{Steps} & • & • & • & • & • & • & • & • & • & • \\ 
+		init7 & • & • & • \\ 
 		\hline 
-		\textbf{Nodes} & • & • & • & • & • & • & • & • & • & • \\ 
+		init8 & • & • & • \\ 
 		\hline 
-	\end{tabular} 
-	
-	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		init9 & • & • & • \\ 
 		\hline 
-		\textbf{DF Graph} & \textbf{init1} & \textbf{init2} & \textbf{init3} & \textbf{init4} & \textbf{init5} & \textbf{init6} & \textbf{init7} & \textbf{init8} & \textbf{init9} & \textbf{init10} \\ 
+		init10 & • & • & • \\ 
 		\hline 
-		\textbf{Time [s]} & • & • & • & • & • & • & • & • & • & • \\ 
-		\hline 
-		\textbf{Steps} & • & • & • & • & • & • & • & • & • & • \\ 
-		\hline 
-		\textbf{Nodes} & • & • & • & • & • & • & • & • & • & • \\ 
-		\hline 
-	\end{tabular} 	
+	\end{tabular}	
 	
 \end{document}
