@@ -13,13 +13,15 @@ class PuzzleProblem(Problem):
         
         self.goal = goal
         self.initial = initial
-        self.parse_init("init1.txt")
+        self.numbernodes = 0
+        self.parse_init("init2.txt")
         Problem.__init__(self,State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
     
 
     def goal_test(self, nodestate):
+        self.numbernodes += 1
         return nodestate.state[3][1] == "1" and nodestate.state[3][2] == "1" and \
         nodestate.state[4][1] == "1" and nodestate.state[4][2] == "1"
 
@@ -108,8 +110,13 @@ class PuzzleProblem(Problem):
 problem=PuzzleProblem()
 #example of bfs search
 #problem.print_conf(problem.initial.state)
-node=iterative_deepening_search(problem)
-#node=breadth_first_graph_search(problem)
+
+node=depth_first_graph_search(problem)
+node=breadth_first_graph_search(problem)
+
+node=depth_first_tree_search(problem)
+node=breadth_first_tree_search(problem)
+
 #example of print
 path=node.path()
 path.reverse()
@@ -119,5 +126,6 @@ for n in path:
     print(n.state) #assume that the __str__ function of states output the correct format
     problem.print_conf(n.state.state)
 print (i)
+print (problem.numbernodes)
 
         
