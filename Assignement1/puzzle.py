@@ -13,7 +13,7 @@ class PuzzleProblem(Problem):
         
         self.goal = goal
         self.initial = initial
-        self.parse_init("init2.txt")
+        self.parse_init("init1.txt")
         Problem.__init__(self,State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
@@ -112,8 +112,11 @@ node=breadth_first_graph_search(problem)
 #example of print
 path=node.path()
 path.reverse()
+i = 0
 for n in path:
+    i+=1
     print(n.state) #assume that the __str__ function of states output the correct format
     problem.print_conf(n.state.state)
+print (i)
 
         
