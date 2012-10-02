@@ -108,7 +108,8 @@ class PuzzleProblem(Problem):
 problem=PuzzleProblem()
 #example of bfs search
 #problem.print_conf(problem.initial.state)
-node=breadth_first_graph_search(problem)
+node=iterative_deepening_search(problem)
+#node=breadth_first_graph_search(problem)
 #example of print
 path=node.path()
 path.reverse()
