@@ -115,11 +115,11 @@ problem=PuzzleProblem()
 #problem.print_conf(problem.initial.state)
 
 
-#node=breadth_first_tree_search(problem)
+node=breadth_first_tree_search(problem)
 #node=breadth_first_graph_search(problem)
 
 #node=depth_first_tree_search(problem)
-node=depth_first_graph_search(problem)
+#node=depth_first_graph_search(problem)
 
 
 #example of print
@@ -131,8 +131,8 @@ for n in path:
     i+=1
 #    print(n.state) #assume that the __str__ function of states output the correct format
 #    problem.print_conf(n.state.state)
-print (i)
-print (problem.numbernodes)
+print (i, 'étapes')
+print (problem.numbernodes, 'noeuds explorés')
 print (enlapsed, 'seconds')
 
 

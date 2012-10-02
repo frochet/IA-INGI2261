@@ -101,6 +101,7 @@ methods involved? What properties must its elements have?}
 	
 	\subsection{Experiments must be realized with the 10 instances of the puzzle problem provided. Report in a table the results on the 10 instances for depth-first and breadth first strategies on both tree and graph search (4 settings). You must report the time, the number of explored nodes and the number of steps from root to solution. When no solution can be found by a strategy in a reasonable time (3 min), explain the reason (time-out and/or swap of the memory}
 	
+	\vspace{0.5cm}\\
 	\begin{tabular}{|c||c|c|c|}
 		\hline 
 		\textbf{BFS Graph} & \textbf{Time [s]} & \textbf{Steps} & \textbf{Nodes} \\ 
@@ -151,7 +152,9 @@ methods involved? What properties must its elements have?}
 		\hline 
 		init10 & / & / & / \\ 
 		\hline 
-	\end{tabular}\\
+	\end{tabular}
+	\vspace{0.5cm}\\
+	We see that when using BFS with a graph, a solution is always found though with a tree, it never happens. The executions were stopped after 3min without result and we also noticed that the space taken in memory didn't cease to increase (about 3Gb in 3min). We didn't try to fill completly the memory in order to see what would happen. It would probably start to swap with the hdd.
 	\vspace{1cm}
 	
 	\begin{tabular}{|c||c|c|c|}
@@ -184,26 +187,28 @@ methods involved? What properties must its elements have?}
 		\hline 
 		\textbf{DF Tree} & \textbf{Time [s]} & \textbf{Steps} & \textbf{Nodes} \\ 
 		\hline 
-		init1 & • & • & • \\ 
+		init1 & / & / & / \\ 
 		\hline 
-		init2 & • & • & • \\ 
+		init2 & / & / & / \\ 
 		\hline 
-		init3 & • & • & • \\ 
+		init3 & / & / & / \\ 
 		\hline 
-		init4 & • & • & • \\ 
+		init4 & / & / & / \\ 
 		\hline 
-		init5 & • & • & • \\ 
+		init5 & / & / & / \\ 
 		\hline 
-		init6 & • & • & • \\ 
+		init6 & / & / & / \\ 
 		\hline 
-		init7 & • & • & • \\ 
+		init7 & / & / & / \\ 
 		\hline 
-		init8 & • & • & • \\ 
+		init8 & / & / & / \\ 
 		\hline 
-		init9 & • & • & • \\ 
+		init9 & / & / & / \\ 
 		\hline 
-		init10 & • & • & • \\ 
+		init10 & / & / & / \\ 
 		\hline 
-	\end{tabular}	
-	
+	\end{tabular}
+	\vspace{0.5cm}\\
+	We observe the same result as for the BFS that is the tree search return nothing and fill the memory (after 3 min, 3Gb were used).\\
+	We also see that the depth first search is faster but give a solution that involves thousands of actions which is not appropriate to our problem.
 \end{document}
