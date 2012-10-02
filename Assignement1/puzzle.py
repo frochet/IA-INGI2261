@@ -4,6 +4,7 @@ from search import *
 from IO import IO
 from state import State
 import sys
+from time import time
 
 ######################  Implement the search #######################
 
@@ -14,7 +15,7 @@ class PuzzleProblem(Problem):
         self.goal = goal
         self.initial = initial
         self.numbernodes = 0
-        self.parse_init("init2.txt")
+        self.parse_init("benchs/init4.txt")
         Problem.__init__(self,State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
@@ -106,16 +107,20 @@ class PuzzleProblem(Problem):
             
 
 ###################### Launch the search #########################
-    
+
+start_time = time()
+
 problem=PuzzleProblem()
 #example of bfs search
 #problem.print_conf(problem.initial.state)
 
-node=depth_first_graph_search(problem)
+
+#node=breadth_first_tree_search(problem)
 node=breadth_first_graph_search(problem)
 
-node=depth_first_tree_search(problem)
-node=breadth_first_tree_search(problem)
+#node=depth_first_tree_search(problem)
+#node=depth_first_graph_search(problem)
+
 
 #example of print
 path=node.path()
@@ -127,5 +132,8 @@ for n in path:
     problem.print_conf(n.state.state)
 print (i)
 print (problem.numbernodes)
+enlapsed = time() - start_time
+print (enlapsed, 'seconds')
+
 
         
