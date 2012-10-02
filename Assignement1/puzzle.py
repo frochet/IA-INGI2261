@@ -13,7 +13,8 @@ class PuzzleProblem(Problem):
         
         self.goal = goal
         self.initial = initial
-        self.parse_init("init_example.txt")
+
+        self.parse_init("init1.txt")
         Problem.__init__(self,State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
@@ -108,12 +109,16 @@ class PuzzleProblem(Problem):
 problem=PuzzleProblem()
 #example of bfs search
 #problem.print_conf(problem.initial.state)
-node=breadth_first_graph_search(problem)
+node=iterative_deepening_search(problem)
+#node=breadth_first_graph_search(problem)
 #example of print
 path=node.path()
 path.reverse()
+i = 0
 for n in path:
+    i+=1
     print(n.state) #assume that the __str__ function of states output the correct format
     problem.print_conf(n.state.state)
+print (i)
 
         
