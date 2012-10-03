@@ -20,7 +20,10 @@ class State:
         
     def get_state(self):
         return self.state
+    
+    def is2horiz(self,x,y):
         
+        pass        
     def move_vertical(self, x, y, direction, i):
         if direction == "north":
             dirmul = -1
