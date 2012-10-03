@@ -1,4 +1,8 @@
-'''NAMES OF THE AUTHOR(S): ...'''
+'''NAMES OF THE AUTHOR(S):
+
+- Florentin Rochet
+- Leonard Debroux
+'''
 
 from search import *
 from IO import IO
@@ -15,7 +19,7 @@ class PuzzleProblem(Problem):
         self.goal = goal
         self.initial = initial
         self.numbernodes = 0
-        self.parse_init("benchs/init1.txt")
+        self.parse_init(self.initial)
         Problem.__init__(self,State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
@@ -31,9 +35,8 @@ class PuzzleProblem(Problem):
         
     def successor(self, state):
         """
-        Regarde tous les z��ros dans le state et pour chaque z��ro, demande un
-        mouvement vers chaque direction, envoie un couple (action, state) si
-        le mouvement est valide.
+        Look at all the zero and for each of them, ask a move towards each direction. Return
+        a couple (action, state) if the move is valid
         In this problem, each move cost 1. We don't need to specify the action since
         it's no relevant to the compute of the path cost. So successor will yield (None, state)
         """
@@ -71,55 +74,45 @@ class PuzzleProblem(Problem):
             io.close()
             
                    
-    def parse_init(self, path):
+    def parse_init(self,init, path=None):
         """
-        Parse une configuration re��ue en entr��e en une represation valide pour
-        l'utilisation du programme.
+        Parse a representation given to a representation of an Object State
+        @see State.state
         """
+        if path == None:
+            path = ""
+            for list in init :
+                for elem in list :
+                    path += elem
         Io = IO(path)
         Io.init_reader()
-        
-        for line in Io.file:
-            linestate = []
-            
-            for char in line:
-                if char != " " and char != "\n":
-                    linestate += char
+        init = Io.file   
+        self.initial = []
+        for line in init:
+                linestate = []
                 
-            self.initial.append(linestate)
-            
-#    def sol_format(self, nodeList):
-#        """
-#        Cr��e les lignes �� entrer dans le fichier solution sous forme de string
-#        et les yield successivement, en ajoutant une ligne vide pour chaque
-#        changement de noeud.
-#        """
-#        for node in nodeList:
-#            
-#            for line in node.state:
-#                outLine = ""
-#                for char in line:
-#                    outLine += char
-#                yield outLine
-#            yield ""
-#        
+                for char in line:
+                    if char != " " and char != "\n":
+                        linestate += char
+                    
+                self.initial.append(linestate)
             
             
-
 ###################### Launch the search #########################
 
 start_time = time()
 
-problem=PuzzleProblem()
+#problem=PuzzleProblem()
+problem = PuzzleProblem(sys.argv[1])
 #example of bfs search
 #problem.print_conf(problem.initial.state)
 
 
-node=breadth_first_graph_search(problem)
+#node=breadth_first_graph_search(problem)
 #node=breadth_first_graph_search(problem)
 
 #node=depth_first_tree_search(problem)
-#node=depth_first_graph_search(problem)
+node=depth_first_graph_search(problem)
 
 
 #example of print
