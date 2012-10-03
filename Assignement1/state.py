@@ -18,15 +18,7 @@ class State:
     def __init__(self, state):
         self.state = state
         self.representation = self.make_representation()
-        
-<<<<<<< HEAD
-    def get_state(self):
-        return self.state
-    
-    def is2horiz(self,x,y):
-        
-        pass        
-=======
+
     def __hash__(self):
        
         result = hash(self.make_representation())
@@ -77,7 +69,7 @@ class State:
         for elem in hashedlist:
             result += str(elem)
 
-        return hash(result)
+        return result
                     
 >>>>>>> 13ff40eabd96601f6531ea95b7023ce934e5e9dc
     def move_vertical(self, x, y, direction, i):
