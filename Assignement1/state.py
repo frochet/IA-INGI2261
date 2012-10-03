@@ -17,13 +17,69 @@ class State:
     """
     def __init__(self, state):
         self.state = state
+        self.representation = self.make_representation()
         
+<<<<<<< HEAD
     def get_state(self):
         return self.state
     
     def is2horiz(self,x,y):
         
         pass        
+=======
+    def __hash__(self):
+       
+        result = hash(self.make_representation())
+        #print(result)
+        return result
+                
+    
+    def __eq__(self,other):
+        return self.representation == other.representation
+     
+    def make_representation(self):
+        
+        """ Horiz == 2
+        Vert == 3"""
+        list = []
+        for line in self.state:
+            list += line
+        hashedlist = list[:]
+        i = 0
+        while i < len(list):
+            if list[i] != "0":
+                if list.count(list[i]) == 1:
+                    hashedlist[i] = 1
+                elif list.count(list[i]) == 4:
+                    hashedlist[i] = 4
+                elif list.count(list[i]) == 2:
+                    if i == 0:
+                        if list[i] == list[i+1]:
+                            hashedlist[i] = 2
+                    elif i == 19:
+                        if list[i] == list[i-1]:
+                            hashedlist[i] = 2
+                    else:
+                        if list[i] == list[i-1] or list[i] == list[i+1]:
+                            hashedlist[i] = 2
+                    if i < 4:
+                        if list[i] == list[i+4]:
+                            hashedlist[i] = 3
+                    elif i > 15:
+                        if list[i] == list[i-4]:
+                            hashedlist[i] = 3
+                    else:
+                        if list[i] == list[i-4] or list[i] == list[i+4]:
+                            hashedlist[i] = 3
+            i += 1
+            
+        result = ""
+        for elem in hashedlist:
+            result += str(elem)
+
+        return hash(result)
+                    
+>>>>>>> 13ff40eabd96601f6531ea95b7023ce934e5e9dc
     def move_vertical(self, x, y, direction, i):
         if direction == "north":
             dirmul = -1

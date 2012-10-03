@@ -4,6 +4,7 @@ from search import *
 from IO import IO
 from state import State
 import sys
+from time import time
 
 ######################  Implement the search #######################
 
@@ -13,13 +14,15 @@ class PuzzleProblem(Problem):
         
         self.goal = goal
         self.initial = initial
-        self.parse_init("init_example.txt")
+        self.numbernodes = 0
+        self.parse_init("benchs/init1.txt")
         Problem.__init__(self,State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
     
 
     def goal_test(self, nodestate):
+        self.numbernodes += 1
         return nodestate.state[3][1] == "1" and nodestate.state[3][2] == "1" and \
         nodestate.state[4][1] == "1" and nodestate.state[4][2] == "1"
 
@@ -104,15 +107,33 @@ class PuzzleProblem(Problem):
             
 
 ###################### Launch the search #########################
-    
+
+start_time = time()
+
 problem=PuzzleProblem()
 #example of bfs search
 #problem.print_conf(problem.initial.state)
-node=breadth_first_graph_search(problem)
+
+
+node=breadth_first_tree_search(problem)
+#node=breadth_first_graph_search(problem)
+
+#node=depth_first_tree_search(problem)
+#node=depth_first_graph_search(problem)
+
+
 #example of print
 path=node.path()
 path.reverse()
+i = 0
+enlapsed = time() - start_time
 for n in path:
-    problem.print_conf(n.state.state) #assume that the __str__ function of states output the correct format
+    i+=1
+#    print(n.state) #assume that the __str__ function of states output the correct format
+#    problem.print_conf(n.state.state)
+print (i, 'étapes')
+print (problem.numbernodes, 'noeuds explorés')
+print (enlapsed, 'seconds')
+
 
         
