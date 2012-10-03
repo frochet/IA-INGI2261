@@ -71,7 +71,6 @@ class State:
 
         return result
                     
->>>>>>> 13ff40eabd96601f6531ea95b7023ce934e5e9dc
     def move_vertical(self, x, y, direction, i):
         if direction == "north":
             dirmul = -1
