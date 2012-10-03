@@ -34,6 +34,37 @@ Assignement 1}
 
 \begin{document}
 
+	\begin{titlepage}
+		\begin{center}
+			{\huge LINGI2261: Artificial Intelligence}\\
+			\vspace{0.4cm}
+			
+			{\Large {Professor : Yves Deville\\ \vspace{0.2cm} Teaching assistants : Cyrille Dejemeppe and Jean-Baptiste Mairy  }}\\
+			\vspace{0.6cm}
+			
+			{\Large \textit{ Assignement1 : Puzzle Sliding Problem}}\\
+			\vspace{1.2cm}
+
+			\texttt{}\\
+			\vspace{0.2cm}
+
+			\includegraphics[height=10cm]{pageGarde.png}\\
+			\vspace{0.1cm}
+			{\Large \textbf{Universit\'e Catholique de Louvain}}
+			\vspace{0.7cm}
+
+			Groupe 37 \\
+			\vspace{0.2cm}
+			
+			Florentin Rochet \\
+			Léonard Debroux\\
+			\vspace{0.2cm}
+			2012-2013\\
+		\end{center}
+	\end{titlepage}
+
+	\newpage
+	
 	\section{Python AIMA}
 	
 	\subsection{In order to perform a search, what are the classes that you must define or extend ? What are they used for ?}
@@ -57,12 +88,12 @@ used?}
 	\subsection{How technically are the elements in the closed list searched? What are the
 methods involved? What properties must its elements have?}
 	
-	They are searched by the instruction "if node.state not in closed" which is the same that "if node.state not in closed.keys()" which search with an iterator among the keys if node.state isn't among them. Implicitly, we think that the  methods involved are the method \_\_iter\_\_() and the method keys(). They are handle by Python.\\
-	The properties of the elements are couples of key->value.
+	They are searched by the instruction "if node.state not in closed" which is the same that "if node.state not in closed.keys()" which search with an iterator among the keys if node.state isn't among them. Implicitly, we think that the  methods involved are the method \_\_iter\_\_ for the iteration, the method keys() that returns the set of keys and the method \_\_hash\_\_ and \_\_eq\_\_ of the object node.state that is given as a key to the dictionary. They are handle by Python.\\
+	If we use self made objects as keys for the dictionary, we have to redefine the \_\_hash\_\_ method and the \_\_eq\_\_ method. This are the properties that the elements must have.
 	
 	\subsection{How technically can you use the implementation of the closed list to deal with symmetrical states ? (hint: if two symmetrical states are considered to be the same, they will not be visited twice)}
 	
-	
+	To deal with symmetrical state, we must have the same hash value for the symmetrical ones. In this situation, the dictionary will perfectly handle the closed list. So we have to choose a way to represent a state and this representation must be the same for symmetrical state. This is this representation that will be hashed to obtain our hash value.
 	
 \section{The Sliding Puzzle Problem}
 
@@ -88,8 +119,8 @@ methods involved? What properties must its elements have?}
 	
 	\subsection{How are you dealing with those symmetrical states?}
 	
-	One way to deal with those symmetrical states is to keep track of the states already generated and analysed and to avoid to analyse its "twins". It is what performs the graph search compared to the tree search.
-	
+	One way to deal with those symmetrical states is to keep track of the states already generated and analysed and to avoid to analyse its "twins". It is what performs the graph search compared to the tree search.\\
+	In our implementation, to deal with symmetrical states, we can define an object State which represent a configuration of the puzzle in matrix. To handle symmetrical state, we convert this representation in a new one which will match correctly any twins states.
 	\subsection{What are the advantages and disadvantages of using the tree and graph search for this problem. Which approach would you choose? Which approach allows you to avoid expending twice symmetrical states?}
 
 	As said above, the graph search presents an advantage in comparison to the tree search which treats symmetrical states as different ones. The approach that we shall use is the graph search via the BFS because the redundancy would cause the computing time to explode as will show the tests later on.
@@ -97,7 +128,7 @@ methods involved? What properties must its elements have?}
 	
 	\subsection{Implement this problem in Python3. Extend the Problem class and implement the necessary methods and other class(es) if necessary. Your file must be named puzzle.py. Your program must print to the standard output a solution to the puzzle satisfying the above format}
 	
-	For the implementation of the solver, we extended the problem class and created two others which are IO and State. The IO has for goal to read and write files while the State class implements an state of the puzzle with all the useful methods. Comments inside the code will help to understand its design.
+	For the implementation of the solver, we extended the problem class and created three others which are IO, State and WrongDirectionException. The IO is a generic class and  has for goal to read and write files while the State class implements an state of the puzzle with all the useful methods. Comments inside the code will help to understand its design.
 	
 	\subsection{Experiments must be realized with the 10 instances of the puzzle problem provided. Report in a table the results on the 10 instances for depth-first and breadth first strategies on both tree and graph search (4 settings). You must report the time, the number of explored nodes and the number of steps from root to solution. When no solution can be found by a strategy in a reasonable time (3 min), explain the reason (time-out and/or swap of the memory}
 	
@@ -123,7 +154,7 @@ methods involved? What properties must its elements have?}
 		init8 & 45.28 & 117 & 283315 \\ 
 		\hline 
 		init9 & 55.59 & 139 & 347982 \\ 
-		\hline 
+		\hline
 		init10 & 64.94 & 159 & 414054 \\ 
 		\hline 
 	\end{tabular}
