@@ -9,10 +9,8 @@ import copy
 
 class State:
     """
-    Pour certaines m��thodes de cette classe, il est n��caissaire d'utiliser
-    un syst��me de coordonn��es, ��tant donn�� que le choix pour state est un
-    dictionnaire colonne contenant des dictionnaires lignes, la varibale
-    x repr��sente la coordonn��e verticale et y la coordonn��e horizontale
+        This class encapsule a representation of a state of the sliding puzzle.
+        This state is a matrix and the representation is a list.
     """
     def __init__(self, state):
         self.state = state
@@ -28,7 +26,10 @@ class State:
     def make_representation(self):
         
         """ Horiz == 2
-        Vert == 3"""
+            Vert == 3
+            square == 4
+            unique == 1
+            None == 0"""
         list = []
         for line in self.state:
             list += line
@@ -78,10 +79,10 @@ class State:
             raise WrongDirectionException(x,y,direction,"move_vertical")
         if i == 10:
             if isInBound and self.state[x+dirmul][y] == self.state[x+2*dirmul][y]:
-                """Test if the piece is a vertical 2bloc piece"""
+                #Test if the piece is a vertical 2bloc piece
                 diff = 2
             else:
-                """Il s'agit d'une piece 1*1"""
+                #Il s'agit d'une piece 1*1
                 diff = 1
             self.state[x][y], self.state[x+dirmul*diff][y] = \
             self.state[x+dirmul*diff][y], self.state[x][y]
@@ -92,10 +93,10 @@ class State:
                 mul = 1
             if isInBound and self.state[x+dirmul][y] == self.state[x+2*dirmul][y] \
             and self.state[x+dirmul][y] == self.state[x+2*dirmul][y+mul]:
-                """Case in which it is the square 2*2"""
+                #Case in which it is the square 2*2
                 diff = 2
             else:
-                """Case in which it is an horizontal 2*1"""
+                #Case in which it is an horizontal 2*1
                 diff = 1
             self.state[x][y], self.state[x+dirmul*diff][y] = \
             self.state[x+dirmul*diff][y], self.state[x][y]
@@ -115,10 +116,10 @@ class State:
 
         if i == 10:
             if isInBound and self.state[x][y+dirmul] == self.state[x][y+2*dirmul]:
-                """Test if the piece is a vertical 2bloc piece"""
+                #Test if the piece is a vertical 2bloc piece
                 diff = 2
             else:
-                """Il s'agit d'une piece 1*1"""
+                #Il s'agit d'une piece 1*1
                 diff = 1
             self.state[x][y], self.state[x][y+dirmul*diff] = \
             self.state[x][y+dirmul*diff], self.state[x][y]
@@ -129,10 +130,10 @@ class State:
                 mul = 1
             if isInBound and self.state[x][y+dirmul] == self.state[x][y+2*dirmul] \
             and self.state[x][y+dirmul] == self.state[x+mul][y+2*dirmul]:
-                """Case in which it is the square 2*2"""
+                #Case in which it is the square 2*2
                 diff = 2
             else:
-                """Case in which it is an horizontal 2*1"""
+                #Case in which it is an horizontal 2*1
                 diff = 1
             self.state[x][y], self.state[x][y+dirmul*diff] = \
             self.state[x][y+dirmul*diff], self.state[x][y]
@@ -173,28 +174,28 @@ class State:
                 isInBound = x == 4
                 dirmul = 1
             if isInBound or self.state[x+dirmul][y] == "0":
-                """Il ne peux pas y avoir de piece au dessus d'une case vide 
-                qui est en haut de la grille ou une piece en dessous d'une 
-                case vide en bas de la grille"""
+                #Il ne peux pas y avoir de piece au dessus d'une case vide 
+                #qui est en haut de la grille ou une piece en dessous d'une 
+                #case vide en bas de la grille
                 return False
             else:
                 if y != 0 and self.state[x+dirmul][y] == self.state[x+dirmul][y-1]:
-                    """Cas ou c'est une piece de deux (ou quatre) 
-                    en (x-1,{y-1, y})"""
+                    #Cas ou c'est une piece de deux (ou quatre) 
+                    #en (x-1,{y-1, y})
                     if self.state[x][y-1] == "0":
                         return -1
                     else:
                         return False
                 elif y != 3 and self.state[x+dirmul][y] == self.state[x+dirmul][y+1]:
-                    """Cas ou c'est une piece de deux (ou quatre) 
-                    en (x-1,{y, y+1})"""
+                    #Cas ou c'est une piece de deux (ou quatre) 
+                    #en (x-1,{y, y+1})
                     if self.state[x][y+1] == "0":
                         return +1
                     else:
                         return False
                 else:
-                    """La piece dans ce cas fait seulement 1 de large
-                    (1*1) ou (2*1) vertical"""
+                    #La piece dans ce cas fait seulement 1 de large
+                    #(1*1) ou (2*1) vertical
                     return 10
                          
         elif direction == "west" or direction == "east":
@@ -208,26 +209,26 @@ class State:
                 return False
             else:
                 if x != 0 and self.state[x][y+dirmul] == self.state[x-1][y+dirmul]:
-                    """Cas ou c'est une piece de deux (ou quatre) 
-                    en ({x-1, x}, y+1)"""
+                    #Cas ou c'est une piece de deux (ou quatre) 
+                    #en ({x-1, x}, y+1)
                     if self.state[x-1][y] == "0":
                         return -1
                     else:
                         return False
                 elif x != 4 and self.state[x][y+dirmul] == self.state[x+1][y+dirmul]:
-                    """Cas ou c'est une piece de deux (ou quatre) 
-                    en ({x, x+1}, y+1)"""
+                    #Cas ou c'est une piece de deux (ou quatre) 
+                    #en ({x, x+1}, y+1)
                     if self.state[x+1][y] == "0":
                         return +1
                     else:
                         return False
                 else:
-                    """La piece dans ce cas fait seulement 1 de large
-                    (1*1) ou (2*1) vertical"""
+                    #La piece dans ce cas fait seulement 1 de large
+                    #(1*1) ou (2*1) vertical
                     return 10
         
         else:
-            """Mauvaise direction entrée."""
+            #Mauvaise direction entrée.
             raise WrongDirectionException(x,y,direction,"in is_possible")
     
     #
