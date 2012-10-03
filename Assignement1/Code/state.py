@@ -1,10 +1,9 @@
 '''
 Created on Sep 28, 2012
 
-@author: inekar
+@author: inekar, Florentin Rochet
 '''
 
-import IO
 import WrongDirectionException
 import copy
 
@@ -21,10 +20,7 @@ class State:
 
     def __hash__(self):
        
-        result = hash(self.make_representation())
-        #print(result)
-        return result
-                
+        return hash(self.make_representation())
     
     def __eq__(self,other):
         return self.representation == other.representation
@@ -71,7 +67,6 @@ class State:
 
         return result
                     
->>>>>>> 13ff40eabd96601f6531ea95b7023ce934e5e9dc
     def move_vertical(self, x, y, direction, i):
         if direction == "north":
             dirmul = -1

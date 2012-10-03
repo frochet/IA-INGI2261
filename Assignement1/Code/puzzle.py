@@ -115,7 +115,7 @@ problem=PuzzleProblem()
 #problem.print_conf(problem.initial.state)
 
 
-node=breadth_first_tree_search(problem)
+node=breadth_first_graph_search(problem)
 #node=breadth_first_graph_search(problem)
 
 #node=depth_first_tree_search(problem)
