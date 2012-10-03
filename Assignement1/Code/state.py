@@ -1,10 +1,9 @@
 '''
 Created on Sep 28, 2012
 
-@author: inekar
+@author: inekar, Florentin Rochet
 '''
 
-import IO
 import WrongDirectionException
 import copy
 
@@ -21,10 +20,7 @@ class State:
 
     def __hash__(self):
        
-        result = hash(self.make_representation())
-        #print(result)
-        return result
-                
+        return hash(self.make_representation())
     
     def __eq__(self,other):
         return self.representation == other.representation
