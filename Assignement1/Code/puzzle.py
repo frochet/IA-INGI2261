@@ -15,7 +15,7 @@ class PuzzleProblem(Problem):
         self.goal = goal
         self.initial = initial
         self.numbernodes = 0
-        self.parse_init("benchs/init1.txt")
+        self.parse_init(None,"../benchs/init1.txt")
         Problem.__init__(self,State(self.initial))
         #move's direction allowed :
         self.direction = ["north", "south","west","east"]
@@ -71,38 +71,26 @@ class PuzzleProblem(Problem):
             io.close()
             
                    
-    def parse_init(self, path):
+    def parse_init(self,init, path=None):
         """
         Parse une configuration re��ue en entr��e en une represation valide pour
         l'utilisation du programme.
         """
-        Io = IO(path)
-        Io.init_reader()
-        
-        for line in Io.file:
-            linestate = []
+        if path != None:
+            Io = IO(path)
+            Io.init_reader()
+            init = Io.file
             
-            for char in line:
-                if char != " " and char != "\n":
-                    linestate += char
+        self.initial = []
+        for line in init:
+                linestate = []
                 
-            self.initial.append(linestate)
-            
-#    def sol_format(self, nodeList):
-#        """
-#        Cr��e les lignes �� entrer dans le fichier solution sous forme de string
-#        et les yield successivement, en ajoutant une ligne vide pour chaque
-#        changement de noeud.
-#        """
-#        for node in nodeList:
-#            
-#            for line in node.state:
-#                outLine = ""
-#                for char in line:
-#                    outLine += char
-#                yield outLine
-#            yield ""
-#        
+                for char in line:
+                    if char != " " and char != "\n":
+                        linestate += char
+                    
+                self.initial.append(linestate)
+                
             
             
 
@@ -110,7 +98,8 @@ class PuzzleProblem(Problem):
 
 start_time = time()
 
-problem=PuzzleProblem()
+#problem=PuzzleProblem()
+problem = PuzzleProblem(sys.argv[1])
 #example of bfs search
 #problem.print_conf(problem.initial.state)
 

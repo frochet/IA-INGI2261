@@ -20,7 +20,7 @@ class State:
 
     def __hash__(self):
        
-        return hash(self.make_representation())
+        return self.representation
     
     def __eq__(self,other):
         return self.representation == other.representation
@@ -65,7 +65,7 @@ class State:
         for elem in hashedlist:
             result += str(elem)
 
-        return result
+        return hash(result)
                     
     def move_vertical(self, x, y, direction, i):
         if direction == "north":
@@ -149,10 +149,10 @@ class State:
             localState = State(copy.deepcopy(self.state))
             if direction == "north" or direction == "south":
                 localState.move_vertical(x, y, direction, i)
-                return localState
+                return State(copy.deepcopy(localState.state))
             elif direction == "west" or direction == "east":
                 localState.move_horizontal(x, y, direction, i)
-                return localState
+                return State(copy.deepcopy(localState.state))
             else:
                 raise WrongDirectionException(x,y,direction,"in move")
         else:
