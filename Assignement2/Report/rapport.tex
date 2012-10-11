@@ -93,7 +93,18 @@ Assignement 2}
 				We have thus prove that a consistent heuristic is admissible.
 				
 		\subsection{A* versus uniform-cost search}
+			\subsubsection{Question 1: Give a consistent heuristic for this problem. Prove that it is admissible}
+				A consistent heuristic for this problem is to use h(n) = manhattan distance from n to the goal. We will prove that it is consistent and thanks to the result of question 1.5, we are sure that it will be admissible too.
+				Lets consider a node and the goal, there is two possible cases:\\ 
+				Either, we go in the direction of the goal following one of the axes and $$ h(n) = c(n,a,n') + h(n') $$
+				Either, we don't move towards the goal and thus we get $$ h(n) < c(n,a,n') + h(n) $$
+				In one case of the other, the inequality $$ h(n) \leq c(n,a,n') + h(n) $$ is respect and thus, the heuristic is consistent.\\
+				As said earlier, the heuristic is consistent and so, it is admissible.
+				
+			\subsubsection{Question 2: Show on the left maze the states (board positions) that are visited during an execution of A* graph search with a manhattan distance heuristic (ignoring walls). A state is visited when it is selected in the fringe and expanded. In the A* algorithm, we assume that when different states in the fringe have the smallest value, the algorithm chooses the state with the smallest coordinate (i, j) ((0, 0) being the bottom left position, i being the horizontal index and j the vertical one) using a lexicographical order}
 		
+			\subsubsection{Show on the right maze the board positions visited by a uniform-cost graph search. When several states have the smallest path cost, this uniform-cost search visits them in the same lexicographical order as A*}
+			
 	\section{Sokoban planning problem}
 	
 		\subsection{Question 1: As illustrated on Figure 3 some situations cannot lead to a solution. Are there other similar situations? If yes, describe them.}
