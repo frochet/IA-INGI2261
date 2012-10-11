@@ -78,8 +78,20 @@ Assignement 2}
 				This is pretty much the same idea than Q3, only here, it is h(n) that is equal to zero which means that we do not use a heuristic. f(n) is equal only to g(n) that represent the cost from the beginning to the node n.
 			
 			\subsubsection{Question 5: Prove that if a heuristic is consistent, then it is admissible}
+				\begin{proof}
+					Let's take the triangle inequality of the consistency and develop it:
+					$$ h(n) \leq c(n,a,n') + h(n') $$
+					Where node n' is the successor of node n through the action a.\\ 
+					Adding g(n), the exact cost to node n, left and right:
+					$$ g(n) + h(n) \leq g(n) + c(n,a,n') + h(n') $$
+					Simplifying the right part by summing the first two terms:
+					$$ g(n) + h(n) \leq g(n') + h(n') $$
+					This expression indicates that $$ f(n) = g(n) + h(n) $$ is optimistic and underestimates the cost of a deeper node. Let's say that n' is the goal (and so, h(n)==0), and can be reach by any set of action from node n, we get:
+					$$ g(n) + h(n) \leq g(n') $$
+					This is the definition of admissibility.
+				\end{proof}\\
+				We have thus prove that a consistent heuristic is admissible.
 				
-			
 		\subsection{A* versus uniform-cost search}
 		
 	\section{Sokoban planning problem}
