@@ -70,6 +70,25 @@ Assignement 2}
 	\section{Sokoban planning problem}
 	
 		\subsection{Question 1}
+			
+			There is another situation that cannot lead to a solution, that is when a block is against a wall and must go in a perpendicular direction w.r.t. that wall as shown on the representation below: \\
+	\begin{tabular}{ccccc}
+		\# & \# & \# & \# & \# \\ 
+		\# &    &    &    & \# \\ 
+		\# & .  &    & \$ & \# \\ 
+		\# &    &    &    & \# \\ 
+		\# & \# & \# & \# & \# \\ 
+	\end{tabular}\\
+	In this cas, the box is stuck against the right wall and it will never be possible to push it to the left to reach the goal.
+	In the of a goal being against a wall, there is a dead state if two boxes a pushed against that wall as shown on the exemple below: \\
+	\begin{tabular}{ccccccccc}
+		\# & \# & \# & \# & \# & \# & \# & \# & \# \\ 
+		\# &    & .  &    & \$ &    & \$ &    & \# \\ 
+		\# &    &    &    &    &    &    &    & \# \\ 
+		\# &    &    &    &    &    &    &    & \# \\ 
+		\# & \# & \# & \# & \# & \# & \# & \# & \# \\ 
+	\end{tabular}\\
+	The box on the right will be able to go on the goal but the one on the right is in the same position as explain above, although there is a goal against the same wall as it.
 		
 		\subsection{Question 2: Why is it important to identify dead states in your successor function? How are you going to implement it?}
 		It's important because if the algorithm doesn't identify dead states, it cannot resolve the problem starting from some initial configuration. Once a block is in a dead state, it cannot move and the solution cannot be reached, this is a major problem. \\
@@ -89,4 +108,5 @@ Assignement 2}
 		\subsection{Question 5}
 		
 		\subsection{Question 6}
+		
 \end{document}
