@@ -105,8 +105,17 @@ Assignement 2}
 	\end{tabular}\\
 	The box on the right will be able to go on the goal but the one on the right is in the same position as explain above, although there is a goal against the same wall as it.
 		
-		\subsection{Question 2}
-		
+		\subsection{Question 2: Why is it important to identify dead states in your successor function? How are you going to implement it?}
+		It's important because if the algorithm doesn't identify dead states, it cannot resolve the problem starting from some initial configuration. Once a block is in a dead state, it cannot move and the solution cannot be reached, this is a major problem. \\
+		So we will handle dead state with some features. First of all, we will make a static Board which represent this type of case : 
+		\begin{itemize}
+			\item Wall 
+			\item Goal
+			\item Normal
+			\item Static Dead state
+		\end{itemize}
+	So, one type of the case will be Static Dead state, which are typically corners on the map. It will be not allowed to push a box in this case.This static Board will be given to each object State that will be represent a particular state. This is this object State that will be yield by the method successor. And a State will be able to detect dynamic dead state around it. (Dead state which appear in some conditions)
+			
 		\subsection{Question 3}
 		
 		\subsection{Question 4}
