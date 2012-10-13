@@ -33,7 +33,7 @@ class Board:
                 elif char == ".":
                     boardLine.append(Case.GOAL)
             self.board.append(boardLine)
-    
+        self.detect_dead_state()
     
     def detect_dead_state(self):
         x = 0
@@ -49,22 +49,83 @@ class Board:
                             # x for dead_state
                             if self.board[y-1][x+1] == Case.NORMAL :
                                 self.board[y-1][x+1] = Case.STATIC_DEAD_STATE
-                        elif self.board[y+1][x] == Case.WALL and self.board[y][x+1]== Case.WALL :
+                        if self.board[y+1][x] == Case.WALL and self.board[y][x+1]== Case.WALL :
                             # this kind of configuration : ##
                             #                              #x
                             # x for dead_state
                             if self.board[y+1][x+1] == Case.NORMAL :
                                 self.board[y+1][x+1] = Case.STATIC_DEAD_STATE
-                        elif self.board[y+1][x] == Case.WALL and self.board[y][x-1]== Case.WALL :
+                        if self.board[y+1][x] == Case.WALL and self.board[y][x-1]== Case.WALL :
                             # this kind of configuration : ##
                             #                              x#
                             # x for dead_state
                             if self.board[y+1][x-1] == Case.NORMAL :
                                 self.board[y+1][x-1] = Case.STATIC_DEAD_STATE
-                        elif self.board[y-1][x] == Case.WALL and self.board[y][x-1]== Case.WALL :
+                        if self.board[y-1][x] == Case.WALL and self.board[y][x-1]== Case.WALL :
                             # this kind of configuration : x#
                             #                              ##
                             # x for dead_state
+                            if self.board[y-1][x-1] == Case.NORMAL:
+                                self.board[y-1][x-1] = Case.STATIC_DEAD_STATE
+                    # On cases at the edges !
+                    elif y == 0 and ( x>0 and x < len(self.board[y])-1):
+                        if self.board[y+1][x] == Case.WALL and \
+                         self.board[y][x+1] == Case.WALL and self.board[y][x-1] == Case.WALL  :
+                            # this kind of configuration : ###
+                            #                              x#x
+                            # x for dead_state
+                            if self.board[y+1][x+1] == Case.NORMAL :
+                                self.board[y+1][x+1] = Case.STATIC_DEAD_STATE
+                            if self.board[y+1][x-1] == Case.NORMAL :
+                                self.board[y+1][x-1] = Case.STATIC_DEAD_STATE      
+                    # On cases at the edges
+                    elif y == len(self.board)-1 and ( x >0 and x < len(self.board[y])-1):
+                        if self.board[y-1][x] == Case.WALL and \
+                         self.board[y][x+1] == Case.WALL and self.board[y][x-1] == Case.WALL  :
+                            # this kind of configuration : x#x
+                            #                              ###
+                            # x for dead_state                
+                            if self.board[y-1][x+1] == Case.NORMAL :
+                                self.board[y-1][x+1] = Case.STATIC_DEAD_STATE
+                            if self.board[y-1][x-1] == Case.NORMAL :
+                                self.board[y-1][x-1] = Case.STATIC_DEAD_STATE 
+                    # on cases at the edges
+                    elif (y>0 and y < len(self.board)-1) and x == 0 :
+                        if self.board[y][x+1] == Case.WALL and \
+                         self.board[y+1][x] == Case.WALL and self.board[y-1][x] == Case.WALL  :
+                            # this kind of configuration : #x
+                            #                              ##
+                            # x for dead_state             #x
+                            if self.board[y-1][x+1] == Case.NORMAL :
+                                self.board[y-1][x+1] = Case.STATIC_DEAD_STATE
+                            if self.board[y+1][x+1] == Case.NORMAL :
+                                self.board[y+1][x+1] = Case.STATIC_DEAD_STATE 
+                    elif (y>0 and y < len(self.board)-1) and x == len(self.board[0])-1 :
+                        if self.board[y][x-1] == Case.WALL and \
+                         self.board[y+1][x] == Case.WALL and self.board[y-1][x] == Case.WALL  :
+                            # this kind of configuration : x#
+                            #                              ##
+                            # x for dead_state             x#
+                            if self.board[y-1][x-1] == Case.NORMAL :
+                                self.board[y-1][x-1] = Case.STATIC_DEAD_STATE
+                            if self.board[y+1][x-1] == Case.NORMAL :
+                                self.board[y+1][x-1] = Case.STATIC_DEAD_STATE
+                    elif x == 0 and y == 0 :
+                        if self.board[y][x+1] == Case.WALL and self.board[y+1][x]==Case.WALL :
+                            if self.board[y+1][x+1] == Case.NORMAL :
+                                self.board[y+1][x+1] = Case.STATIC_DEAD_STATE
+                    elif x == 0 and y == len(self.board)-1 :
+                        if self.board[y][x+1] == Case.WALL and self.board[y-1][x]==Case.WALL :
+                            if self.board[y-1][x+1] == Case.NORMAL :
+                                self.board[y-1][x+1] = Case.STATIC_DEAD_STATE
+                    elif x == len(self.board[0])-1 and y == 0 :
+                        if self.board[y+1][x] == Case.WALL and self.board[y][x-1]==Case.WALL :
+                            if self.board[y+1][x-1] == Case.NORMAL :
+                                self.board[y+1][x-1] = Case.STATIC_DEAD_STATE
+                    elif x == len(self.board[0])-1 and y == len(self.board)-1 :
+                        if self.board[y-1][x] == Case.WALL and self.board[y][x-1]==Case.WALL :
+                            if self.board[y-1][x-1] == Case.NORMAL :
+                                self.board[y-1][x-1] = Case.STATIC_DEAD_STATE
                 x+=1   
             x=0
             y+=1
