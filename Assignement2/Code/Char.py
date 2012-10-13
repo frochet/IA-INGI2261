@@ -11,23 +11,23 @@ class Char:
     '''
 
 
-    def __init__(self, x, y):
+    def __init__(self, y, x):
         '''
         Constructor
         '''
-        self.x = x
         self.y = y
+        self.x = x
     
     def move_char(self, direction):
-        newX = self.x
         newY = self.y
+        newX = self.x
         if direction == Direction.UP:
-            newX -= 1
-        elif direction == Direction.DOWN:
-            newX += 1
-        elif direction == Direction.LEFT:
             newY -= 1
-        elif direction == Direction.RIGHT:
+        elif direction == Direction.DOWN:
             newY += 1
-        return Char(newX, newY)
+        elif direction == Direction.LEFT:
+            newX -= 1
+        elif direction == Direction.RIGHT:
+            newX += 1
+        return Char(newY, newX)
         

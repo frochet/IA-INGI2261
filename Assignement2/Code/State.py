@@ -39,18 +39,23 @@ class State:
             raise WrongDirectionException(self.char.x,self.char.y,"In the class state, method move")
         
     def move_up(self):
-        if not self.is_a_wall(self.char.x, self.char.y-1):
+        x = self.char.x
+        y = self.char.y
+        if not self.is_a_wall(y-1, x):
             #There is no wall in the desired direction
-            if not self.is_a_box(self.char.x, self.char.y-1):
+            if not self.is_a_box(y-1, x):
                 #The is no box in the desired direction
                 return State(self.board, self.clone_boxes(self.boxes), \
                 self.char.move_char(Direction.UP))
             else:
                 #There is a box in the way
-                if not self.is_a_wall(self.char.x, self.char.y-2) \
-                and not self.is_a_dead_state(self.char.x, self.char.y-2):
+                if not self.is_a_wall(y-2, x) \
+                and not self.is_a_dead_state(y-2, x):
+                    if self.creates_dead_state(y-2, x):
+                        pass
+                
                     return State(self.board, \
-                    self.move_box(self.char.x, self.char.y-1, Direction.UP), \
+                    self.move_box(y-1, x, Direction.UP), \
                     self.char.move_char(Direction.UP))
                 else:
                     return False
@@ -114,58 +119,61 @@ class State:
         else:
             return False
     
-    def is_a_wall(self, x, y):
-        return self.board[x][y] == Case.WALL
+    def is_a_wall(self, y, x):
+        return self.board[y][x] == Case.WALL
     
-    def is_a_box(self, x, y):
+    def is_a_box(self, y, x):
         '''
         check if return statment is correct and working
         '''
         for box in self.boxes:
-            if x == box.x and y == box.y:
+            if y == box.y and x == box.x:
                 return True
         return False
     
-    def is_a_dead_state(self, x, y):
-        '''returns true if (x, y) is a static dead state or if it is a 
+    def is_a_dead_state(self, y, x):
+        '''returns true if (y, x) is a static dead state or if it is a 
         current dead state
         '''
-        if self.board[x][y] == Case.STATIC_DEAD_STATE:
+        if self.board[y][x] == Case.STATIC_DEAD_STATE:
             return True
         else:
             for deadState in self.currentDeadStates:
-                if x == deadState[0] and y == deadState[1]:
+                if y == deadState[0] and x == deadState[1]:
                     return True
             return False
         
     def find_current_dead_states(self):
         '''Creates a list of coordinates of the actual dead states for this 
-        particular state. Like so [[x1, y1], [x2, y2], ...]
+        particular state. Like so [[y1, x1], [y2, x2], ...]
         '''
         pass
     
     def clone_boxes(self, boxes):
         newboxes = []
         for box in boxes:
-            newboxes.append(Box(box.x, box.y))
+            newboxes.append(Box(box.y, box.x))
         return newboxes
     
-    def move_box(self, x, y, direction):
+    def move_box(self, y, x, direction):
         newboxes = []
         for box in self.boxes:
-            if x == box.x and y == box.y:
+            if y == box.y and x == box.x:
                 if direction == Direction.UP:
-                    newboxes.append(Box(x, y-1))
+                    newboxes.append(Box(y-1, x))
                 elif direction == Direction.DOWN:
-                    newboxes.append(Box(x, y+1))
+                    newboxes.append(Box(y+1, x))
                 elif direction == Direction.LEFT:
-                    newboxes.append(Box(x-1, y))
+                    newboxes.append(Box(y, x-1))
                 elif direction == Direction.RIGHT:
-                    newboxes.append(Box(x+1, y))
+                    newboxes.append(Box(y, x+1))
                 else:
                     pass
             else: newboxes.append(box)
         return self.clone_boxes(newboxes)
+    
+    def creates_dead_state(self, y, x):
+        return self.board[y][x]
                     
                     
                     
