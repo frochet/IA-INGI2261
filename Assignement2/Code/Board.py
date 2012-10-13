@@ -1,4 +1,4 @@
-'''
+'''"
 Created on 11 oct. 2012
 
 @author: Florentin
@@ -34,6 +34,42 @@ class Board:
                     boardLine.append(Case.GOAL)
             self.board.append(boardLine)
     
+    
+    def detect_dead_state(self):
+        x = 0
+        y = 0
+        while y < len(self.board) :
+            while x < len(self.board[y]):
+                if self.board[y][x] == Case.WALL :
+                    if (y > 0 and y < (len(self.board)-1)) and (x > 0 and x < len(self.board[y])-1):
+                        # On a case not at the edges
+                        if self.board[y-1][x] == Case.WALL and self.board[y][x+1]== Case.WALL :
+                            # this kind of configuration : #x
+                            #                              ##
+                            # x for dead_state
+                            if self.board[y-1][x+1] == Case.NORMAL :
+                                self.board[y-1][x+1] = Case.STATIC_DEAD_STATE
+                        elif self.board[y+1][x] == Case.WALL and self.board[y][x+1]== Case.WALL :
+                            # this kind of configuration : ##
+                            #                              #x
+                            # x for dead_state
+                            if self.board[y+1][x+1] == Case.NORMAL :
+                                self.board[y+1][x+1] = Case.STATIC_DEAD_STATE
+                        elif self.board[y+1][x] == Case.WALL and self.board[y][x-1]== Case.WALL :
+                            # this kind of configuration : ##
+                            #                              x#
+                            # x for dead_state
+                            if self.board[y+1][x-1] == Case.NORMAL :
+                                self.board[y+1][x-1] = Case.STATIC_DEAD_STATE
+                        elif self.board[y-1][x] == Case.WALL and self.board[y][x-1]== Case.WALL :
+                            # this kind of configuration : x#
+                            #                              ##
+                            # x for dead_state
+                x+=1   
+            x=0
+            y+=1
+        
+                
     def print_board(self):
         for line in self.board :
             for char in line :
@@ -59,7 +95,7 @@ class Board:
         assert y >= 0 and y < len(self.board-1)
         assert x >= 0 and x < len(self.board[y])
         return self.board[y-1][x]
-    
+
 
 # TEST 
     

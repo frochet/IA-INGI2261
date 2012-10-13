@@ -4,6 +4,7 @@ Created on 11 oct. 2012
 @author: Florentin
 '''
 from logging import raiseExceptions
+import WrongDirectionException
 
 class State:
     '''
@@ -30,7 +31,7 @@ class State:
         elif direction == "RIGHT":
             return self.move_right()
         else:
-            pass
+            raise WrongDirectionException(self.char.x,self.char.y,"In the class state, method move")
         
     def move_up(self):
         if not self.is_a_wall(char.x, char.y):
