@@ -48,6 +48,12 @@ class Board:
             p#
              all case marked with p are possible dead state, that means that if the goal
              g is filled with a box, all the p become dead state.
+            The code is clearly illisible but the logic is simple, each time
+            we find a goal, we look for wall side by side to it. if the goal
+            is along some wall, some case will be marked as HPDS for row and
+            VPDS for column. That means that those case are potentially dead
+            state, if the number of boxes on those cases is more than the number
+            of goal on those cases.
         """
         x = 2
         y = 2
@@ -108,6 +114,54 @@ class Board:
                                 self.board[y][j] = Case.HPDS
                             j-=1
                     # HANDLE VPDS
+                    up = True
+                    down = True
+                    i = y
+                    while i < len(self.board)-2 and down :
+                        if self.board[i][x-1] != Case.WALL :
+                            down = False
+                        i+=1
+                    if y - i < 0 :
+                        j = x
+                        while j < i :
+                            if self.board[j+1][x] != Case.WALL and self.board[j][x] == Case.NORMAL:
+                                self.board[j][x] = Case.VPDS
+                            j+=1
+                    i = y
+                    while i > 2 and up:
+                        if self.board[i][x-1]!= Case.WALL:
+                            up = False
+                        i-=1
+                    if y - i > 0:
+                        j = y
+                        while j > i :
+                            if self.board[j-1][x] != Case.WALL and self.board[j][x] == Case.NORMAL:
+                                self.board[j][x] = Case.VPDS
+                            j-=1
+                    up = True
+                    down = True
+                    i = y
+                    while i < len(self.board)-2 and down :
+                        if self.board[i][x+1] != Case.WALL :
+                            down = False
+                        i+=1
+                    if y - i < 0 :
+                        j = x
+                        while j < i :
+                            if self.board[j+1][x] != Case.WALL and self.board[j][x] == Case.NORMAL:
+                                self.board[j][x] = Case.VPDS
+                            j+=1
+                    i = y
+                    while i > 2 and up:
+                        if self.board[i][x+1]!= Case.WALL:
+                            up = False
+                        i-=1
+                    if y - i > 0:
+                        j = y
+                        while j > i :
+                            if self.board[j-1][x] != Case.WALL and self.board[j][x] == Case.NORMAL:
+                                self.board[j][x] = Case.VPDS
+                            j-=1
                 x+=1
             x=0
             y+=1
@@ -182,7 +236,7 @@ class Board:
                                 if self.board[y-1][x+1] == Case.WALL or self.board[y+1][x+1] == Case.WALL:
                                     self.board[y][x+1] = Case.STATIC_DEAD_STATE
                                 else:
-                                    self.board[y][x+1] = Case.VDPS
+                                    self.board[y][x+1] = Case.VPDS
                             else :
                                 self.board[y][x+1] = Case.STATIC_DEAD_STATE
                     elif (y>0 and y < len(self.board)-1) and x == len(self.board[0])-1 :
@@ -250,6 +304,6 @@ class Board:
 # TEST 
     
 if __name__ == "__main__" :
-    plateau = Board("../benchs/sokoInst14.goal")
+    plateau = Board("../benchs/sokoInst10.goal")
     plateau.print_board()
                     
