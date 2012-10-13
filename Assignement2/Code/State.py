@@ -52,11 +52,34 @@ class State:
                 if not self.is_a_wall(y-2, x) \
                 and not self.is_a_dead_state(y-2, x):
                     if self.creates_dead_state(y-2, x):
-                        pass
+                        iterY = y
+                        iterX = x
+                        newCurrentDeadStates = self.copy_currentDeadStates()
+                        if self.board[y][x] == Case.HPDS:
+                            while self.board[iterY][iterX] == Case.HPDS \
+                            or self.board[iterY][iterX] == Case.GOAL:
+                                newCurrentDeadStates.append([iterY, iterX])
+                                iterX -= 1
+                            iterX = x+1
+                            while self.board[iterY][iterX] == Case.HPDS \
+                            or self.board[iterY][iterX] == Case.GOAL:
+                                newCurrentDeadStates.append([iterY, iterX])
+                                iterX += 1
+                        if self.board[y][x] == Case.VPDS:
+                            while self.board[iterY][iterX] == Case.VPDS \
+                            or self.board[iterY][iterX] == Case.GOAL:
+                                newCurrentDeadStates.append([iterY, iterX])
+                                iterY -= 1
+                            iterY = y+1
+                            while self.board[iterY][iterX] == Case.VPDS \
+                            or self.board[iterY][iterX] == Case.GOAL:
+                                newCurrentDeadStates.append([iterY, iterX])
+                                iterY += 1
                 
                     return State(self.board, \
                     self.move_box(y-1, x, Direction.UP), \
-                    self.char.move_char(Direction.UP))
+                    self.char.move_char(Direction.UP), \
+                    newCurrentDeadStates)
                 else:
                     return False
         else:
@@ -173,8 +196,14 @@ class State:
         return self.clone_boxes(newboxes)
     
     def creates_dead_state(self, y, x):
-        return self.board[y][x]
-                    
+        return self.board[y][x] == Case.HPDS or \
+        self.board[y][x] == Case.VPDS
+    
+    def copy_currentDeadStates(self):
+        newlist = []
+        for state in self.currentDeadStates:
+            newlist.append([state[0], state[1]])
+        return newlist
                     
                     
                     
