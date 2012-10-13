@@ -9,6 +9,7 @@ from IO import IO
 from state import State
 import sys
 from time import time
+import Board
 
 ######################  Implement the search #######################
 
@@ -128,4 +129,8 @@ print (problem.numbernodes, 'noeuds explorés')
 print (enlapsed, 'seconds')
 
 
+
+if __name__ == "__main__" :
+    plateau = Board("../benchs/sokoInst01.goal")
+    plateau.print_board()
         

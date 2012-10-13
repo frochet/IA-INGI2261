@@ -8,6 +8,8 @@ import WrongDirectionException
 from Case import *
 from Box import Box
 from Direction import Direction
+from Board import Board
+from Char import Char
 
 class State:
     '''
@@ -46,15 +48,92 @@ class State:
             if not self.is_a_box(y-1, x):
                 #The is no box in the desired direction
                 return State(self.board, self.clone_boxes(self.boxes), \
-                self.char.move_char(Direction.UP))
+                self.char.move_char(Direction.UP), \
+                self.copy_currentDeadStates())
             else:
                 #There is a box in the way
                 if not self.is_a_wall(y-2, x) \
                 and not self.is_a_dead_state(y-2, x):
+                    newCurrentDeadStates = self.copy_currentDeadStates()
                     if self.creates_dead_state(y-2, x):
+                        #iterY = y-2
+                        #iterX = x
+                        self.extend_currentDeadStates(newCurrentDeadStates, y-2, x)
+#                        if self.board[y][x] == Case.HPDS:
+#                            while self.board[iterY][iterX] == Case.HPDS \
+#                            or self.board[iterY][iterX] == Case.GOAL:
+#                                newCurrentDeadStates.append([iterY, iterX])
+#                                iterX -= 1
+#                            iterX = x+1
+#                            while self.board[iterY][iterX] == Case.HPDS \
+#                            or self.board[iterY][iterX] == Case.GOAL:
+#                                newCurrentDeadStates.append([iterY, iterX])
+#                                iterX += 1
+#                        if self.board[y][x] == Case.VPDS:
+#                            while self.board[iterY][iterX] == Case.VPDS \
+#                            or self.board[iterY][iterX] == Case.GOAL:
+#                                newCurrentDeadStates.append([iterY, iterX])
+#                                iterY -= 1
+#                            iterY = y+1
+#                            while self.board[iterY][iterX] == Case.VPDS \
+#                            or self.board[iterY][iterX] == Case.GOAL:
+#                                newCurrentDeadStates.append([iterY, iterX])
+#                                iterY += 1
+                
+                    return State(self.board, \
+                    self.move_box(y-1, x, Direction.UP), \
+                    self.char.move_char(Direction.UP), \
+                    newCurrentDeadStates)
+                else:
+                    return False
+        else:
+            return False
+            
+    def move_down(self):
+        x = self.char.x
+        y = self.char.y
+        if not self.is_a_wall(y+1, x):
+            #There is no wall in the desired direction
+            if not self.is_a_box(y+1, x):
+                #The is no box in the desired direction
+                return State(self.board, self.clone_boxes(self.boxes), \
+                self.char.move_char(Direction.DOWN), \
+                self.copy_currentDeadStates())
+            else:
+                #There is a box in the way
+                if not self.is_a_wall(y+2, x) \
+                and not self.is_a_dead_state(y+2, x):
+                    newCurrentDeadStates = self.copy_currentDeadStates()
+                    if self.creates_dead_state(y+2, x):
+                        self.extend_currentDeadStates(newCurrentDeadStates, y+2, x)
+                
+                    return State(self.board, \
+                    self.move_box(y+1, x, Direction.DOWN), \
+                    self.char.move_char(Direction.DOWN), \
+                    newCurrentDeadStates)
+                else:
+                    return False
+        else:
+            return False
+    
+    def move_left(self):
+        x = self.char.x
+        y = self.char.y
+        if not self.is_a_wall(y, x-1):
+            #There is no wall in the desired direction
+            if not self.is_a_box(y, x-1):
+                #The is no box in the desired direction
+                return State(self.board, self.clone_boxes(self.boxes), \
+                self.char.move_char(Direction.LEFT), \
+                self.copy_currentDeadStates())
+            else:
+                #There is a box in the way
+                if not self.is_a_wall(y, x-2) \
+                and not self.is_a_dead_state(y, x-2):
+                    newCurrentDeadStates = self.copy_currentDeadStates()
+                    if self.creates_dead_state(y, x-2):
                         iterY = y
-                        iterX = x
-                        newCurrentDeadStates = self.copy_currentDeadStates()
+                        iterX = x-2
                         if self.board[y][x] == Case.HPDS:
                             while self.board[iterY][iterX] == Case.HPDS \
                             or self.board[iterY][iterX] == Case.GOAL:
@@ -77,47 +156,9 @@ class State:
                                 iterY += 1
                 
                     return State(self.board, \
-                    self.move_box(y-1, x, Direction.UP), \
-                    self.char.move_char(Direction.UP), \
+                    self.move_box(y, x-1, Direction.LEFT), \
+                    self.char.move_char(Direction.LEFT), \
                     newCurrentDeadStates)
-                else:
-                    return False
-        else:
-            return False
-            
-    def move_down(self):
-        if not self.is_a_wall(self.char.x, self.char.y+1):
-            #There is no wall in the desired direction
-            if not self.is_a_box(self.char.x, self.char.y+1):
-                #The is no box in the desired direction
-                return State(self.board, self.clone_boxes(self.boxes), \
-                self.char.move_char(Direction.DOWN))
-            else:
-                #There is a box in the way
-                if not self.is_a_wall(self.char.x, self.char.y+2) \
-                and not self.is_a_dead_state(self.char.x, self.char.y+2):
-                    return State(self.board, \
-                    self.move_box(self.char.x, self.char.y+1, Direction.DOWN), \
-                    self.char.move_char(Direction.DOWN))
-                else:
-                    return False
-        else:
-            return False
-    
-    def move_left(self):
-        if not self.is_a_wall(self.char.x-1, self.char.y):
-            #There is no wall in the desired direction
-            if not self.is_a_box(self.char.x-1, self.char.y):
-                #The is no box in the desired direction
-                return State(self.board, self.clone_boxes(self.boxes), \
-                self.char.move_char(Direction.LEFT))
-            else:
-                #There is a box in the way
-                if not self.is_a_wall(self.char.x-2, self.char.y) \
-                and not self.is_a_dead_state(self.char.x-2, self.char.y):
-                    return State(self.board, \
-                    self.move_box(self.char.x-1, self.char.y, Direction.LEFT), \
-                    self.char.move_char(Direction.LEFT))
                 else:
                     return False
         else:
@@ -143,7 +184,7 @@ class State:
             return False
     
     def is_a_wall(self, y, x):
-        return self.board[y][x] == Case.WALL
+        return self.board.board[y][x] == Case.WALL
     
     def is_a_box(self, y, x):
         '''
@@ -158,7 +199,7 @@ class State:
         '''returns true if (y, x) is a static dead state or if it is a 
         current dead state
         '''
-        if self.board[y][x] == Case.STATIC_DEAD_STATE:
+        if self.board.board[y][x] == Case.STATIC_DEAD_STATE:
             return True
         else:
             for deadState in self.currentDeadStates:
@@ -196,18 +237,50 @@ class State:
         return self.clone_boxes(newboxes)
     
     def creates_dead_state(self, y, x):
-        return self.board[y][x] == Case.HPDS or \
-        self.board[y][x] == Case.VPDS
+        return self.board.board[y][x] == Case.HPDS or \
+        self.board.board[y][x] == Case.VPDS
     
     def copy_currentDeadStates(self):
         newlist = []
         for state in self.currentDeadStates:
             newlist.append([state[0], state[1]])
         return newlist
+    
+    def extend_currentDeadStates(self, stateList, y, x):
+        iterY = y
+        iterX = x
+        if self.board[y][x] == Case.HPDS:
+            while self.board[iterY][iterX] == Case.HPDS \
+            or self.board[iterY][iterX] == Case.GOAL:
+                stateList.append([iterY, iterX])
+                iterX -= 1
+            iterX = x+1
+            while self.board[iterY][iterX] == Case.HPDS \
+            or self.board[iterY][iterX] == Case.GOAL:
+                stateList.append([iterY, iterX])
+                iterX += 1
+        if self.board[y][x] == Case.VPDS:
+            while self.board[iterY][iterX] == Case.VPDS \
+            or self.board[iterY][iterX] == Case.GOAL:
+                stateList.append([iterY, iterX])
+                iterY -= 1
+            iterY = y+1
+            while self.board[iterY][iterX] == Case.VPDS \
+            or self.board[iterY][iterX] == Case.GOAL:
+                stateList.append([iterY, iterX])
+                iterY += 1
                     
                     
                     
-                    
+if __name__ == "__main__" :
+    plateau = Board("../benchs/sokoInst01.goal")
+    plateau.print_board()
+    etattest = State(plateau, [Box(2, 3), Box(2, 1)], Char(2, 2), [])
+    print (etattest.char.x)
+    newetattest = etattest.move(Direction.DOWN)
+    print (newetattest.boxes[0].y)
+    print (newetattest.char.y)
+
                     
                     
                     
