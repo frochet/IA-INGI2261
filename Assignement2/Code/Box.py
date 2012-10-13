@@ -10,10 +10,10 @@ class Box:
     '''
 
 
-    def __init__(self, x, y):
+    def __init__(self, y, x):
         '''
         Constructor
         '''
-        self.x = x
         self.y = y
+        self.x = x
         
