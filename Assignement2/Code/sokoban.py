@@ -1,15 +1,22 @@
 '''NAMES OF THE AUTHOR(S): ...'''
 
 from search import *
-
-
+import Board
+import State
+from Direction import *
 ######################  Implement the search #######################
 
 class Sokoban(Problem):
 
     def __init__(self,init):
-        pass
-
+        self.board = Board(init)
+        # to do
+        self.char = None
+        self.boxes = []
+        #end to do
+        # add goal
+        Problem.__init__(self, State(self.board,self.boxes,self.char))
+        self.direction = [Direction.UP,Direction.Down,Direction.LEFT,Direction.RIGHT]
     
     def goal_test(self, state):
         pass
