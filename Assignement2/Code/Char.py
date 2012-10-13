@@ -3,6 +3,7 @@ Created on Oct 13, 2012
 
 @author: inekar
 '''
+from Direction import Direction
 
 class Char:
     '''
@@ -20,13 +21,13 @@ class Char:
     def move_char(self, direction):
         newX = self.x
         newY = self.y
-        if direction == "UP":
+        if direction == Direction.UP:
             newX -= 1
-        elif direction == "DOWN":
+        elif direction == Direction.DOWN:
             newX += 1
-        elif direction == "LEFT":
+        elif direction == Direction.LEFT:
             newY -= 1
-        elif direction == "RIGHT":
+        elif direction == Direction.RIGHT:
             newY += 1
         return Char(newX, newY)
         
