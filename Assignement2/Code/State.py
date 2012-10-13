@@ -7,6 +7,7 @@ from logging import raiseExceptions
 import WrongDirectionException
 from Case import *
 from Box import Box
+from Direction import Direction
 
 class State:
     '''
@@ -14,7 +15,7 @@ class State:
     '''
 
 
-    def __init__(self, board, boxes, char):
+    def __init__(self, board, boxes, char, currentDeadStates):
         '''
         Constructor
         boxes in a list of boxes
@@ -22,17 +23,17 @@ class State:
         self.board = board
         self.boxes = boxes
         self.char = char
-        self.currentDeadStates = self.find_current_dead_states()
+        self.currentDeadStates = currentDeadStates
         pass
     
     def move(self, direction):
-        if direction == "UP":
+        if direction == Direction.UP:
             return self.move_up()
-        elif direction == "DOWN":
+        elif direction == Direction.DOWN:
             return self.move_down()
-        elif direction == "LEFT":
+        elif direction == Direction.LEFT:
             return self.move_left()
-        elif direction == "RIGHT":
+        elif direction == Direction.RIGHT:
             return self.move_right()
         else:
             raise WrongDirectionException(self.char.x,self.char.y,"In the class state, method move")
@@ -43,14 +44,14 @@ class State:
             if not self.is_a_box(self.char.x, self.char.y-1):
                 #The is no box in the desired direction
                 return State(self.board, self.clone_boxes(self.boxes), \
-                self.char.move_char("UP"))
+                self.char.move_char(Direction.UP))
             else:
                 #There is a box in the way
                 if not self.is_a_wall(self.char.x, self.char.y-2) \
                 and not self.is_a_dead_state(self.char.x, self.char.y-2):
                     return State(self.board, \
-                    self.move_box(self.char.x, self.char.y-1, "UP"), \
-                    self.char.move_char("UP"))
+                    self.move_box(self.char.x, self.char.y-1, Direction.UP), \
+                    self.char.move_char(Direction.UP))
                 else:
                     return False
         else:
@@ -62,14 +63,14 @@ class State:
             if not self.is_a_box(self.char.x, self.char.y+1):
                 #The is no box in the desired direction
                 return State(self.board, self.clone_boxes(self.boxes), \
-                self.char.move_char("UP"))
+                self.char.move_char(Direction.DOWN))
             else:
                 #There is a box in the way
                 if not self.is_a_wall(self.char.x, self.char.y+2) \
                 and not self.is_a_dead_state(self.char.x, self.char.y+2):
                     return State(self.board, \
-                    self.move_box(self.char.x, self.char.y+1, "UP"), \
-                    self.char.move_char("UP"))
+                    self.move_box(self.char.x, self.char.y+1, Direction.DOWN), \
+                    self.char.move_char(Direction.DOWN))
                 else:
                     return False
         else:
@@ -81,14 +82,14 @@ class State:
             if not self.is_a_box(self.char.x-1, self.char.y):
                 #The is no box in the desired direction
                 return State(self.board, self.clone_boxes(self.boxes), \
-                self.char.move_char("UP"))
+                self.char.move_char(Direction.LEFT))
             else:
                 #There is a box in the way
                 if not self.is_a_wall(self.char.x-2, self.char.y) \
                 and not self.is_a_dead_state(self.char.x-2, self.char.y):
                     return State(self.board, \
-                    self.move_box(self.char.x-1, self.char.y, "UP"), \
-                    self.char.move_char("UP"))
+                    self.move_box(self.char.x-1, self.char.y, Direction.LEFT), \
+                    self.char.move_char(Direction.LEFT))
                 else:
                     return False
         else:
@@ -100,14 +101,14 @@ class State:
             if not self.is_a_box(self.char.x+1, self.char.y):
                 #The is no box in the desired direction
                 return State(self.board, self.clone_boxes(self.boxes), \
-                self.char.move_char("UP"))
+                self.char.move_char(Direction.RIGHT))
             else:
                 #There is a box in the way
                 if not self.is_a_wall(self.char.x+2, self.char.y) \
                 and not self.is_a_dead_state(self.char.x+2, self.char.y):
                     return State(self.board, \
-                    self.move_box(self.char.x+1, self.char.y, "UP"), \
-                    self.char.move_char("UP"))
+                    self.move_box(self.char.x+1, self.char.y, Direction.RIGHT), \
+                    self.char.move_char(Direction.RIGHT))
                 else:
                     return False
         else:
@@ -153,13 +154,13 @@ class State:
         newboxes = []
         for box in self.boxes:
             if x == box.x and y == box.y:
-                if direction == "UP":
+                if direction == Direction.UP:
                     newboxes.append(Box(x, y-1))
-                elif direction == "DOWN":
+                elif direction == Direction.DOWN:
                     newboxes.append(Box(x, y+1))
-                elif direction == "LEFT":
+                elif direction == Direction.LEFT:
                     newboxes.append(Box(x-1, y))
-                elif direction == "RIGHT":
+                elif direction == Direction.RIGHT:
                     newboxes.append(Box(x+1, y))
                 else:
                     pass
