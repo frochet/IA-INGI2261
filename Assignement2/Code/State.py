@@ -11,13 +11,14 @@ class State:
     '''
 
 
-    def __init__(self, boxes, char):
+    def __init__(self, board, boxes, char):
         '''
         Constructor
         '''
+        self.board = board
         self.boxes = boxes
         self.char = char
-        #self.currentDeadStates = currentDeadStates
+        self.currentDeadStates = self.find_current_dead_states()
         pass
     
     def move(self, direction):
@@ -33,8 +34,19 @@ class State:
             pass
         
     def move_up(self):
-        if not self.is_a_wall(char.x, char.y):
-            pass
+        if not self.is_a_wall(self.char.x, self.char.y - 1):
+            '''There is no wall in the desired direction'''
+            if not self.is_a_box(self.char.x, self.char.y - 1):
+                '''The is no box in the desired direction'''
+                return State(self.board, self.clone_boxes(), \
+                self.char.move_char("UP"))
+            else:
+                '''There is a box in the way'''
+                if not self.is_a_wall(self.char.x, self.char.y - 2):
+                    return State(self.board, self.move_box("UP"), \
+                    self.char.move_char("UP"))
+                else:
+                    return False
         else:
             return False
             
@@ -57,3 +69,8 @@ class State:
     def is_a_dead_state(self, x, y):
         pass
         
+    def find_current_dead_states(self):
+        pass
+    
+    def clone_boxes(self):
+        pass
