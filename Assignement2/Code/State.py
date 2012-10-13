@@ -37,8 +37,6 @@ class State:
             pass
         
     def move_up(self):
-        ''' /!\ aux dead states
-        '''
         if not self.is_a_wall(self.char.x, self.char.y-1):
             '''There is no wall in the desired direction'''
             if not self.is_a_box(self.char.x, self.char.y-1):
@@ -48,7 +46,7 @@ class State:
             else:
                 '''There is a box in the way'''
                 if not self.is_a_wall(self.char.x, self.char.y-2) \
-                and not self.is_a_dead_state(self.char, self.char.y-2):
+                and not self.is_a_dead_state(self.char.x, self.char.y-2):
                     return State(self.board, \
                     self.move_box(self.char.x, self.char.y-1, "UP"), \
                     self.char.move_char("UP"))
@@ -58,13 +56,61 @@ class State:
             return False
             
     def move_down(self):
-        pass
+        if not self.is_a_wall(self.char.x, self.char.y+1):
+            '''There is no wall in the desired direction'''
+            if not self.is_a_box(self.char.x, self.char.y+1):
+                '''The is no box in the desired direction'''
+                return State(self.board, self.clone_boxes(self.boxes), \
+                self.char.move_char("UP"))
+            else:
+                '''There is a box in the way'''
+                if not self.is_a_wall(self.char.x, self.char.y+2) \
+                and not self.is_a_dead_state(self.char.x, self.char.y+2):
+                    return State(self.board, \
+                    self.move_box(self.char.x, self.char.y+1, "UP"), \
+                    self.char.move_char("UP"))
+                else:
+                    return False
+        else:
+            return False
     
     def move_left(self):
-        pass
+        if not self.is_a_wall(self.char.x-1, self.char.y):
+            '''There is no wall in the desired direction'''
+            if not self.is_a_box(self.char.x-1, self.char.y):
+                '''The is no box in the desired direction'''
+                return State(self.board, self.clone_boxes(self.boxes), \
+                self.char.move_char("UP"))
+            else:
+                '''There is a box in the way'''
+                if not self.is_a_wall(self.char.x-2, self.char.y) \
+                and not self.is_a_dead_state(self.char.x-2, self.char.y):
+                    return State(self.board, \
+                    self.move_box(self.char.x-1, self.char.y, "UP"), \
+                    self.char.move_char("UP"))
+                else:
+                    return False
+        else:
+            return False
     
     def move_right(self):
-        pass
+        if not self.is_a_wall(self.char.x+1, self.char.y):
+            '''There is no wall in the desired direction'''
+            if not self.is_a_box(self.char.x+1, self.char.y):
+                '''The is no box in the desired direction'''
+                return State(self.board, self.clone_boxes(self.boxes), \
+                self.char.move_char("UP"))
+            else:
+                '''There is a box in the way'''
+                if not self.is_a_wall(self.char.x+2, self.char.y) \
+                and not self.is_a_dead_state(self.char.x+2, self.char.y):
+                    return State(self.board, \
+                    self.move_box(self.char.x+1, self.char.y, "UP"), \
+                    self.char.move_char("UP"))
+                else:
+                    return False
+        else:
+            return False
     
     def is_a_wall(self, x, y):
         return self.board[x][y] == Case.WALL
