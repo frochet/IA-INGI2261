@@ -27,17 +27,32 @@ class Sokoban(Problem):
                 j+=1
             j=0
             i+=1
+        self.direction = [Direction.UP,Direction.Down,Direction.LEFT,Direction.RIGHT]
 
         # add goal
         Problem.__init__(self, State(self.board,self.boxes,self.char))
-        self.direction = [Direction.UP,Direction.Down,Direction.LEFT,Direction.RIGHT]
     
     def goal_test(self, state):
-        pass
+        i = 0
+        for box in state.boxes :
+            for coord in self.board.positionGoal :
+                if coord[0] == box.x and coord[1] : i+=1
+            
+            if i == 0 : return False
+            i = 0
+        return True
+            
 
         
     def successor(self, state):
-        pass
+        """
+            No action because they are all the same, each is a move in one of the
+            directions. Each cost we be 1
+        """
+        for direct in self.direction :
+            newState = state.move(direct)
+            if newState :
+                yield (None, newState)
         
 
 

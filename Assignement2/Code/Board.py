@@ -24,6 +24,9 @@ class Board:
         self.board = []
         self.nbrGoal = 0
         self.nbrBox = 0
+        self.positionGoal = []
+        i = 0
+        j = 0
         for line in self.Io.file :
             boardLine = []
             for char in line :
@@ -34,6 +37,10 @@ class Board:
                 elif char == ".":
                     boardLine.append(Case.GOAL)
                     self.nbrGoal += 1
+                    self.positionGoal.append([i,j])
+                j+=1
+            j=0
+            i+=1
             self.board.append(boardLine)
         self.detect_dead_state()
         self.detect_possible_dead_state()
@@ -262,7 +269,9 @@ class Board:
                             if self.board[y-1][x+1] == Case.NORMAL :
                                 self.board[y-1][x+1] = Case.STATIC_DEAD_STATE
                     elif x == len(self.board[0])-1 and y == 0 :
-                        if self.board[y+1][x] == Case.WALL and self.board[y][x-1]==Case.WALL :
+                        if self
+
+                        .board[y+1][x] == Case.WALL and self.board[y][x-1]==Case.WALL :
                             if self.board[y+1][x-1] == Case.NORMAL :
                                 self.board[y+1][x-1] = Case.STATIC_DEAD_STATE
                     elif x == len(self.board[0])-1 and y == len(self.board)-1 :
@@ -299,8 +308,8 @@ class Board:
         assert y >= 0 and y < len(self.board-1)
         assert x >= 0 and x < len(self.board[y])
         return self.board[y-1][x]
-
-
+    
+    
 # TEST 
     
 if __name__ == "__main__" :
