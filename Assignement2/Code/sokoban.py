@@ -36,7 +36,7 @@ class Sokoban(Problem):
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
-                if coord[0] == box.x and coord[1] : i+=1
+                if coord[0] == box.x and coord[1] == box.y : i+=1
             
             if i == 0 : return False
             i = 0
