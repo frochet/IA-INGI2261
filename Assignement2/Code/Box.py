@@ -15,5 +15,4 @@ class Box:
         Constructor
         '''
         self.y = y
-        self.x = x
-        
+        self.x = x        

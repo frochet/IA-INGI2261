@@ -56,9 +56,16 @@ class State:
                 and not self.is_a_dead_state(y-2, x) \
                 and not self.is_a_box(y-2, x):
                     newCurrentDeadStates = self.copy_currentDeadStates()
-                    if self.creates_dead_state(y-2, x):
-                        self.extend_currentDeadStates(newCurrentDeadStates, y-2, x)
-                
+                    
+                    #allows to go to a PDS if already on one
+                    if self.is_currentDeadState(y-2, x):
+                        if not self.is_currentDeadState(y-1, x):
+                            return False
+                    else:
+                        if self.creates_dead_state(y-2, x):
+                            self.extend_currentDeadStates \
+                            (newCurrentDeadStates, y-2, x)
+                    
                     return State(self.board, \
                     self.move_box(y-1, x, Direction.UP), \
                     self.char.move_char(Direction.UP), \
@@ -84,9 +91,16 @@ class State:
                 and not self.is_a_dead_state(y+2, x) \
                 and not self.is_a_box(y+2, x):
                     newCurrentDeadStates = self.copy_currentDeadStates()
-                    if self.creates_dead_state(y+2, x):
-                        self.extend_currentDeadStates(newCurrentDeadStates, y+2, x)
-                
+                    
+                    #allows to go to a PDS if already on one
+                    if self.is_currentDeadState(y+2, x):
+                        if not self.is_currentDeadState(y+1, x):
+                            return False
+                    else:
+                        if self.creates_dead_state(y+2, x):
+                            self.extend_currentDeadStates \
+                            (newCurrentDeadStates, y+2, x)
+                    
                     return State(self.board, \
                     self.move_box(y+1, x, Direction.DOWN), \
                     self.char.move_char(Direction.DOWN), \
@@ -112,9 +126,16 @@ class State:
                 and not self.is_a_dead_state(y, x-2) \
                 and not self.is_a_box(y, x-2):
                     newCurrentDeadStates = self.copy_currentDeadStates()
-                    if self.creates_dead_state(y, x-2):
-                        self.extend_currentDeadStates(newCurrentDeadStates, y, x-2)
-                
+                    
+                    #allows to go to a PDS if already on one
+                    if self.is_currentDeadState(y, x-2):
+                        if not self.is_currentDeadState(y, x-1):
+                            return False
+                    else:
+                        if self.creates_dead_state(y, x-2):
+                            self.extend_currentDeadStates \
+                            (newCurrentDeadStates, y, x-2)
+                    
                     return State(self.board, \
                     self.move_box(y, x-1, Direction.LEFT), \
                     self.char.move_char(Direction.LEFT), \
@@ -140,9 +161,16 @@ class State:
                 and not self.is_a_dead_state(y, x+2) \
                 and not self.is_a_box(y, x+2):
                     newCurrentDeadStates = self.copy_currentDeadStates()
-                    if self.creates_dead_state(y, x+2):
-                        self.extend_currentDeadStates(newCurrentDeadStates, y, x+2)
-                
+                    
+                    #allows to go to a PDS if already on one
+                    if self.is_currentDeadState(y, x+2):
+                        if not self.is_currentDeadState(y, x+1):
+                            return False
+                    else:
+                        if self.creates_dead_state(y, x+2):
+                            self.extend_currentDeadStates \
+                            (newCurrentDeadStates, y, x+2)
+                    
                     return State(self.board, \
                     self.move_box(y, x+1, Direction.RIGHT), \
                     self.char.move_char(Direction.RIGHT), \
@@ -171,10 +199,13 @@ class State:
         if self.board.board[y][x] == Case.STATIC_DEAD_STATE:
             return True
         else:
-            for deadState in self.currentDeadStates:
-                if y == deadState[0] and x == deadState[1]:
-                    return True
+#            for deadState in self.currentDeadStates:
+#                if y == deadState[0] and x == deadState[1]:
+#                    return True
             return False
+        
+    def is_currentDeadState(self, y, x):
+        return [y, x] in self.currentDeadStates
         
     def find_current_dead_states(self):
         '''Creates a list of coordinates of the actual dead states for this 
@@ -218,7 +249,12 @@ class State:
     def extend_currentDeadStates(self, stateList, y, x):
         iterY = y
         iterX = x
+        
         if self.board.board[y][x] == Case.HPDS:
+            '''Note pour le futur
+            Si le nombre de caisses - nbre de goals sur la ligne de HPDS, alors
+            sinon, skip
+            '''
             while self.board.board[iterY][iterX] == Case.HPDS \
             or self.board.board[iterY][iterX] == Case.GOAL:
                 stateList.append([iterY, iterX])
@@ -228,6 +264,11 @@ class State:
             or self.board.board[iterY][iterX] == Case.GOAL:
                 stateList.append([iterY, iterX])
                 iterX += 1
+                
+            '''Note pour le futur
+            Si le nombre de caisses - nbre de goals sur la ligne de VPDS, alors
+            sinon, skip
+            '''
         if self.board.board[y][x] == Case.VPDS:
             while self.board.board[iterY][iterX] == Case.VPDS \
             or self.board.board[iterY][iterX] == Case.GOAL:
@@ -246,11 +287,11 @@ if __name__ == "__main__" :
     plateau.print_board()
     plateau.board[2][2] = Case.VPDS
     plateau.board[3][2] = Case.VPDS
-    etattest = State(plateau, [Box(2, 3), Box(2, 1)], Char(2, 4), [])
-    print (etattest.char.x)
-    newetattest = etattest.move(Direction.LEFT)
-    print (newetattest.boxes[0].x)
-    print (newetattest.char.x)
+    etattest = State(plateau, [Box(3, 3), Box(2, 1)], Char(4, 3), [])
+    print (etattest.char.y)
+    newetattest = etattest.move(Direction.UP)
+    print (newetattest.boxes[0].y)
+    print (newetattest.char.y)
     plateau.print_board()
     print (newetattest.currentDeadStates)
 
