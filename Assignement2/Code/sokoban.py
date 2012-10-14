@@ -4,16 +4,30 @@ from search import *
 import Board
 import State
 from Direction import *
+import IO
+import Box
+import Char
 ######################  Implement the search #######################
 
 class Sokoban(Problem):
 
-    def __init__(self,init):
-        self.board = Board(init)
-        # to do
-        self.char = None
+    def __init__(self,filename):
+        self.board = Board(filename+".goal")
+        Io = IO(filename+".init")
+        Io.init_reader()
         self.boxes = []
-        #end to do
+        i = 0
+        j = 0
+        for line in Io.file :
+            for elem in line :
+                if elem == "$" :
+                    self.boxes.append(Box(i,j))
+                elif elem == "@":
+                    self.char = Char(i,j)
+                j+=1
+            j=0
+            i+=1
+
         # add goal
         Problem.__init__(self, State(self.board,self.boxes,self.char))
         self.direction = [Direction.UP,Direction.Down,Direction.LEFT,Direction.RIGHT]
