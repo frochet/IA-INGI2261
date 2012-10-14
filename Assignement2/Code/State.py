@@ -59,7 +59,8 @@ class State:
                     
                     #allows to go to a PDS if already on one
                     if self.is_currentDeadState(y-2, x):
-                        if not self.is_currentDeadState(y-1, x):
+                        if not self.is_currentDeadState(y-1, x) or \
+                        self.is_a_box(y-3, x): #new line !!!!!!!!!!!!!!!!!!!!!!!!!
                             return False
                     else:
                         if self.creates_dead_state(y-2, x):
@@ -204,6 +205,9 @@ class State:
 #                    return True
             return False
         
+    def is_a_goal(self, y, x):
+        return self.board.board[y][x] == Case.GOAL
+        
     def is_currentDeadState(self, y, x):
         return [y, x] in self.currentDeadStates
         
@@ -250,9 +254,10 @@ class State:
         iterY = y
         iterX = x
         
-        if self.board.board[y][x] == Case.HPDS:
+        if self.board.board[y][x] == Case.HPDS and \
+        self.same_amount(y, x, "HORIZONTAL"):
             '''Note pour le futur
-            Si le nombre de caisses - nbre de goals sur la ligne de HPDS, alors
+            Si le nombre de caisses = nbre de goals sur la ligne de HPDS, alors
             sinon, skip
             '''
             while self.board.board[iterY][iterX] == Case.HPDS \
@@ -266,10 +271,11 @@ class State:
                 iterX += 1
                 
             '''Note pour le futur
-            Si le nombre de caisses - nbre de goals sur la ligne de VPDS, alors
+            Si le nombre de caisses = nbre de goals sur la ligne de VPDS, alors
             sinon, skip
             '''
-        if self.board.board[y][x] == Case.VPDS:
+        if self.board.board[y][x] == Case.VPDS and \
+        self.same_amount(y, x, "VERTICAL"):
             while self.board.board[iterY][iterX] == Case.VPDS \
             or self.board.board[iterY][iterX] == Case.GOAL:
                 stateList.append([iterY, iterX])
@@ -279,6 +285,34 @@ class State:
             or self.board.board[iterY][iterX] == Case.GOAL:
                 stateList.append([iterY, iterX])
                 iterY += 1
+                
+    def same_amount(self, y, x, dir):
+        #iterY = y
+        #iterX = x
+        nbBoxes = 0
+        nbGoals = 0
+        if dir == "HORIZONTAL":
+            while not self.is_a_dead_state(y, x):
+                x -= 1
+            x += 1
+            while not self.is_a_dead_state(y, x):
+                if [y, x] in self.boxes:
+                    nbBoxes += 1
+                if self.is_a_goal(y, x):
+                    nbGoals += 1
+                x += 1
+        if dir == "VERTICAL":
+            while not self.is_a_dead_state(y, x):
+                y -= 1
+            y += 1
+            while not self.is_a_dead_state(y, x):
+                if [y, x] in self.boxes:
+                    nbBoxes += 1
+                if self.is_a_goal(y, x):
+                    nbGoals += 1
+                y += 1
+        return nbBoxes >= nbGoals
+                
                     
                     
                     
