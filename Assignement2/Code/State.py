@@ -41,8 +41,8 @@ class State:
         result += str(self.char.x)
         for box in self.boxes:
             result += str(box.y)
-            result += str(box.y)
-        return int(result)
+            result += str(box.x)
+        return hash(result)
         
     def move(self, direction):
         if direction == Direction.UP:
@@ -79,9 +79,10 @@ class State:
                         self.is_a_box(y-3, x):
                             return False
                     else:
-                        if self.creates_dead_state(y-2, x):
+                        potentialDirection = self.creates_dead_state(y-2, x)
+                        if potentialDirection:
                             self.extend_currentDeadStates \
-                            (newCurrentDeadStates, y-2, x)
+                            (newCurrentDeadStates, y-2, x, potentialDirection)
                     
                     return State(self.board, \
                     self.move_box(y-1, x, Direction.UP), \
@@ -115,9 +116,10 @@ class State:
                         if not self.is_currentDeadState(y+1, x):
                             return False
                     else:
-                        if self.creates_dead_state(y+2, x):
+                        potentialDirection = self.creates_dead_state(y+2, x)
+                        if potentialDirection:
                             self.extend_currentDeadStates \
-                            (newCurrentDeadStates, y+2, x)
+                            (newCurrentDeadStates, y+2, x, potentialDirection)
                     
                     return State(self.board, \
                     self.move_box(y+1, x, Direction.DOWN), \
@@ -151,9 +153,10 @@ class State:
                         if not self.is_currentDeadState(y, x-1):
                             return False
                     else:
-                        if self.creates_dead_state(y, x-2):
+                        potentialDirection = self.creates_dead_state(y, x-2)
+                        if potentialDirection:
                             self.extend_currentDeadStates \
-                            (newCurrentDeadStates, y, x-2)
+                            (newCurrentDeadStates, y, x-2, potentialDirection)
                     
                     return State(self.board, \
                     self.move_box(y, x-1, Direction.LEFT), \
@@ -187,9 +190,10 @@ class State:
                         if not self.is_currentDeadState(y, x+1):
                             return False
                     else:
-                        if self.creates_dead_state(y, x+2):
+                        potentialDirection = self.creates_dead_state(y, x-2)
+                        if potentialDirection:
                             self.extend_currentDeadStates \
-                            (newCurrentDeadStates, y, x+2)
+                            (newCurrentDeadStates, y, x+2, potentialDirection)
                     
                     return State(self.board, \
                     self.move_box(y, x+1, Direction.RIGHT), \
@@ -260,8 +264,21 @@ class State:
         return self.clone_boxes(newboxes)
     
     def creates_dead_state(self, y, x):
-        return self.board.board[y][x] == Case.HPDS or \
-        self.board.board[y][x] == Case.VPDS
+        if self.board.board[y][x] == Case.HPDS:
+            return Direction.HORIZONTAL
+        elif self.board.board[y][x] == Case.VPDS:
+            return Direction.VERTICAL
+        elif self.board.board[y][x] == Case.GOAL:
+            if self.board.board[y][x-1] == Case.HPDS or \
+            self.board.board[y][x+1] == Case.HPDS:
+                return Direction.HORIZONTAL
+            elif self.board.board[y-1][x] == Case.VPDS or \
+            self.board.board[y+1][x] == Case.VPDS:
+                return Direction.VERTICAL
+            else:
+                return False
+        else:
+            return False
     
     def copy_currentDeadStates(self):
         newlist = []
@@ -269,11 +286,11 @@ class State:
             newlist.append([state[0], state[1]])
         return newlist
     
-    def extend_currentDeadStates(self, stateList, y, x):
+    def extend_currentDeadStates(self, stateList, y, x, direction):
         iterY = y
         iterX = x
         
-        if self.board.board[y][x] == Case.HPDS and \
+        if direction == Direction.HORIZONTAL and \
         self.same_amount(y, x, Direction.HORIZONTAL):
             while self.board.board[iterY][iterX] == Case.HPDS \
             or self.board.board[iterY][iterX] == Case.GOAL:
@@ -285,7 +302,7 @@ class State:
                 stateList.append([iterY, iterX])
                 iterX += 1
                 
-        if self.board.board[y][x] == Case.VPDS and \
+        if direction == Direction.VERTICAL and \
         self.same_amount(y, x, Direction.VERTICAL):
             while self.board.board[iterY][iterX] == Case.VPDS \
             or self.board.board[iterY][iterX] == Case.GOAL:
