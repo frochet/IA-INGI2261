@@ -26,8 +26,23 @@ class State:
         self.boxes = boxes
         self.char = char
         self.currentDeadStates = currentDeadStates
+        self.representation = self.make_representation()
+    
+    def __hash__(self):
         pass
     
+    def __eq__(self,other):
+        return self.representation == other.representation
+    
+    def make_representation(self):
+        result = ""
+        result += self.char.y
+        result += self.char.x
+        for box in self.boxes:
+            result += box.y
+            result += box.y
+        return hash(result)
+        
     def move(self, direction):
         if direction == Direction.UP:
             return self.move_up()
@@ -60,7 +75,7 @@ class State:
                     #allows to go to a PDS if already on one
                     if self.is_currentDeadState(y-2, x):
                         if not self.is_currentDeadState(y-1, x) or \
-                        self.is_a_box(y-3, x): #new line !!!!!!!!!!!!!!!!!!!!!!!!!
+                        self.is_a_box(y-3, x):
                             return False
                     else:
                         if self.creates_dead_state(y-2, x):
@@ -94,7 +109,8 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    if self.is_currentDeadState(y+2, x):
+                    if self.is_currentDeadState(y+2, x) or \
+                    self.is_a_box(y+3, x):
                         if not self.is_currentDeadState(y+1, x):
                             return False
                     else:
@@ -129,7 +145,8 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    if self.is_currentDeadState(y, x-2):
+                    if self.is_currentDeadState(y, x-2) or \
+                    self.is_a_box(y, x-3):
                         if not self.is_currentDeadState(y, x-1):
                             return False
                     else:
@@ -164,7 +181,8 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    if self.is_currentDeadState(y, x+2):
+                    if self.is_currentDeadState(y, x+2) or \
+                    self.is_a_box(y, x+3):
                         if not self.is_currentDeadState(y, x+1):
                             return False
                     else:
@@ -256,10 +274,6 @@ class State:
         
         if self.board.board[y][x] == Case.HPDS and \
         self.same_amount(y, x, Direction.HORIZONTAL):
-            '''Note pour le futur
-            Si le nombre de caisses = nbre de goals sur la ligne de HPDS, alors
-            sinon, skip
-            '''
             while self.board.board[iterY][iterX] == Case.HPDS \
             or self.board.board[iterY][iterX] == Case.GOAL:
                 stateList.append([iterY, iterX])
@@ -270,10 +284,6 @@ class State:
                 stateList.append([iterY, iterX])
                 iterX += 1
                 
-            '''Note pour le futur
-            Si le nombre de caisses = nbre de goals sur la ligne de VPDS, alors
-            sinon, skip
-            '''
         if self.board.board[y][x] == Case.VPDS and \
         self.same_amount(y, x, Direction.VERTICAL):
             while self.board.board[iterY][iterX] == Case.VPDS \
