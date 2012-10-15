@@ -78,8 +78,8 @@ problem=Sokoban(sys.argv[1])
 node=astar_graph_search(problem,problem.h)
 #example of print
 path=node.path()
-#path.reverse()
-#for n in path:
-#   print(n.state) #assume that the __str__ function of states output the correct format
+path.reverse()
+for n in path:
+    print(n.state.print_board(n.state.char,n.state.boxes)) #assume that the __str__ function of states output the correct format
 
         

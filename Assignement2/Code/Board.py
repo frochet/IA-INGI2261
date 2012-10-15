@@ -220,8 +220,28 @@ class Board:
             x=0
             y+=1
         
-                
-    def print_board(self):
+     
+    def print_board(self,char,boxes):
+        y = 0
+        x = 0
+        for line in self.board :
+            for char in line :
+                special = False
+                for box in boxes :
+                    if box.x == x and box.y == y:
+                        sys.stdout.write("$")
+                        special = True
+                if char.x == x and char.y == y :
+                    sys.stdout.write("@")
+                    special = True
+                if not special :
+                    if char == Case.GOAL : sys.stdout.write(".")
+                    elif char == Case.WALL : sys.stdout.write("#")
+                    else: sys.stdout.write(" ")
+                x+=1
+            x=0
+            y+=1
+    def print_board_repr(self):
         for line in self.board :
             for char in line :
                 sys.stdout.write(str(char))
@@ -246,6 +266,7 @@ class Board:
         assert y >= 0 and y < len(self.board-1)
         assert x >= 0 and x < len(self.board[y])
         return self.board[y-1][x]
+    
     
     
 # TEST 

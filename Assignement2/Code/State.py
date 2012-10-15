@@ -322,6 +322,8 @@ class State:
                     nbGoals += 1
                 y += 1
         return nbBoxes >= nbGoals - 1
+    def print_board(self):
+        self.board.print_board(self.char,self.boxes)
                 
                     
                     
