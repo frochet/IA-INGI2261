@@ -1,4 +1,4 @@
-'''NAMES OF THE AUTHOR(S): ...'''
+'''NAMES OF THE AUTHOR(S): Florentin Rochet, Leonard Debroux'''
 
 from search import *
 from Board import Board
@@ -11,11 +11,14 @@ from Char import Char
 
 class Sokoban(Problem):
     """ 
+        This class solve a sokoban game 
     """
 
     def __init__(self,filename):
         """
-            
+            filename has the form pathto/sokoInstxy without the .goal or .init
+            This constructor make the static board and give the dynamic items (boxes, char)
+            to the first state.
         """
         
         self.board = Board(filename+".goal")
@@ -39,6 +42,9 @@ class Sokoban(Problem):
         Problem.__init__(self, State(self.board,self.boxes,self.char,[]))
     
     def goal_test(self, state):
+        """
+            Perform a goal test by testing if the boxes' position are at the goals' position
+        """
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
@@ -52,12 +58,14 @@ class Sokoban(Problem):
         
     def successor(self, state):
         """
+            yield the next state to a current state.
             No action because they are all the same, each is a move in one of the
             directions. Each cost we be 1
         """
         for direct in self.direction :
             newState = state.move(direct)
             if newState :
+                newState.print_board()
                 yield (None, newState)
         
     def h(self,node):
@@ -80,6 +88,6 @@ node=astar_graph_search(problem,problem.h)
 path=node.path()
 path.reverse()
 for n in path:
-    print(n.state.print_board()) #assume that the __str__ function of states output the correct format
+    print(n.state) #assume that the __str__ function of states output the correct format
 
         
