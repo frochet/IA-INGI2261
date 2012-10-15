@@ -33,8 +33,10 @@ class State:
     
     def __eq__(self,other):
         return self.representation == other.representation
+    
     def __str__(self):
         self.print_board()
+        
     def make_representation(self):
         result = ""
         result += str(self.char.y)

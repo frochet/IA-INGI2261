@@ -48,7 +48,7 @@ class Sokoban(Problem):
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
-                if coord[0] == box.x and coord[1] == box.y : 
+                if coord[0] == box.y and coord[1] == box.x : 
                     i+=1
             
             if i == 0 : return False
@@ -63,23 +63,12 @@ class Sokoban(Problem):
             No action because they are all the same, each is a move in one of the
             directions. Each cost we be 1
         """
-        state.print_board()
-        print (state.currentDeadStates)
-        print (state.representation)
+        #state.print_board()
+        #print (state.currentDeadStates)
+        #print (state.representation)
         for direct in self.direction :
             newState = state.move(direct)
             if newState :
-                count = 0
-                x = 0
-                while x < 10:
-                    if newState.boxes[0].y == 1 and newState.boxes[0].x == x:
-                        count += 1
-                    if newState.boxes[1].y == 1 and newState.boxes[1].x == x:
-                        count += 1
-                    x += 1
-                if count == 2:
-                    print("oups")
-                #newState.print_board()
                 yield (None, newState)
         
     def h(self,node):
@@ -97,8 +86,8 @@ class Sokoban(Problem):
     
 problem=Sokoban(sys.argv[1])
 #example of bfs search
-#node=astar_graph_search(problem,problem.h)
-node=depth_first_graph_search(problem)
+node=astar_graph_search(problem,problem.h)
+#node=depth_first_graph_search(problem)
 print(node == None)
 #example of print
 path=node.path()
