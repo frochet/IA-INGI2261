@@ -311,7 +311,7 @@ class State:
                 if self.is_a_goal(y, x):
                     nbGoals += 1
                 y += 1
-        return nbBoxes >= nbGoals
+        return nbBoxes >= nbGoals - 1
                 
                     
                     
@@ -319,9 +319,9 @@ class State:
 if __name__ == "__main__" :
     plateau = Board("../benchs/sokoInst01.goal")
     plateau.print_board()
-    plateau.board[2][2] = Case.VPDS
-    plateau.board[3][2] = Case.VPDS
-    etattest = State(plateau, [Box(3, 3), Box(2, 1)], Char(4, 3), [])
+    #plateau.board[2][2] = Case.VPDS
+    #plateau.board[3][2] = Case.VPDS
+    etattest = State(plateau, [Box(2, 3), Box(2, 1)], Char(3, 3), [])
     print (etattest.char.y)
     newetattest = etattest.move(Direction.UP)
     print (newetattest.boxes[0].y)
