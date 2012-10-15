@@ -96,6 +96,6 @@ print(node == None)
 path=node.path()
 path.reverse()
 for n in path:
-    print(n.state.print_board(n.state.char,n.state.boxes)) #assume that the __str__ function of states output the correct format
+    print(n.state.print_board()) #assume that the __str__ function of states output the correct format
 
         
