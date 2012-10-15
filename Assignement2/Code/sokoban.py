@@ -10,8 +10,15 @@ import Char
 ######################  Implement the search #######################
 
 class Sokoban(Problem):
+    """ 
+    """
 
     def __init__(self,filename):
+        """
+            
+        """
+        print(filename)
+        
         self.board = Board(filename+".goal")
         Io = IO(filename+".init")
         Io.init_reader()
@@ -54,19 +61,26 @@ class Sokoban(Problem):
             if newState :
                 yield (None, newState)
         
-
-
+    def h(self,node):
+#        goals = self.board.positionGoal
+#        boxes = node.state.boxes
+#        sums = []
+#        for goal in goals:
+#            for box in boxes :
+#                pass
+        return 0
+        
 
 
 ###################### Launch the search #########################
     
 problem=Sokoban(sys.argv[1])
 #example of bfs search
-node=breadth_first_graph_search(problem)
+node=astar_graph_search(problem,problem.h)
 #example of print
 path=node.path()
-path.reverse()
-for n in path:
-    print(n.state) #assume that the __str__ function of states output the correct format
+#path.reverse()
+#for n in path:
+#   print(n.state) #assume that the __str__ function of states output the correct format
 
         

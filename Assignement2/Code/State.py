@@ -255,7 +255,7 @@ class State:
         iterX = x
         
         if self.board.board[y][x] == Case.HPDS and \
-        self.same_amount(y, x, "HORIZONTAL"):
+        self.same_amount(y, x, Direction.HORIZONTAL):
             '''Note pour le futur
             Si le nombre de caisses = nbre de goals sur la ligne de HPDS, alors
             sinon, skip
@@ -275,7 +275,7 @@ class State:
             sinon, skip
             '''
         if self.board.board[y][x] == Case.VPDS and \
-        self.same_amount(y, x, "VERTICAL"):
+        self.same_amount(y, x, Direction.VERTICAL):
             while self.board.board[iterY][iterX] == Case.VPDS \
             or self.board.board[iterY][iterX] == Case.GOAL:
                 stateList.append([iterY, iterX])
@@ -291,7 +291,7 @@ class State:
         #iterX = x
         nbBoxes = 0
         nbGoals = 0
-        if dir == "HORIZONTAL":
+        if dir == Direction.HORIZONTAL:
             while not self.is_a_dead_state(y, x):
                 x -= 1
             x += 1
@@ -301,7 +301,7 @@ class State:
                 if self.is_a_goal(y, x):
                     nbGoals += 1
                 x += 1
-        if dir == "VERTICAL":
+        if dir == Direction.VERTICAL:
             while not self.is_a_dead_state(y, x):
                 y -= 1
             y += 1

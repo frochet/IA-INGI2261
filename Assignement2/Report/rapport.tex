@@ -88,8 +88,8 @@ Assignement 2}
 					$$ g(n) + h(n) \leq g(n') + h(n') $$
 					This expression indicates that $$ f(n) = g(n) + h(n) $$ is optimistic and underestimates the cost of a deeper node. Let's say that n' is the goal (and so, h(n)==0), and can be reach by any set of action from node n, we get:
 					$$ g(n) + h(n) \leq g(n') $$
-					This is the definition of admissibility.
-				\end{proof}\\
+					This is the definition of admissibility.\\
+				\end{proof}
 				We have thus prove that a consistent heuristic is admissible.
 				
 		\subsection{A* versus uniform-cost search}
@@ -102,7 +102,7 @@ Assignement 2}
 				As said earlier, the heuristic is consistent and so, it is admissible.
 				
 			\subsubsection{Question 2: Show on the left maze the states (board positions) that are visited during an execution of A* graph search with a manhattan distance heuristic (ignoring walls). A state is visited when it is selected in the fringe and expanded. In the A* algorithm, we assume that when different states in the fringe have the smallest value, the algorithm chooses the state with the smallest coordinate (i, j) ((0, 0) being the bottom left position, i being the horizontal index and j the vertical one) using a lexicographical order}
-				For the following search, when looking at the children of a node, we start looking to the north and continue clockwise.
+				For the following search, when looking at the children of a node, we start looking to the north and continue clockwise.\\
 			\begin{center}
 				\begin{tabular}{|c|c|c|c|c|c|c|}
 					\hline 
@@ -125,7 +125,7 @@ Assignement 2}
 					1 & 3  & \# &    &    &    &   \\ 
 					\hline 
 				\end{tabular}
-			\end{center} \\
+			\end{center} 
 				The path that is retained by the A* search using the manhattan distance heuristic is the following : \{1, 2, 4, 6, 8, 10, 11, 12, 13, 14, 15, 16, 18, 20\}. The numbers indicates in which order the nodes are seen.
 
 			\subsubsection{Show on the right maze the board positions visited by a uniform-cost graph search. When several states have the smallest path cost, this uniform-cost search visits them in the same lexicographical order as A*}
