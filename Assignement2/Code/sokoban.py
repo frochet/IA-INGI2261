@@ -42,7 +42,8 @@ class Sokoban(Problem):
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
-                if coord[0] == box.x and coord[1] == box.y : i+=1
+                if coord[0] == box.x and coord[1] == box.y : 
+                    i+=1
             
             if i == 0 : return False
             i = 0
@@ -89,8 +90,8 @@ class Sokoban(Problem):
     
 problem=Sokoban(sys.argv[1])
 #example of bfs search
-node=astar_graph_search(problem,problem.h)
-#node=depth_first_graph_search(problem)
+#node=astar_graph_search(problem,problem.h)
+node=depth_first_graph_search(problem)
 print(node == None)
 #example of print
 path=node.path()
