@@ -192,7 +192,7 @@ class State:
                         if not self.is_currentDeadState(y, x+1):
                             return False
                     else:
-                        potentialDirection = self.creates_dead_state(y, x-2)
+                        potentialDirection = self.creates_dead_state(y, x+2)
                         if potentialDirection:
                             self.extend_currentDeadStates \
                             (newCurrentDeadStates, y, x+2, potentialDirection)
