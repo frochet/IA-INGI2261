@@ -68,7 +68,7 @@ Assignement 2}
 	\section{Search Algorithms}
 		\subsection{Statments to be proven}
 			\subsubsection{Question 1: Prove that depth-first is a special case of uniform-cost search}
-				If the tree that is build is such as the cost of the nodes increments by one following the path of an actual depth-search, the uniform-cost will follow that same path and thus perform a depth-first search.
+				We have to find an example of a tree that have the same search-path for the depth-first and the uniform-cost. If a tree is build is such as the cost of the nodes increments by one following the path of an actual depth-search, the uniform-cost will follow that same path and thus perform a depth-first search. 
 				
 			\subsubsection{Question 2: Prove that breadth-first is a special case of uniform-cost search}	
 				In the simple case where all the nodes have the exact same cost, the uniform-search will run through the tree by level exactly like a breadth-first search.
@@ -79,33 +79,27 @@ Assignement 2}
 			
 			\subsubsection{Question 5: Prove that if a heuristic is consistent, then it is admissible}
 				\begin{proof}
-					Let's procede by in a recursive way, using the consitency definition :
+					Let's take the triangle inequality of the consistency and develop it:
 					$$ h(n) \leq c(n,a,n') + h(n') $$
-					We assume first that n' is the goal, and thus, h(g) equals 0 by definition. We get
-					$$ h(n) \leq c(n,a,g) $$
-					Where n is the node strictly before reaching the goal. We see that h is admissible for this node. We can now start the recursion like so:
-					$$ h(n) \leq c(n,a,n') + h(n') $$
-					Knowing that h(n') is admissible, we can set an upper bound for h(n') that is the exact minimal cost to the goal and can write the above as:
-					$$ h(n) \leq c(n,a,n') + C*(n', g) $$
-					The right term can thus be written as:
-					$$ h(n) \leq C*(n, g) $$
-					Which is the definition of admissibility.				
-				\end{proof}\\
+					Where node n' is the successor of node n through the action a.\\ 
+					Adding g(n), the exact cost to node n, left and right:
+					$$ g(n) + h(n) \leq g(n) + c(n,a,n') + h(n') $$
+					Simplifying the right part by summing the first two terms:
+					$$ g(n) + h(n) \leq g(n') + h(n') $$
+					This expression indicates that $$ f(n) = g(n) + h(n) $$ is optimistic and underestimates the cost of a deeper node. Let's say that n' is the goal (and so, h(n)==0), and can be reach by any set of action from node n, we get:
+					$$ g(n) + h(n) \leq g(n') $$
+					This is the definition of admissibility.\\
+				\end{proof}
 				We have thus prove that a consistent heuristic is admissible.
 				
 		\subsection{A* versus uniform-cost search}
 			\subsubsection{Question 1: Give a consistent heuristic for this problem. Prove that it is admissible}
 				A consistent heuristic for this problem is to use h(n) = manhattan distance from n to the goal. We will prove that it is consistent and thanks to the result of question 1.5, we are sure that it will be admissible too.
-				\begin{proof}
-					To prove that this heuristic is consistent and thus, admissible, we consider that the consistency statement is false and get:
-					$$ h(n) > c(n,a,n') + h(n') $$
-					Where "a" is a move in any of the cardinal directions.
-					By subtracting h(n') on both side we get:
-					$$ h(n) - h(n') > c(n,a,n') $$
-					The manhattan distance heuristic should have a cost of 1 per action and accordingly to the latter expression, it is at least of 2 because c(n,a,n') is equal to 1.\\
-					This is impossible and thus, the statement of consistency must be true.\\
-					Because the heuristic is consistent, it is admissible as proved earlier. 	
-				\end{proof}		
+				Lets consider a node and the goal, there is two possible cases:\\ 
+				Either, we go in the direction of the goal following one of the axes and $$ h(n) = c(n,a,n') + h(n') $$
+				Either, we don't move towards the goal and thus we get $$ h(n) < c(n,a,n') + h(n) $$
+				In one case of the other, the inequality $$ h(n) \leq c(n,a,n') + h(n) $$ is respect and thus, the heuristic is consistent.\\
+				As said earlier, the heuristic is consistent and so, it is admissible.
 				
 			\subsubsection{Question 2: Show on the left maze the states (board positions) that are visited during an execution of A* graph search with a manhattan distance heuristic (ignoring walls). A state is visited when it is selected in the fringe and expanded. In the A* algorithm, we assume that when different states in the fringe have the smallest value, the algorithm chooses the state with the smallest coordinate (i, j) ((0, 0) being the bottom left position, i being the horizontal index and j the vertical one) using a lexicographical order}
 				For the following search, when looking at the children of a node, we start looking to the north and continue clockwise.\\

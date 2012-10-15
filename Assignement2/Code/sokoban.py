@@ -89,6 +89,6 @@ node=astar_graph_search(problem,problem.h)
 path=node.path()
 path.reverse()
 for n in path:
-    print(n.state.print_board()) #assume that the __str__ function of states output the correct format
+    n.state.print_board() #assume that the __str__ function of states output the correct format
 
         
