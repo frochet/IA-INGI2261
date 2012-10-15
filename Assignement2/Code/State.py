@@ -29,19 +29,19 @@ class State:
         self.representation = self.make_representation()
     
     def __hash__(self):
-        pass
+        return self.representation
     
     def __eq__(self,other):
         return self.representation == other.representation
     
     def make_representation(self):
         result = ""
-        result += self.char.y
-        result += self.char.x
+        result += str(self.char.y)
+        result += str(self.char.x)
         for box in self.boxes:
-            result += box.y
-            result += box.y
-        return hash(result)
+            result += str(box.y)
+            result += str(box.y)
+        return int(result)
         
     def move(self, direction):
         if direction == Direction.UP:

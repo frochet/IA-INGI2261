@@ -1,12 +1,12 @@
 '''NAMES OF THE AUTHOR(S): ...'''
 
 from search import *
-import Board
-import State
+from Board import Board
+from State import State
 from Direction import *
-import IO
-import Box
-import Char
+from IO import IO
+from Box import Box
+from Char import Char
 ######################  Implement the search #######################
 
 class Sokoban(Problem):
@@ -17,7 +17,6 @@ class Sokoban(Problem):
         """
             
         """
-        print(filename)
         
         self.board = Board(filename+".goal")
         Io = IO(filename+".init")
@@ -34,10 +33,10 @@ class Sokoban(Problem):
                 j+=1
             j=0
             i+=1
-        self.direction = [Direction.UP,Direction.Down,Direction.LEFT,Direction.RIGHT]
+        self.direction = [Direction.UP,Direction.DOWN,Direction.LEFT,Direction.RIGHT]
 
         # add goal
-        Problem.__init__(self, State(self.board,self.boxes,self.char))
+        Problem.__init__(self, State(self.board,self.boxes,self.char,[]))
     
     def goal_test(self, state):
         i = 0
