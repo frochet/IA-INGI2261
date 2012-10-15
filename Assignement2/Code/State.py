@@ -3,7 +3,6 @@ Created on 11 oct. 2012
 
 @author: Florentin
 '''
-from logging import raiseExceptions
 import WrongDirectionException
 from Case import *
 from Box import Box
@@ -12,11 +11,12 @@ from Board import Board
 from Char import Char
 
 class State:
+    
     '''
-    classdocs
+          A state is a dynamic representation of the board, it contains character and boxes
+          and some methods to handle the move of the character and the boxes.
     '''
-
-
+    
     def __init__(self, board, boxes, char, currentDeadStates):
         '''
         Constructor
@@ -33,7 +33,8 @@ class State:
     
     def __eq__(self,other):
         return self.representation == other.representation
-    
+    def __str__(self):
+        self.print_board()
     def make_representation(self):
         result = ""
         result += str(self.char.y)

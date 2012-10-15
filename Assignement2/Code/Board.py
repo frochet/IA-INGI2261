@@ -47,6 +47,16 @@ class Board:
     
     
     def detect_possible_dead_state(self):
+        """
+            In our board, we might have some possible dead state which 
+            are configuration like :
+            #######
+            #  .  #
+            on the goal line, there are pure dead state on the corners and
+            possible dead state on the cases on the line. That means that if
+            a box is push on that line, all the others case are transformed to 
+            dead state.
+        """
         def detect_bound_on_raw(y, goalX):
             left = False
             right = False
@@ -243,6 +253,7 @@ class Board:
             x=0
             y+=1
     def print_board_repr(self):
+        """print the board with our case representation (see module Case)"""
         for line in self.board :
             for char in line :
                 sys.stdout.write(str(char))
