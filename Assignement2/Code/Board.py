@@ -45,130 +45,70 @@ class Board:
         self.detect_dead_state()
         self.detect_possible_dead_state()
     
+    
     def detect_possible_dead_state(self):
-        """
-            Those states occurs when we have a goal along a wall like that :
-            p#
-            g#
-            p#
-            p#
-            p#
-             all case marked with p are possible dead state, that means that if the goal
-             g is filled with a box, all the p become dead state.
-            The code is clearly illisible but the logic is simple, each time
-            we find a goal, we look for wall side by side to it. if the goal
-            is along some wall, some case will be marked as HPDS for row and
-            VPDS for column. That means that those case are potentially dead
-            state, if the number of boxes on those cases is more than the number
-            of goal on those cases.
-        """
+        def detect_bound_on_raw(y, goalX):
+            left = False
+            right = False
+            i = goalX    
+            while (self.board[y-1][i] == Case.WALL or self.board[y+1][i] == Case.WALL) and not right :
+                if self.board[y][i+1] == Case.WALL :
+                    right = True
+                i+=1                
+            if not right :
+                return False
+            r = i-1
+            i = goalX
+            while (self.board[y-1][i] == Case.WALL or self.board[y+1][i] == Case.WALL) and not left :
+                if self.board[y][i-1] == Case.WALL :
+                    left = True
+                i-=1
+            if not left :
+                return False
+            l = i+1
+            return [l,r]
+        def detect_bound_on_col(goalY,x):
+            up = False
+            down = False
+            i = goalY
+            while(self.board[i][x+1] == Case.WALL or self.board[i][x-1] == Case.WALL) and not up :
+                if self.board[i-1][x] == Case.WALL :
+                    up = True
+                i-=1
+            if not up :
+                return False
+            u = i+1
+            i = goalY
+            while(self.board[i][x+1] == Case.WALL or self.board[i][x-1] == Case.WALL) and not down :
+                if self.board[i+1][x] == Case.WALL :
+                    down = True
+                i+=1
+            if not down :
+                return False
+            d = i-1
+            return [u,d]
+        
+        
         x = 2
         y = 2
         while y < len(self.board)-2 :
             while x < len(self.board[y])-2 :
                 if self.board[y][x] == Case.GOAL :
-                    # HANDLE HPDS ! #
-                    left = True
-                    right = True
-                    i = x
-                    while i < len(self.board[y])-2 and right:
-                        if self.board[y-1][i] != Case.WALL : 
-                            right = False
-                        else:
+                    coord = detect_bound_on_raw(y,x)
+                    if coord :
+                        # on va placer des HPDS entre les elements r,l compris.
+                        i = coord[0]
+                        while i < coord[1] :
+                            if self.board[y][i] == Case.NORMAL :
+                                self.board[y][i] = Case.HPDS
                             i+=1
-                    if x - i < 0 :
-                        j = x
-                        while j < i :
-                            if self.board[y][j+1] != Case.WALL and self.board[y][j] == Case.NORMAL :
-                                self.board[y][j] = Case.HPDS
-                            j+=1
-                    right = True
-                    i = x
-                    while i < len(self.board[y])-2 and right:
-                        if self.board[y+1][i] != Case.WALL : 
-                            right = False
-                        else:
+                    coord = detect_bound_on_col(y,x)
+                    if coord :
+                        i = coord[0]
+                        while i < coord[1] :
+                            if self.board[i][x] == Case.NORMAL :
+                                self.board[i][x] = Case.VPDS
                             i+=1
-                    if x - i < 0 :
-                        j = x
-                        while j < i :
-                            if self.board[y][j+1] != Case.WALL and self.board[y][j] == Case.NORMAL :
-                                self.board[y][j] = Case.HPDS
-                            j+=1
-                    i = x
-                    while i > 2 and left :
-                        if self.board[y-1][i] != Case.WALL :
-                            left = False
-                        else :
-                            i-=1
-                    if x - i > 0:
-                        j = x
-                        while j > i:
-                            if self.board[y][j-1] != Case.WALL and self.board[y][j] == Case.NORMAL :
-                                self.board[y][j] = Case.HPDS
-                            j-=1
-                    left = True
-                    i = x
-                    while i > 2 and left :
-                        if self.board[y+1][i] != Case.WALL :
-                            left = False
-                        else :
-                            i-=1
-                    if x - i > 0:
-                        j = x
-                        while j > i:
-                            if self.board[y][j-1] != Case.WALL and self.board[y][j] == Case.NORMAL :
-                                self.board[y][j] = Case.HPDS
-                            j-=1
-                    # HANDLE VPDS
-                    up = True
-                    down = True
-                    i = y
-                    while i < len(self.board)-2 and down :
-                        if self.board[i][x-1] != Case.WALL :
-                            down = False
-                        i+=1
-                    if y - i < 0 :
-                        j = x
-                        while j < i :
-                            if self.board[j+1][x] != Case.WALL and self.board[j][x] == Case.NORMAL:
-                                self.board[j][x] = Case.VPDS
-                            j+=1
-                    i = y
-                    while i > 2 and up:
-                        if self.board[i][x-1]!= Case.WALL:
-                            up = False
-                        i-=1
-                    if y - i > 0:
-                        j = y
-                        while j > i :
-                            if self.board[j-1][x] != Case.WALL and self.board[j][x] == Case.NORMAL:
-                                self.board[j][x] = Case.VPDS
-                            j-=1
-                    up = True
-                    down = True
-                    i = y
-                    while i < len(self.board)-2 and down :
-                        if self.board[i][x+1] != Case.WALL :
-                            down = False
-                        i+=1
-                    if y - i < 0 :
-                        j = x
-                        while j < i :
-                            if self.board[j+1][x] != Case.WALL and self.board[j][x] == Case.NORMAL:
-                                self.board[j][x] = Case.VPDS
-                            j+=1
-                    i = y
-                    while i > 2 and up:
-                        if self.board[i][x+1]!= Case.WALL:
-                            up = False
-                        i-=1
-                    if y - i > 0:
-                        j = y
-                        while j > i :
-                            if self.board[j-1][x] != Case.WALL and self.board[j][x] == Case.NORMAL:
-                                self.board[j][x] = Case.VPDS
-                            j-=1
                 x+=1
             x=0
             y+=1
@@ -269,9 +209,7 @@ class Board:
                             if self.board[y-1][x+1] == Case.NORMAL :
                                 self.board[y-1][x+1] = Case.STATIC_DEAD_STATE
                     elif x == len(self.board[0])-1 and y == 0 :
-                        if self
-
-                        .board[y+1][x] == Case.WALL and self.board[y][x-1]==Case.WALL :
+                        if self.board[y+1][x] == Case.WALL and self.board[y][x-1]==Case.WALL :
                             if self.board[y+1][x-1] == Case.NORMAL :
                                 self.board[y+1][x-1] = Case.STATIC_DEAD_STATE
                     elif x == len(self.board[0])-1 and y == len(self.board)-1 :
