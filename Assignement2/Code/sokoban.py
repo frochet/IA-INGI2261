@@ -7,6 +7,7 @@ from Direction import *
 from IO import IO
 from Box import Box
 from Char import Char
+from time import time
 ######################  Implement the search #######################
 
 class Sokoban(Problem):
@@ -83,7 +84,9 @@ class Sokoban(Problem):
     
 problem=Sokoban(sys.argv[1])
 #example of bfs search
+start_time = time()
 node=astar_graph_search(problem,problem.h)
+enlapsed = time() - start_time
 #node=depth_first_graph_search(problem)
 #example of print
 path=node.path()
@@ -91,4 +94,5 @@ path.reverse()
 for n in path:
     n.state.print_board() #assume that the __str__ function of states output the correct format
 
+print (enlapsed, 'seconds')
         
