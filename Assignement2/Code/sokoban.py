@@ -48,7 +48,7 @@ class Sokoban(Problem):
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
-                if coord[0] == box.x and coord[1] == box.y : i+=1
+                if coord[0] == box.y and coord[1] == box.x : i+=1
             
             if i == 0 : return False
             i = 0
@@ -62,9 +62,7 @@ class Sokoban(Problem):
             No action because they are all the same, each is a move in one of the
             directions. Each cost we be 1
         """
-        state.print_board()
-        print (state.currentDeadStates)
-        print (state.representation)
+        #state.print_board()
         for direct in self.direction :
             newState = state.move(direct)
             if newState :
@@ -103,6 +101,6 @@ print(node == None)
 path=node.path()
 path.reverse()
 for n in path:
-    print(n.state) #assume that the __str__ function of states output the correct format
+    print(n.state.print_board()) #assume that the __str__ function of states output the correct format
 
         
