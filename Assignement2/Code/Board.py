@@ -239,6 +239,7 @@ class Board:
                     elif elem == Case.WALL : sys.stdout.write("#")
                     else: sys.stdout.write(" ")
                 x+=1
+            sys.stdout.write("\n")
             x=0
             y+=1
     def print_board_repr(self):
