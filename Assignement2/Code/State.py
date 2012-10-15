@@ -330,7 +330,7 @@ class State:
                     
 if __name__ == "__main__" :
     plateau = Board("../benchs/sokoInst01.goal")
-    plateau.print_board()
+
     #plateau.board[2][2] = Case.VPDS
     #plateau.board[3][2] = Case.VPDS
     etattest = State(plateau, [Box(2, 3), Box(2, 1)], Char(3, 3), [])
@@ -338,7 +338,7 @@ if __name__ == "__main__" :
     newetattest = etattest.move(Direction.UP)
     print (newetattest.boxes[0].y)
     print (newetattest.char.y)
-    plateau.print_board()
+    newetattest.print_board()
     print (newetattest.currentDeadStates)
 
 

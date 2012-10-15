@@ -225,7 +225,7 @@ class Board:
         y = 0
         x = 0
         for line in self.board :
-            for char in line :
+            for elem in line :
                 special = False
                 for box in boxes :
                     if box.x == x and box.y == y:
@@ -235,8 +235,8 @@ class Board:
                     sys.stdout.write("@")
                     special = True
                 if not special :
-                    if char == Case.GOAL : sys.stdout.write(".")
-                    elif char == Case.WALL : sys.stdout.write("#")
+                    if elem == Case.GOAL : sys.stdout.write(".")
+                    elif elem == Case.WALL : sys.stdout.write("#")
                     else: sys.stdout.write(" ")
                 x+=1
             x=0
