@@ -75,7 +75,7 @@ Assignement 2}
 			\subsubsection{Question 3: Prove that greedy-best-first search is a special case of A*}
 				The f(n) function of an A* search is g(n) + h(n), which is the sum of the exact cost from the beginning to a node n and the extimated cost provided by the heuristic. In a greedy-best first, g(n) is equal to zero and thus it is a special case of A* where we do not take into account the cost to get to the node n. 
 			\subsubsection{Question 4: Prove that uniform-cost is a special case of A*}
-				This is pretty much the same idea than Q3, only here, it is h(n) that is equal to zero which means that we do not use a heuristic. f(n) is equal only to g(n) that represent the cost from the beginning to the node n.
+				This is pretty much the same idea than Q3, only here, it is h(n) that is equal to zero which means that we do not use a heuristic. f(n) is equal only to g(n) that represent the cost from the beginning to the node n.\\
 			
 			\subsubsection{Question 5: Prove that if a heuristic is consistent, then it is admissible}
 			
@@ -90,7 +90,7 @@ Assignement 2}
 					The right term can thus be written as:
 					$$ h(n) \leq C*(n, g) $$
 					Which is the definition of admissibility.        
-				\end{proof}\\
+				\end{proof}
 				We have thus prove that a consistent heuristic is admissible.
 				
 		\subsection{A* versus uniform-cost search}
@@ -209,10 +209,12 @@ Assignement 2}
 				
 		\subsection{Question 3: Describe possible (non trivial) heuristic(s) to reach a goal state (with reference if any). Is(are) your heuristic(s) admissible and/or consistent?}
 		
+		One that has been tested in our implementation is minimize the sum of the manhattan distance for the set of possibles configurations from boxes to goals. \\
+		So, if we have N boxes/goals on our problem, we have factorial N possibles matchs boxes to goal. We take the minimum of this to ensure that, first the heuristic will never overestimate the cost (Since we have the pure minimal cost to move the box to the goal). Then the heuristic is consistent because for a state n' closer to the goal from a previous state n, we have $ h(n) < h(n')$ by our difinition of $h$ and more precisely, we have $h(n) <= c(n,a,n')+h(n')$ with c the cost from $n$ to $n'$ by the action $a$. So our heuristic is admissible and consitent
 		\subsection{Question 4: Implement this problem. Extend the Problem class and implement the necessary methods and other class(es) if necessary. Your file must be named sokoban.py. You program must print to the standard output a solution to the sokoban instance given in argument satisfying the described format.}
 			The resolution is launched using 
 			\begin{quote}
-				python3 sokoban.py sokoInst 
+				python3 sokoban.py sokoInstxy 
 			\end{quote}
 			There is no need to add the extensions.
 
