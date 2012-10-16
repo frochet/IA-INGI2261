@@ -24,6 +24,7 @@ class Sokoban(Problem):
         
         self.board = Board(filename+".goal")
         self.board.print_board_repr()
+        self.numbernodes = 0
         Io = IO(filename+".init")
         Io.init_reader()
         self.boxes = []
@@ -47,6 +48,7 @@ class Sokoban(Problem):
         """
             Perform a goal test by testing if the boxes' position are at the goals' position
         """
+        self.numbernodes += 1
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
@@ -71,18 +73,25 @@ class Sokoban(Problem):
                 yield (None, newState)
         
     def h(self,node):
-#        goals = self.board.positionGoal
-#        boxes = node.state.boxes
-#        sums = []
-#        for goal in goals:
-#            for box in boxes :
-#                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
-        
-        # Renvois la distance de manhattan la plus petite d'une box vers un goal
-        #sums.sort()
-        # return sums[0]
-        
-        return 0
+        goals = self.board.positionGoal
+        boxes = Box.copy(node.state.boxes)
+        sums = []
+        conf = []
+        for goal in goals:
+            for box in boxes :
+                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
+            mini = 10000
+            for elem in sums :
+                if elem < mini :
+                        mini=elem
+            conf.append(mini)
+            boxes.pop(sums.index(mini))
+            sums = []
+        val = sum(conf)
+        return val
+        #return 0
+
+    
         
 
 
@@ -97,8 +106,13 @@ enlapsed = time() - start_time
 #example of print
 path=node.path()
 path.reverse()
+numberOfSteps = 0
 for n in path:
+    numberOfSteps += 1
     n.state.print_board() #assume that the __str__ function of states output the correct format
 
-print (enlapsed, 'seconds')
+print (enlapsed, ' seconds')
+print (numberOfSteps, ' steps')
+print (problem.numbernodes, ' noeuds explorés')
+
         
