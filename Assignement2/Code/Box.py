@@ -15,4 +15,10 @@ class Box:
         Constructor
         '''
         self.y = y
-        self.x = x        
+        self.x = x
+    
+    def copy(boxes):
+        newboxes = []
+        for box in boxes :
+            newboxes.append(box)
+        return newboxes

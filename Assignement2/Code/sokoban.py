@@ -71,18 +71,25 @@ class Sokoban(Problem):
                 yield (None, newState)
         
     def h(self,node):
-#        goals = self.board.positionGoal
-#        boxes = node.state.boxes
-#        sums = []
-#        for goal in goals:
-#            for box in boxes :
-#                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
-        
-        # Renvois la distance de manhattan la plus petite d'une box vers un goal
-        #sums.sort()
-        # return sums[0]
-        
-        return 0
+        goals = self.board.positionGoal
+        boxes = Box.copy(node.state.boxes)
+        sums = []
+        conf = []
+        for goal in goals:
+            for box in boxes :
+                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
+            mini = 10000
+            for elem in sums :
+                if elem < mini :
+                        mini=elem
+            conf.append(mini)
+            boxes.pop(sums.index(mini))
+            sums = []
+        val = sum(conf)
+        return val
+        #return 0
+
+    
         
 
 
