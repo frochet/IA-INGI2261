@@ -13,8 +13,7 @@ from Char import Char
 class State:
     
     '''
-          A state is a dynamic representation of the board, 
-          it contains character and boxes
+          A state is a dynamic representation of the board, it contains character and boxes
           and some methods to handle the move of the character and the boxes.
     '''
     
@@ -64,8 +63,7 @@ class State:
         elif direction == Direction.RIGHT:
             return self.move_right()
         else:
-            raise WrongDirectionException \
-            (self.char.x,self.char.y,"In the class state, method move")
+            raise WrongDirectionException(self.char.x,self.char.y,"In the class state, method move")
         
     def move_up(self):
         x = self.char.x
@@ -375,8 +373,7 @@ class State:
                 
                     
                     
-# TEST
-           
+                    
 if __name__ == "__main__" :
     plateau = Board("../benchs/sokoInst01.goal")
 

@@ -116,6 +116,7 @@ class Sokoban(Problem):
         #     HEURISTIC 3 : MIN OF THE SUM OF ALL THE CONFIGURATION FOR MANHATTAN DISTANCE
         #
         ###
+
 #        boxes = node.state.boxes
 #        sums = []
 #        listToMin = []
@@ -168,8 +169,12 @@ class Sokoban(Problem):
 problem=Sokoban(sys.argv[1])
 #example of bfs search
 start_time = time()
+
 node=astar_graph_search(problem,problem.h)
 #node=breadth_first_graph_search(problem)
+
+#node=astar_graph_search(problem,problem.h)
+node=breadth_first_graph_search(problem)
 #node=depth_first_graph_search(problem)
 enlapsed = time() - start_time
 #example of print
