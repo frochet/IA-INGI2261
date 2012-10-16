@@ -99,7 +99,7 @@ class Sokoban(Problem):
 #            sums = []
 #        val = sum(conf)
 #        return val
-        boxes = Box.copy(node.state.boxes)
+        boxes = node.state.boxes
         sums = []
         listToMin = []
         i = 0
@@ -111,7 +111,6 @@ class Sokoban(Problem):
                 i+=1
                 j+=1
             
-            #print(sums)
             l = k*self.goalsize
             val = 0
             while l < (k+1)*self.goalsize :
@@ -120,8 +119,10 @@ class Sokoban(Problem):
             listToMin.append(val)
             j=0
             k+=1
-        #print(listToMin)
         mini = 10000    
+        print(boxes)
+        print(self.listCombi)
+        print(listToMin)
         for elem in listToMin :
             if elem < mini :
                     mini=elem
