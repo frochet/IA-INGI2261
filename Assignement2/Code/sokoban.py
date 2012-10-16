@@ -87,7 +87,7 @@ class Sokoban(Problem):
         #
         ###
         
-        #return 0
+        return 0
         
         ###
         #  HEURISTIC 2 : SUM OF THE MIN OF THE MANHATTAN DISTANCE
@@ -134,9 +134,9 @@ class Sokoban(Problem):
 #            j=0
 #            k+=1
 #        mini = 10000    
-#        print(boxes)
-#        print(self.listCombi)
-#        print(listToMin)
+##        print(boxes)
+##        print(self.listCombi)
+##        print(listToMin)
 #        for elem in listToMin :
 #            if elem < mini :
 #                    mini=elem
@@ -147,14 +147,14 @@ class Sokoban(Problem):
         #
         # HEURISTIC 4 : Count the number of box not in a goal
         #
-        i = self.goalsize 
-        
-        for box in node.state.boxes :
-            for coord in self.board.positionGoal :
-                if coord[0] == box.y and coord[1] == box.x : 
-                    i-=1
-        #print(i)
-        return i
+#        i = self.goalsize 
+#        
+#        for box in node.state.boxes :
+#            for coord in self.board.positionGoal :
+#                if coord[0] == box.y and coord[1] == box.x : 
+#                    i-=1
+#        #print(i)
+#        return i
     
         
 
