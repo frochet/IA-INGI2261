@@ -104,9 +104,9 @@ class Sokoban(Problem):
         i = 0
         j = 0
         k = 0
-        while i < math.factorial(goals) :
+        while i < math.factorial(size) :
             while j < size :
-                sums.extend(abs(goals[j][0]-listCombi[i][0])+abs(goals[j][1])-listCombi[i][1])
+                sums.append(abs(goals[j][0]-listCombi[i][0])+abs(goals[j][1]-listCombi[i][1]))
                 i+=1
                 j+=1
             
@@ -114,14 +114,15 @@ class Sokoban(Problem):
             val = 0
             while l < (k+1)*size :
                 val += sums[l]
-            listToMin.extend(val)
+                l+=1
+            listToMin.append(val)
             j=0
             k+=1
+        print(listToMin)
         mini = 10000    
         for elem in listToMin :
             if elem < mini :
                     mini=elem
-            
         return mini
 
     
