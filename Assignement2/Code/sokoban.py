@@ -8,6 +8,7 @@ from IO import IO
 from Box import Box
 from Char import Char
 from time import time
+#import heuristic
 ######################  Implement the search #######################
 
 class Sokoban(Problem):
@@ -80,23 +81,52 @@ class Sokoban(Problem):
                 yield (None, newState)
         
     def h(self,node):
-        #return 0
+        return 0
         goals = self.board.positionGoal
-        boxes = Box.copy(node.state.boxes)
-        sums = []
-        conf = []
-        for goal in goals:
-            for box in boxes :
-                sums.append(abs(box.y-goal[0])+abs(box.x-goal[1]))
-            mini = 10000
-            for elem in sums :
-                if elem < mini :
-                        mini=elem
-            conf.append(mini)
-            boxes.pop(sums.index(mini))
-            sums = []
-        val = sum(conf)
-        return val
+        size = len(goals)
+        
+#        boxes = Box.copy(node.state.boxes)
+#        sums = []
+#        conf = []
+#        for goal in goals:
+#            for box in boxes :
+#                sums.append(abs(box.x-goal[0])+abs(box.y-goal[1]))
+#            mini = 10000
+#            for elem in sums :
+#                if elem < mini :
+#                        mini=elem
+#            conf.append(mini)
+#            boxes.pop(sums.index(mini))
+#            sums = []
+#        val = sum(conf)
+#        return val
+        
+        
+#        sums = []
+#        listCombi = heuristic.make_combi(goals,size)
+#        listToMin = []
+#        i = 0
+#        j = 0
+#        k = 0
+#        while i < math.factorial(goals) :
+#            while j < size :
+#                sums.extend(abs(goals[j][0]-listCombi[i][0])+abs(goals[j][1])-listCombi[i][1])
+#                i+=1
+#                j+=1
+#            
+#            l = k*size
+#            val = 0
+#            while l < (k+1)*size :
+#                val += sums[l]
+#            listToMin.extend(val)
+#            j=0
+#            k+=1
+#        mini = 10000    
+#        for elem in listToMin :
+#            if elem < mini :
+#                    mini=elem
+#            
+#        return mini
 
     
         
