@@ -1,7 +1,7 @@
 '''
 Created on 28 sept. 2012
 
-@author: Florentin
+@author: Debroux Léonard, Rochet Florentin
 '''
 class IO:
     

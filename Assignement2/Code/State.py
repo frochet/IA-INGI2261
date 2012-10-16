@@ -1,7 +1,7 @@
 '''
 Created on 11 oct. 2012
 
-@author: Florentin
+@author: Debroux Léonard, Rochet Florentin
 '''
 import WrongDirectionException
 from Case import *
@@ -38,14 +38,6 @@ class State:
         self.print_board()
         
     def make_representation(self):
-#        result = ""
-#        result += str(self.char.y)
-#        result += str(self.char.x)
-#        for box in self.boxes:
-#            result += str(box.y)
-#            result += str(box.x)
-#        return hash(result)
-    
         result = ""
         result += str(self.char.y)
         result += str(self.char.x)
@@ -91,13 +83,6 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    
-                    
-#                    if self.is_currentDeadState(y-2, x):
-#                        if not self.is_currentDeadState(y-1, x) or \
-#                        self.is_a_box(y-3, x):
-#                            return False
-                        
                     if self.is_currentDeadState(y-2, x):
                         if not self.is_currentDeadState(y-1, x) or \
                         self.is_a_box(y-3, x):
@@ -137,13 +122,6 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    
-                    
-#                    if self.is_currentDeadState(y+2, x) or \
-#                    self.is_a_box(y+3, x):
-#                        if not self.is_currentDeadState(y+1, x):
-#                            return False
-                        
                     if self.is_currentDeadState(y+2, x):
                         if not self.is_currentDeadState(y+1, x) or \
                         self.is_a_box(y+3, x):
@@ -184,13 +162,6 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    
-                    
-#                    if self.is_currentDeadState(y, x-2) or \
-#                    self.is_a_box(y, x-3):
-#                        if not self.is_currentDeadState(y, x-1):
-#                            return False
-
                     if self.is_currentDeadState(y, x-2):
                         if not self.is_currentDeadState(y, x-1) or \
                         self.is_a_box(y, x-3):
@@ -231,13 +202,6 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    
-                    
-#                    if self.is_currentDeadState(y, x+2) or \
-#                    self.is_a_box(y, x+3):
-#                        if not self.is_currentDeadState(y, x+1):
-#                            return False
-                        
                     if self.is_currentDeadState(y, x+2):
                         if not self.is_currentDeadState(y, x+1) or \
                         self.is_a_box(y, x+3):
@@ -273,28 +237,15 @@ class State:
         return False
     
     def is_a_dead_state(self, y, x):
-        '''returns true if (y, x) is a static dead state or if it is a 
-        current dead state
+        '''returns true if (y, x) is a static dead state
         '''
-        if self.board.board[y][x] == Case.STATIC_DEAD_STATE:
-            return True
-        else:
-#            for deadState in self.currentDeadStates:
-#                if y == deadState[0] and x == deadState[1]:
-#                    return True
-            return False
+        return self.board.board[y][x] == Case.STATIC_DEAD_STATE
         
     def is_a_goal(self, y, x):
         return self.board.board[y][x] == Case.GOAL
         
     def is_currentDeadState(self, y, x):
         return [y, x] in self.currentDeadStates
-        
-    def find_current_dead_states(self):
-        '''Creates a list of coordinates of the actual dead states for this 
-        particular state. Like so [[y1, x1], [y2, x2], ...]
-        '''
-        pass
     
     def clone_boxes(self, boxes):
         newboxes = []
@@ -351,16 +302,6 @@ class State:
                     return Direction.VERTICAL
             
             return False
-        
-#            if self.board.board[y][x-1] == Case.HPDS or \
-#            self.board.board[y][x+1] == Case.HPDS:
-#                return Direction.HORIZONTAL
-#            elif self.board.board[y-1][x] == Case.VPDS or \
-#            self.board.board[y+1][x] == Case.VPDS:
-#                return Direction.VERTICAL
-#            else:
-#                return False
-            
         else:
             return False
     
@@ -436,8 +377,6 @@ class State:
 if __name__ == "__main__" :
     plateau = Board("../benchs/sokoInst01.goal")
 
-    #plateau.board[2][2] = Case.VPDS
-    #plateau.board[3][2] = Case.VPDS
     etattest = State(plateau, [Box(2, 3), Box(2, 1)], Char(3, 3), [])
     print (etattest.char.y)
     newetattest = etattest.move(Direction.UP)

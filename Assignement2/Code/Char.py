@@ -1,7 +1,7 @@
 '''
 Created on Oct 13, 2012
 
-@author: inekar
+@author: Debroux Léonard, Rochet Florentin
 '''
 from Direction import Direction
 

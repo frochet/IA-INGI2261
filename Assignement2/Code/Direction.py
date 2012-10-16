@@ -1,7 +1,7 @@
 '''
 Created on 11 oct. 2012
 
-@author: Florentin
+@author: Debroux Léonard, Rochet Florentin
 '''
 
 class Direction:

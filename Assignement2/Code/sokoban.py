@@ -1,4 +1,5 @@
-'''NAMES OF THE AUTHOR(S): Florentin Rochet, Leonard Debroux'''
+'''NAMES OF THE AUTHOR(S): 
+Debroux Léonard, Rochet Florentin'''
 
 from search import *
 from Board import Board
