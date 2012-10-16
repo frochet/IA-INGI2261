@@ -42,8 +42,10 @@ class Sokoban(Problem):
             j=0
             i+=1
         self.direction = [Direction.UP,Direction.DOWN,Direction.LEFT,Direction.RIGHT]
-
-        # add goal
+        
+        self.goalsize = len(self.board.positionGoal)
+        self.listCombi = heuristic.make_combi(self.board.positionGoal,self.goalsize)
+        
         Problem.__init__(self, State(self.board,self.boxes,self.char,[]))
     
     def goal_test(self, state):
@@ -82,10 +84,6 @@ class Sokoban(Problem):
                 yield (None, newState)
         
     def h(self,node):
-        return 0
-        goals = self.board.positionGoal
-        size = len(goals)
-        
 #        boxes = Box.copy(node.state.boxes)
 #        sums = []
 #        conf = []
@@ -101,32 +99,35 @@ class Sokoban(Problem):
 #            sums = []
 #        val = sum(conf)
 #        return val
+        boxes = Box.copy(node.state.boxes)
         sums = []
-        listCombi = heuristic.make_combi(goals,size)
         listToMin = []
         i = 0
         j = 0
         k = 0
-        while i < math.factorial(size) :
-            while j < size :
-                sums.append(abs(goals[j][0]-listCombi[i][0])+abs(goals[j][1]-listCombi[i][1]))
+        while i < len(self.listCombi) :
+            while j < self.goalsize :
+                sums.append(abs(boxes[j].y-self.listCombi[i][0])+abs(boxes[j].x-self.listCombi[i][1]))
                 i+=1
                 j+=1
             
-            l = k*size
+            #print(sums)
+            l = k*self.goalsize
             val = 0
-            while l < (k+1)*size :
+            while l < (k+1)*self.goalsize :
                 val += sums[l]
                 l+=1
             listToMin.append(val)
             j=0
             k+=1
-        print(listToMin)
+        #print(listToMin)
         mini = 10000    
         for elem in listToMin :
             if elem < mini :
                     mini=elem
+        #print(mini)
         return mini
+        #return 0
 
     
         

@@ -11,7 +11,8 @@ def make_combi(goals,size):
     while i < math.factorial(size):
         swapper(goals,j,j+1)
         listCombi.extend(goals)
-        if j == size-2:
+        j+=1
+        if j == size-1:
             j=0
         i+=1
     return listCombi
