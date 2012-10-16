@@ -49,6 +49,9 @@ class Sokoban(Problem):
             Perform a goal test by testing if the boxes' position are at the goals' position
         """
         self.numbernodes += 1
+#        if self.numbernodes == 3114:
+#            self.board.print_board(state.char, state.boxes)
+        #print (problem.numbernodes, ' noeuds explorés')
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
@@ -73,23 +76,23 @@ class Sokoban(Problem):
                 yield (None, newState)
         
     def h(self,node):
-        goals = self.board.positionGoal
-        boxes = Box.copy(node.state.boxes)
-        sums = []
-        conf = []
-        for goal in goals:
-            for box in boxes :
-                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
-            mini = 10000
-            for elem in sums :
-                if elem < mini :
-                        mini=elem
-            conf.append(mini)
-            boxes.pop(sums.index(mini))
-            sums = []
-        val = sum(conf)
-        return val
-        #return 0
+#        goals = self.board.positionGoal
+#        boxes = Box.copy(node.state.boxes)
+#        sums = []
+#        conf = []
+#        for goal in goals:
+#            for box in boxes :
+#                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
+#            mini = 10000
+#            for elem in sums :
+#                if elem < mini :
+#                        mini=elem
+#            conf.append(mini)
+#            boxes.pop(sums.index(mini))
+#            sums = []
+#        val = sum(conf)
+#        return val
+        return 0
 
     
         

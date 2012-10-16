@@ -323,20 +323,24 @@ class State:
         nbBoxes = 0
         nbGoals = 0
         if dir == Direction.HORIZONTAL:
-            while not self.is_a_dead_state(y, x):
+            while not self.is_a_dead_state(y, x) and \
+            not self.is_a_wall(y, x):
                 x -= 1
             x += 1
-            while not self.is_a_dead_state(y, x):
+            while not self.is_a_dead_state(y, x) and \
+            not self.is_a_wall(y, x):
                 if [y, x] in self.boxes:
                     nbBoxes += 1
                 if self.is_a_goal(y, x):
                     nbGoals += 1
                 x += 1
         if dir == Direction.VERTICAL:
-            while not self.is_a_dead_state(y, x):
+            while not self.is_a_dead_state(y, x) and \
+            not self.is_a_wall(y, x):
                 y -= 1
             y += 1
-            while not self.is_a_dead_state(y, x):
+            while not self.is_a_dead_state(y, x) and \
+            not self.is_a_wall(y, x):
                 if [y, x] in self.boxes:
                     nbBoxes += 1
                 if self.is_a_goal(y, x):
