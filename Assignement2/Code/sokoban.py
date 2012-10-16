@@ -80,23 +80,23 @@ class Sokoban(Problem):
                 yield (None, newState)
         
     def h(self,node):
-#        goals = self.board.positionGoal
-#        boxes = Box.copy(node.state.boxes)
-#        sums = []
-#        conf = []
-#        for goal in goals:
-#            for box in boxes :
-#                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
-#            mini = 10000
-#            for elem in sums :
-#                if elem < mini :
-#                        mini=elem
-#            conf.append(mini)
-#            boxes.pop(sums.index(mini))
-#            sums = []
-#        val = sum(conf)
-#        return val
-        return 0
+        #return 0
+        goals = self.board.positionGoal
+        boxes = Box.copy(node.state.boxes)
+        sums = []
+        conf = []
+        for goal in goals:
+            for box in boxes :
+                sums.append(abs(box.y-goal[0])+abs(box.x-goal[1]))
+            mini = 10000
+            for elem in sums :
+                if elem < mini :
+                        mini=elem
+            conf.append(mini)
+            boxes.pop(sums.index(mini))
+            sums = []
+        val = sum(conf)
+        return val
 
     
         
@@ -108,6 +108,7 @@ problem=Sokoban(sys.argv[1])
 #example of bfs search
 start_time = time()
 node=astar_graph_search(problem,problem.h)
+#node=breadth_first_graph_search(problem)
 #node=depth_first_graph_search(problem)
 enlapsed = time() - start_time
 #example of print
@@ -117,7 +118,7 @@ numberOfSteps = 0
 for n in path:
     numberOfSteps += 1
     n.state.print_board() #assume that the __str__ function of states output the correct format
-
+    print("")
 print (enlapsed, ' seconds')
 print (numberOfSteps, ' steps')
 print (problem.numbernodes, ' noeuds explorés')
