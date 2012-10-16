@@ -245,7 +245,8 @@ class State:
     def clone_boxes(self, boxes):
         newboxes = []
         for box in boxes:
-            newboxes.append(Box(box.y, box.x))
+            newboxes.append(box)
+            #newboxes.append(Box(box.y, box.x))
         return newboxes
     
     def move_box(self, y, x, direction):

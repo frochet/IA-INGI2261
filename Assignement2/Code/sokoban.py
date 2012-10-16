@@ -24,6 +24,7 @@ class Sokoban(Problem):
         
         self.board = Board(filename+".goal")
         self.board.print_board_repr()
+        self.numbernodes = 0
         Io = IO(filename+".init")
         Io.init_reader()
         self.boxes = []
@@ -47,6 +48,7 @@ class Sokoban(Problem):
         """
             Perform a goal test by testing if the boxes' position are at the goals' position
         """
+        self.numbernodes += 1
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
@@ -104,8 +106,13 @@ enlapsed = time() - start_time
 #example of print
 path=node.path()
 path.reverse()
+numberOfSteps = 0
 for n in path:
+    numberOfSteps += 1
     n.state.print_board() #assume that the __str__ function of states output the correct format
 
-print (enlapsed, 'seconds')
+print (enlapsed, ' seconds')
+print (numberOfSteps, ' steps')
+print (problem.numbernodes, ' noeuds explorés')
+
         
