@@ -92,7 +92,7 @@ class Sokoban(Problem):
         #
         ###
         
-        return 0
+        #return 0
         
         ###
         #  HEURISTIC 2 : SUM OF THE MIN OF THE MANHATTAN DISTANCE
@@ -118,35 +118,35 @@ class Sokoban(Problem):
         #     HEURISTIC 3 : MIN OF THE SUM OF ALL THE CONFIGURATION FOR MANHATTAN DISTANCE
         #
         ###
-#        boxes = node.state.boxes
-#        sums = []
-#        listToMin = []
-#        i = 0
-#        j = 0
-#        k = 0
-#        while i < len(self.listCombi) :
-#            while j < self.goalsize :
-#                sums.append(abs(boxes[j].y-self.listCombi[i][0])+abs(boxes[j].x-self.listCombi[i][1]))
-#                i+=1
-#                j+=1
-#            
-#            l = k*self.goalsize
-#            val = 0
-#            while l < (k+1)*self.goalsize :
-#                val += sums[l]
-#                l+=1
-#            listToMin.append(val)
-#            j=0
-#            k+=1
-#        mini = 10000    
-##        print(boxes)
-##        print(self.listCombi)
-##        print(listToMin)
-#        for elem in listToMin :
-#            if elem < mini :
-#                    mini=elem
-#        #print(mini)
-#        return mini
+        boxes = node.state.boxes
+        sums = []
+        listToMin = []
+        i = 0
+        j = 0
+        k = 0
+        while i < len(self.listCombi) :
+            while j < self.goalsize :
+                sums.append(abs(boxes[j].y-self.listCombi[i][0])+abs(boxes[j].x-self.listCombi[i][1]))
+                i+=1
+                j+=1
+            
+            l = k*self.goalsize
+            val = 0
+            while l < (k+1)*self.goalsize :
+                val += sums[l]
+                l+=1
+            listToMin.append(val)
+            j=0
+            k+=1
+        mini = 10000    
+#        print(boxes)
+#        print(self.listCombi)
+#        print(listToMin)
+        for elem in listToMin :
+            if elem < mini :
+                    mini=elem
+        #print(mini)
+        return mini
 
         ###
         #
@@ -169,7 +169,7 @@ class Sokoban(Problem):
 problem=Sokoban(sys.argv[1])
 #example of bfs search
 start_time = time()
-node=astar_graph_search(problem,problem.h)
+#node=astar_graph_search(problem,problem.h)
 node=breadth_first_graph_search(problem)
 #node=depth_first_graph_search(problem)
 enlapsed = time() - start_time

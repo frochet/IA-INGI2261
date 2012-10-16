@@ -217,7 +217,117 @@ Assignement 2}
 			There is no need to add the extensions.
 
 		\subsection{Question 5: Experiment, compare and analyze informed (astar\_graph \_search) and uninformed (breadth\_first\_graph\_search) graph search of aima-python3 on the 15 instances of sokoban provided. Report in a table the time, the number of explored nodes and the number of steps to reach the solution. Are the number of explored nodes always smaller with astar\_graph\_search, why? When no solution can be found by a strategy in a reasonable time (say 5 min), explain the reason (time-out and/or swap of the memory).}
-		
+			We implemented several heuristics and will use one of them for the tests. \\
+			The one we will use minimize the sum of the manhattan distance from the boxes to the goal, when one box is associated to one goal and one goal to one box.
+			
+			\begin{tabular}{|c||c|c|c|}
+				\hline 
+				\textbf{A* Graph} & \textbf{Time [s]} & \textbf{Steps} & \textbf{Nodes} \\ 
+				\hline 
+				sokoInst01 & 0.028 & 15 & 618 \\ 
+				\hline 
+				sokoInst02 & 0.337 & 65 & 6,835 \\ 
+				\hline 
+				sokoInst03 & 13.54 & 135 & 237,250 \\ 
+				\hline 
+				sokoInst04 & 2.83 & 26 & 16,104 \\ 
+				\hline 
+				sokoInst05 & 0.985 & 108 & 19,702 \\ 
+				\hline 
+				sokoInst06 & 256.2 & 27 & 47,949 \\ 
+				\hline 
+				sokoInst07 & 0.134 & 98 & 4,352 \\ 
+				\hline 
+				sokoInst08 & 0.342 & 90 & 6,268 \\ 
+				\hline 
+				sokoInst09 & 4.75 & 101 & 83,210 \\ 
+				\hline
+				sokoInst10 & 0.144 & 42 & 2,549 \\ 
+				\hline 
+				sokoInst11 & 14.76 & 179 & 229,555 \\ 
+				\hline
+				sokoInst12 & 6.123 & 70 & 96,894 \\ 
+				\hline
+				sokoInst13 & 6.949 & 182 & 126,404 \\ 
+				\hline
+				sokoInst14 & 22.75 & 65 & 150,513 \\ 
+				\hline
+				sokoInst15 & 10.78 & 56 & 69,960 \\ 
+				\hline
+			\end{tabular}\\
+			
+			\begin{tabular}{|c||c|c|c|}
+				\hline 
+				\textbf{BFS Graph} & \textbf{Time [s]} & \textbf{Steps} & \textbf{Nodes} \\ 
+				\hline 
+				sokoInst01 & 0.045 & 15 & 1,548 \\ 
+				\hline 
+				sokoInst02 & 0.152 & 65 & 6,922 \\ 
+				\hline 
+				sokoInst03 & 6.963 & 135 & 238,760 \\ 
+				\hline 
+				sokoInst04 & 0.736 & 26 & 27,741 \\ 
+				\hline 
+				sokoInst05 & 0.435 & 108 & 19,729 \\ 
+				\hline 
+				sokoInst06 & 1.624 & 27 & 52,405 \\ 
+				\hline 
+				sokoInst07 & 0.092 & 98 & 4,770 \\ 
+				\hline 
+				sokoInst08 & 0.138 & 90 & 6,323 \\ 
+				\hline 
+				sokoInst09 & 2.333 & 101 & 84,559 \\ 
+				\hline
+				sokoInst10 & 0.079 & 42 & 3,268 \\ 
+				\hline 
+				sokoInst11 & 7.5 & 179 & 237,430 \\ 
+				\hline
+				sokoInst12 & 3.819 & 70 & 129,777 \\ 
+				\hline
+				sokoInst13 & 3.26 & 182 & 127,068 \\ 
+				\hline
+				sokoInst14 & 4.839 & 65 & 157,453 \\ 
+				\hline
+				sokoInst15 & 3.16 & 56 & 90,014 \\ 
+				\hline
+			\end{tabular}\\
+			
+			\begin{tabular}{|c||c||c|c||c|c|}
+				\hline 
+				\textbf{Problem} & \textbf{Steps} & \textbf{A* Time [s]} & \textbf{A* Nodes} & \textbf{BFS Time [s]} & \textbf{BFS Nodes} \\ 
+				\hline 
+				sokoInst01 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst02 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst03 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst04 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst05 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst06 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst07 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst08 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst09 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst10 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst11 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst12 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst13 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst14 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+				sokoInst15 & Steps & Time & Nodes & Time & Nodes \\ 
+				\hline
+			\end{tabular}
+			
 		
 		\subsection{Question 6}
 		
