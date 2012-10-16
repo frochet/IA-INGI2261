@@ -23,7 +23,7 @@ class Sokoban(Problem):
         """
         
         self.board = Board(filename+".goal")
-        self.board.print_board_repr()
+        #self.board.print_board_repr()
         self.numbernodes = 0
         Io = IO(filename+".init")
         Io.init_reader()
@@ -69,7 +69,11 @@ class Sokoban(Problem):
             No action because they are all the same, each is a move in one of the
             directions. Each cost we be 1
         """
+        
         #state.print_board()
+        #self.board.print_board(state.char, state.boxes)
+        #print (state.currentDeadStates)
+        
         for direct in self.direction :
             newState = state.move(direct)
             if newState :
@@ -104,8 +108,8 @@ problem=Sokoban(sys.argv[1])
 #example of bfs search
 start_time = time()
 node=astar_graph_search(problem,problem.h)
-enlapsed = time() - start_time
 #node=depth_first_graph_search(problem)
+enlapsed = time() - start_time
 #example of print
 path=node.path()
 path.reverse()

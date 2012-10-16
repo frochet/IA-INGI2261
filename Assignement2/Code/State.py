@@ -76,15 +76,24 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
+                    
+                    
+#                    if self.is_currentDeadState(y-2, x):
+#                        if not self.is_currentDeadState(y-1, x) or \
+#                        self.is_a_box(y-3, x):
+#                            return False
+                        
                     if self.is_currentDeadState(y-2, x):
                         if not self.is_currentDeadState(y-1, x) or \
                         self.is_a_box(y-3, x):
                             return False
+                        
                     else:
                         potentialDirection = self.creates_dead_state(y-2, x)
                         if potentialDirection:
                             self.extend_currentDeadStates \
                             (newCurrentDeadStates, y-2, x, potentialDirection)
+                    
                     
                     return State(self.board, \
                     self.move_box(y-1, x, Direction.UP), \
@@ -113,15 +122,25 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    if self.is_currentDeadState(y+2, x) or \
-                    self.is_a_box(y+3, x):
-                        if not self.is_currentDeadState(y+1, x):
+                    
+                    
+#                    if self.is_currentDeadState(y+2, x) or \
+#                    self.is_a_box(y+3, x):
+#                        if not self.is_currentDeadState(y+1, x):
+#                            return False
+                        
+                    if self.is_currentDeadState(y+2, x):
+                        if not self.is_currentDeadState(y+1, x) or \
+                        self.is_a_box(y+3, x):
                             return False
+                        
                     else:
                         potentialDirection = self.creates_dead_state(y+2, x)
                         if potentialDirection:
                             self.extend_currentDeadStates \
                             (newCurrentDeadStates, y+2, x, potentialDirection)
+                            
+                            
                     
                     return State(self.board, \
                     self.move_box(y+1, x, Direction.DOWN), \
@@ -150,15 +169,25 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    if self.is_currentDeadState(y, x-2) or \
-                    self.is_a_box(y, x-3):
-                        if not self.is_currentDeadState(y, x-1):
+                    
+                    
+#                    if self.is_currentDeadState(y, x-2) or \
+#                    self.is_a_box(y, x-3):
+#                        if not self.is_currentDeadState(y, x-1):
+#                            return False
+
+                    if self.is_currentDeadState(y, x-2):
+                        if not self.is_currentDeadState(y, x-1) or \
+                        self.is_a_box(y, x-3):
                             return False
+                        
                     else:
                         potentialDirection = self.creates_dead_state(y, x-2)
                         if potentialDirection:
                             self.extend_currentDeadStates \
                             (newCurrentDeadStates, y, x-2, potentialDirection)
+                            
+                            
                     
                     return State(self.board, \
                     self.move_box(y, x-1, Direction.LEFT), \
@@ -187,15 +216,25 @@ class State:
                     newCurrentDeadStates = self.copy_currentDeadStates()
                     
                     #allows to go to a PDS if already on one
-                    if self.is_currentDeadState(y, x+2) or \
-                    self.is_a_box(y, x+3):
-                        if not self.is_currentDeadState(y, x+1):
+                    
+                    
+#                    if self.is_currentDeadState(y, x+2) or \
+#                    self.is_a_box(y, x+3):
+#                        if not self.is_currentDeadState(y, x+1):
+#                            return False
+                        
+                    if self.is_currentDeadState(y, x+2):
+                        if not self.is_currentDeadState(y, x+1) or \
+                        self.is_a_box(y, x+3):
                             return False
+                        
                     else:
                         potentialDirection = self.creates_dead_state(y, x+2)
                         if potentialDirection:
                             self.extend_currentDeadStates \
                             (newCurrentDeadStates, y, x+2, potentialDirection)
+                    
+                    
                     
                     return State(self.board, \
                     self.move_box(y, x+1, Direction.RIGHT), \
@@ -272,14 +311,41 @@ class State:
         elif self.board.board[y][x] == Case.VPDS:
             return Direction.VERTICAL
         elif self.board.board[y][x] == Case.GOAL:
-            if self.board.board[y][x-1] == Case.HPDS or \
-            self.board.board[y][x+1] == Case.HPDS:
-                return Direction.HORIZONTAL
-            elif self.board.board[y-1][x] == Case.VPDS or \
-            self.board.board[y+1][x] == Case.VPDS:
-                return Direction.VERTICAL
-            else:
-                return False
+            
+            iterY = y
+            iterX = x
+            while self.board.board[iterY][iterX] == Case.GOAL:
+                iterX -= 1
+                if self.board.board[iterY][iterX] == Case.HPDS:
+                    return Direction.HORIZONTAL
+            iterX = x
+            while self.board.board[iterY][iterX] == Case.GOAL:
+                iterX += 1
+                if self.board.board[iterY][iterX] == Case.HPDS:
+                    return Direction.HORIZONTAL
+            iterX = x
+            
+            while self.board.board[iterY][iterX] == Case.GOAL:
+                iterY -= 1
+                if self.board.board[iterY][iterX] == Case.HPDS:
+                    return Direction.VERTICAL
+            iterY = y
+            while self.board.board[iterY][iterX] == Case.GOAL:
+                iterY += 1
+                if self.board.board[iterY][iterX] == Case.HPDS:
+                    return Direction.VERTICAL
+            
+            return False
+        
+#            if self.board.board[y][x-1] == Case.HPDS or \
+#            self.board.board[y][x+1] == Case.HPDS:
+#                return Direction.HORIZONTAL
+#            elif self.board.board[y-1][x] == Case.VPDS or \
+#            self.board.board[y+1][x] == Case.VPDS:
+#                return Direction.VERTICAL
+#            else:
+#                return False
+            
         else:
             return False
     
