@@ -318,8 +318,6 @@ class State:
                 iterY += 1
                 
     def same_amount(self, y, x, dir):
-        #iterY = y
-        #iterX = x
         nbBoxes = 0
         nbGoals = 0
         if dir == Direction.HORIZONTAL:
@@ -334,7 +332,8 @@ class State:
                 if self.is_a_goal(y, x):
                     nbGoals += 1
                 x += 1
-        if dir == Direction.VERTICAL:
+
+        elif dir == Direction.VERTICAL:
             while not self.is_a_dead_state(y, x) and \
             not self.is_a_wall(y, x):
                 y -= 1
