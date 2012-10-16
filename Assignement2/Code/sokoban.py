@@ -75,7 +75,12 @@ class Sokoban(Problem):
 #        sums = []
 #        for goal in goals:
 #            for box in boxes :
-#                pass
+#                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
+        
+        # Renvois la distance de manhattan la plus petite d'une box vers un goal
+        #sums.sort()
+        # return sums[0]
+        
         return 0
         
 
