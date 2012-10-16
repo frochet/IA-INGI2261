@@ -53,9 +53,7 @@ class Sokoban(Problem):
             Perform a goal test by testing if the boxes' position are at the goals' position
         """
         self.numbernodes += 1
-#        if self.numbernodes == 3114:
-#            self.board.print_board(state.char, state.boxes)
-        #print (problem.numbernodes, ' noeuds explorés')
+
         i = 0
         for box in state.boxes :
             for coord in self.board.positionGoal :
@@ -84,6 +82,17 @@ class Sokoban(Problem):
                 yield (None, newState)
         
     def h(self,node):
+        ##
+        #  HEURISTIC 1 : return h(n) = 0
+        #
+        ###
+        
+        #return 0
+        
+        ###
+        #  HEURISTIC 2 : SUM OF THE MIN OF THE MANHATTAN DISTANCE
+        #
+        ###
 #        boxes = Box.copy(node.state.boxes)
 #        sums = []
 #        conf = []
@@ -99,37 +108,53 @@ class Sokoban(Problem):
 #            sums = []
 #        val = sum(conf)
 #        return val
-        boxes = node.state.boxes
-        sums = []
-        listToMin = []
-        i = 0
-        j = 0
-        k = 0
-        while i < len(self.listCombi) :
-            while j < self.goalsize :
-                sums.append(abs(boxes[j].y-self.listCombi[i][0])+abs(boxes[j].x-self.listCombi[i][1]))
-                i+=1
-                j+=1
-            
-            l = k*self.goalsize
-            val = 0
-            while l < (k+1)*self.goalsize :
-                val += sums[l]
-                l+=1
-            listToMin.append(val)
-            j=0
-            k+=1
-        mini = 10000    
-        print(boxes)
-        print(self.listCombi)
-        print(listToMin)
-        for elem in listToMin :
-            if elem < mini :
-                    mini=elem
-        #print(mini)
-        return mini
-        #return 0
 
+        ###
+        #     HEURISTIC 3 : MIN OF THE SUM OF ALL THE CONFIGURATION FOR MANHATTAN DISTANCE
+        #
+        ###
+#        boxes = node.state.boxes
+#        sums = []
+#        listToMin = []
+#        i = 0
+#        j = 0
+#        k = 0
+#        while i < len(self.listCombi) :
+#            while j < self.goalsize :
+#                sums.append(abs(boxes[j].y-self.listCombi[i][0])+abs(boxes[j].x-self.listCombi[i][1]))
+#                i+=1
+#                j+=1
+#            
+#            l = k*self.goalsize
+#            val = 0
+#            while l < (k+1)*self.goalsize :
+#                val += sums[l]
+#                l+=1
+#            listToMin.append(val)
+#            j=0
+#            k+=1
+#        mini = 10000    
+#        print(boxes)
+#        print(self.listCombi)
+#        print(listToMin)
+#        for elem in listToMin :
+#            if elem < mini :
+#                    mini=elem
+#        #print(mini)
+#        return mini
+
+        ###
+        #
+        # HEURISTIC 4 : Count the number of box not in a goal
+        #
+        i = self.goalsize 
+        
+        for box in node.state.boxes :
+            for coord in self.board.positionGoal :
+                if coord[0] == box.y and coord[1] == box.x : 
+                    i-=1
+        #print(i)
+        return i
     
         
 
