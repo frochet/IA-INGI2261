@@ -174,7 +174,7 @@ node=astar_graph_search(problem,problem.h)
 #node=breadth_first_graph_search(problem)
 
 #node=astar_graph_search(problem,problem.h)
-node=breadth_first_graph_search(problem)
+#node=breadth_first_graph_search(problem)
 #node=depth_first_graph_search(problem)
 enlapsed = time() - start_time
 #example of print
@@ -183,8 +183,8 @@ path.reverse()
 numberOfSteps = 0
 for n in path:
     numberOfSteps += 1
-    n.state.print_board() #assume that the __str__ function of states output the correct format
-    print("")
+    ''''n.state.print_board() #assume that the __str__ function of states output the correct format
+    print("")'''
 print (enlapsed, ' seconds')
 print (numberOfSteps, ' steps')
 print (problem.numbernodes, ' noeuds explorés')
