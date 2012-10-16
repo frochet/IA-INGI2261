@@ -331,7 +331,7 @@ class State:
                 if self.is_a_goal(y, x):
                     nbGoals += 1
                 x += 1
-        if dir == Direction.VERTICAL:
+        elif dir == Direction.VERTICAL:
             while not self.is_a_dead_state(y, x):
                 y -= 1
             y += 1
