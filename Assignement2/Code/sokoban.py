@@ -10,8 +10,6 @@ from Box import Box
 from Char import Char
 from time import time
 import heuristic
-#import heuristic
-######################  Implement the search #######################
 
 class Sokoban(Problem):
     """ 
@@ -48,7 +46,7 @@ class Sokoban(Problem):
         
         self.goalsize = len(self.board.positionGoal)
         self.listCombi = heuristic.make_combi(self.board.positionGoal,self.goalsize)
-        
+        self.mini = 10000
         Problem.__init__(self, State(self.board,self.boxes,self.char,[]))
     
     def goal_test(self, state):
@@ -92,27 +90,27 @@ class Sokoban(Problem):
         #
         ###
         
-        return 0
+        #return 0
         
         ###
         #  HEURISTIC 2 : SUM OF THE MIN OF THE MANHATTAN DISTANCE
         #
         ###
-#        boxes = Box.copy(node.state.boxes)
-#        sums = []
-#        conf = []
-#        for goal in goals:
-#            for box in boxes :
-#                sums.append(abs(box.x-goal[0])+abs(box.y-goal[1]))
-#            mini = 10000
-#            for elem in sums :
-#                if elem < mini :
-#                        mini=elem
-#            conf.append(mini)
-#            boxes.pop(sums.index(mini))
-#            sums = []
-#        val = sum(conf)
-#        return val
+        boxes = node.state.clone_boxes(node.state.boxes)
+        sums = []
+        conf = []
+        for goal in self.board.positionGoal:
+            for box in boxes :
+                sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
+            mini = 10000
+            for elem in sums :
+                if elem < mini :
+                        mini=elem
+            conf.append(mini)
+            boxes.pop(sums.index(mini))
+            sums = []
+        val = sum(conf)
+        return val
 
         ###
         #     HEURISTIC 3 : MIN OF THE SUM OF ALL THE CONFIGURATION FOR MANHATTAN DISTANCE
@@ -138,27 +136,28 @@ class Sokoban(Problem):
 #            listToMin.append(val)
 #            j=0
 #            k+=1
-#        mini = 10000    
-##        print(boxes)
-##        print(self.listCombi)
-##        print(listToMin)
+#        self.mini = 10000    
+#        #print(boxes)
+#        #print(self.board.positionGoal)
+#        #print(self.listCombi)
+#        
+#        #print(listToMin)
 #        for elem in listToMin :
-#            if elem < mini :
-#                    mini=elem
-#        #print(mini)
-#        return mini
+#            if elem < self.mini :
+#                    self.mini=elem
+#        print(self.mini)
+#        return self.mini
 
         ###
         #
         # HEURISTIC 4 : Count the number of box not in a goal
         #
-#        i = self.goalsize 
+#        i = self.goalsize
 #        
 #        for box in node.state.boxes :
 #            for coord in self.board.positionGoal :
 #                if coord[0] == box.y and coord[1] == box.x : 
 #                    i-=1
-#        #print(i)
 #        return i
     
         
@@ -170,7 +169,7 @@ problem=Sokoban(sys.argv[1])
 #example of bfs search
 start_time = time()
 node=astar_graph_search(problem,problem.h)
-node=breadth_first_graph_search(problem)
+#node=breadth_first_graph_search(problem)
 #node=depth_first_graph_search(problem)
 enlapsed = time() - start_time
 #example of print
