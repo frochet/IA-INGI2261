@@ -7,7 +7,7 @@ from Direction import Direction
 
 class Char:
     '''
-    classdocs
+    Represent an avatar
     '''
 
 
@@ -19,6 +19,9 @@ class Char:
         self.x = x
     
     def move_char(self, direction):
+        '''Returns a new instance of char 
+        which has done a move of 1 in the given direction
+        '''
         newY = self.y
         newX = self.x
         if direction == Direction.UP:

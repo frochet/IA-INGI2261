@@ -6,7 +6,7 @@ Created on Oct 13, 2012
 
 class Box:
     '''
-    classdocs
+    Represent a box with its coordinates, implemented for lisibility
     '''
 
 

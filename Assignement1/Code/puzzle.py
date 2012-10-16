@@ -33,10 +33,13 @@ class PuzzleProblem(Problem):
         
     def successor(self, state):
         """
-        Look at all the zero and for each of them, ask a move towards each direction. Return
-        a couple (action, state) if the move is valid
-        In this problem, each move cost 1. We don't need to specify the action since
-        it's no relevant to the compute of the path cost. So successor will yield (None, state)
+        Look at all the zero and for each of them, 
+        ask a move towards each direction. 
+        Return a couple (action, state) if the move is valid
+        In this problem, each move cost 1. 
+        We don't need to specify the action since
+        it's no relevant to the compute of the path cost. 
+        So successor will yield (None, state)
         """
         x = 0
         while x < len(state.state):

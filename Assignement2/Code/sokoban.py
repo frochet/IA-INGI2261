@@ -20,8 +20,10 @@ class Sokoban(Problem):
 
     def __init__(self,filename):
         """
-            filename has the form pathto/sokoInstxy without the .goal or .init
-            This constructor make the static board and give the dynamic items (boxes, char)
+            filename has the form pathto/sokoInstxy 
+            without the .goal or .init
+            This constructor make the static board 
+            and give the dynamic items (boxes, char)
             to the first state.
         """
         
@@ -51,7 +53,8 @@ class Sokoban(Problem):
     
     def goal_test(self, state):
         """
-            Perform a goal test by testing if the boxes' position are at the goals' position
+            Perform a goal test by testing 
+            if the boxes' position are at the goals' position
         """
         self.numbernodes += 1
 
@@ -69,7 +72,8 @@ class Sokoban(Problem):
     def successor(self, state):
         """
             yield the next state to a current state.
-            No action because they are all the same, each is a move in one of the
+            No action because they are all the same, 
+            each is a move in one of the
             directions. Each cost we be 1
         """
         
@@ -166,7 +170,7 @@ problem=Sokoban(sys.argv[1])
 #example of bfs search
 start_time = time()
 node=astar_graph_search(problem,problem.h)
-#node=breadth_first_graph_search(problem)
+node=breadth_first_graph_search(problem)
 #node=depth_first_graph_search(problem)
 enlapsed = time() - start_time
 #example of print
