@@ -38,13 +38,28 @@ class State:
         self.print_board()
         
     def make_representation(self):
+#        result = ""
+#        result += str(self.char.y)
+#        result += str(self.char.x)
+#        for box in self.boxes:
+#            result += str(box.y)
+#            result += str(box.x)
+#        return hash(result)
+    
         result = ""
         result += str(self.char.y)
         result += str(self.char.x)
+        boxlist = []
         for box in self.boxes:
-            result += str(box.y)
-            result += str(box.x)
+            concat = ""
+            concat += str(box.y)
+            concat += str(box.x)
+            boxlist.append(concat)
+        for elem in sorted(boxlist):
+            result += elem
         return hash(result)
+    
+    
         
     def move(self, direction):
         if direction == Direction.UP:

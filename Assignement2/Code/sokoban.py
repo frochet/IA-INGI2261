@@ -9,6 +9,7 @@ from Box import Box
 from Char import Char
 from time import time
 import heuristic
+#import heuristic
 ######################  Implement the search #######################
 
 class Sokoban(Problem):
@@ -81,8 +82,10 @@ class Sokoban(Problem):
                 yield (None, newState)
         
     def h(self,node):
+        return 0
         goals = self.board.positionGoal
         size = len(goals)
+        
 #        boxes = Box.copy(node.state.boxes)
 #        sums = []
 #        conf = []
@@ -135,6 +138,7 @@ problem=Sokoban(sys.argv[1])
 #example of bfs search
 start_time = time()
 node=astar_graph_search(problem,problem.h)
+#node=breadth_first_graph_search(problem)
 #node=depth_first_graph_search(problem)
 enlapsed = time() - start_time
 #example of print
@@ -144,7 +148,7 @@ numberOfSteps = 0
 for n in path:
     numberOfSteps += 1
     n.state.print_board() #assume that the __str__ function of states output the correct format
-
+    print("")
 print (enlapsed, ' seconds')
 print (numberOfSteps, ' steps')
 print (problem.numbernodes, ' noeuds explorés')

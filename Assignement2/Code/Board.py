@@ -283,7 +283,7 @@ class Board:
                     sys.stdout.write("@")
                     special = True
                 if not special :
-                    if elem == Case.GOAL : sys.stdout.write(".")
+                    if elem == Case.GOAL : sys.stdout.write(" ")
                     elif elem == Case.WALL : sys.stdout.write("#")
                     else: sys.stdout.write(" ")
                 x+=1
