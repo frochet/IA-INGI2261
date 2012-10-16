@@ -23,6 +23,7 @@ class Sokoban(Problem):
         """
         
         self.board = Board(filename+".goal")
+        self.board.print_board_repr()
         Io = IO(filename+".init")
         Io.init_reader()
         self.boxes = []
