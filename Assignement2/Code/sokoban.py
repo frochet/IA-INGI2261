@@ -16,7 +16,7 @@ class Sokoban(Problem):
         This class solve a sokoban game 
     """
 
-    def __init__(self, fileinit, filegoal):
+    def __init__(self, filename):
         """
             filename has the form pathto/sokoInstxy 
             without the .goal or .init
@@ -25,10 +25,24 @@ class Sokoban(Problem):
             to the first state.
         """
         
-        self.board = Board(filegoal)
+        self.board = Board(filename + ".goal")
         #self.board.print_board_repr()
         self.numbernodes = 0
-        Io = IO(fileinit)
+        Io = IO(filename +".init")
+
+#    def __init__(self, fileinit, filegoal):
+#        """
+#            filename has the form pathto/sokoInstxy 
+#            without the .goal or .init
+#            This constructor make the static board 
+#            and give the dynamic items (boxes, char)
+#            to the first state.
+#        """
+#        
+#        self.board = Board(filegoal)
+#        #self.board.print_board_repr()
+#        self.numbernodes = 0
+#        Io = IO(fileinit)
         Io.init_reader()
         self.boxes = []
         i = 0
@@ -165,8 +179,9 @@ class Sokoban(Problem):
 
 
 ###################### Launch the search #########################
-    
-problem=Sokoban(sys.argv[1], sys.argv[2])
+
+problem=Sokoban(sys.argv[1])    
+#problem=Sokoban(sys.argv[1], sys.argv[2])
 #example of bfs search
 start_time = time()
 
