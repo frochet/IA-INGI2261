@@ -238,6 +238,7 @@ The third that we developed count the amount of boxes not on a goal. It is not v
 		\subsection{Question 5: Experiment, compare and analyze informed (astar\_graph \_search) and uninformed (breadth\_first\_graph\_search) graph search of aima-python3 on the 15 instances of sokoban provided. Report in a table the time, the number of explored nodes and the number of steps to reach the solution. Are the number of explored nodes always smaller with astar\_graph\_search, why? When no solution can be found by a strategy in a reasonable time (say 5 min), explain the reason (time-out and/or swap of the memory).}
 			We implemented several heuristics and will use one of them for the tests. \\
 			The one we will use the sum of the manhattan distance from each box to its closest goal (which means that a goals can be wanted by several boxes). \\
+			This heuristic is consistent because it is the sum on the box to their closest goals. As seen in the course, the manhattan distance from a tile coordinate to its goal is consistent. Because of the fact that we have as much terms in our sum as we have boxes, it is the minimum amount of moves that are to be done to reach a solution in the best case in which several boxes could go on the same goal. It is obviously underestimated the exact cost and making. And we respect the consistency because of the use of the manhattan distance as proved in section 1.2.1.\\
 			All the tests were run on the same computer to ensure consistency of the results.\\
 			
 			\begin{tabular}{|c||c||c|c||c|c|}
@@ -299,7 +300,7 @@ The third that we developed count the amount of boxes not on a goal. It is not v
 				\hline
 				sokoInst05 & 108 & 4.224 & 139,784 & 5.919 & 139,603 \\ 
 				\hline
-				sokoInst06 & 27 & None & None &  &  \\ 
+				sokoInst06 & 27 & None & None & 1962.7 & 2,868,224 \\ 
 				\hline
 				sokoInst07 & 98 & 0.212 & 9,392 & 0.276 & 8,993 \\ 
 				\hline
@@ -320,7 +321,9 @@ The third that we developed count the amount of boxes not on a goal. It is not v
 				sokoInst15 & 56 & 29.29 & 802,991 & 50.8 & 739,200 \\ 
 				\hline
 			\end{tabular}\\
-			The "None" statement means that the search filled the memory so that the OS killed the process, this is due to the huge amount of states generated before reaching a solution.\\
+			The "None" statement means that the search filled the memory so that the OS killed the process, this is due to the huge amount of states generated before reaching a solution. The reason for it is that all the cases along the wall in the 6th configuration are in dead states when detecting them, so instead of 30 cases where boxes can go, there is only 12. The exponential growth for that kind of problem explains that the search does not provide a result.\\
+			When using a heuristic, the memory is filled at a slower rate which allow the search to find a solution. The result of about 32 minutes is given as an indication.\\
+			The reason it takes so much time is the same as the reason the BFS doesn't find a solution.
 			
 			We can see by analysing that array that the number of explored nodes explodes and so does the time (but as said before, it is not the most relevant information).
 			
