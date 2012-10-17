@@ -180,6 +180,7 @@ Assignement 2}
 	
 	In this case, the box is stuck against the right wall and it will never be possible to push it to the left to reach the goal.\\
 	In the case of a goal being against a wall, there is a dead state if two boxes a pushed against that wall as shown on the example below: \\
+	
 	\begin{center}
 	\begin{tabular}{ccccccccc}
 		\# & \# & \# & \# & \# & \# & \# & \# & \# \\ 
@@ -222,11 +223,11 @@ Assignement 2}
 				
 		\subsection{Question 3: Describe possible (non trivial) heuristic(s) to reach a goal state (with reference if any). Is(are) your heuristic(s) admissible and/or consistent?}
 
-		Except the trivial heuristic, we developed three heuristics, the one used in the question 5 for tests is described in later in the document.
-		The second non trivial is the following:\\ 		
+		Except the trivial heuristic, we developed three heuristics, the one used in the question 5 for tests is described later in the document.\\
 		
+		The second non trivial is the following:\\ 
 		The h(n) function minimizes the sum of the manhattan distance for the set of possibles configurations from boxes to goals (one box associated to one goal and one goal is targeted by one and only one box). \\
-		So, if we have N boxes/goals on our problem, we have factorial N possible pair of box and goal. We take the minimum of this to ensure that, first the heuristic will never overestimate the cost (Since we have the pure minimal cost to move the boxes to the goals). Then the heuristic is consistent because for a state n' closer to the goal from a previous state n, we have $ h(n) \geq h(n')$ by our definition of $h$ and more precisely the difference between the two if any is of $1$, we have then $h(n) \leq c(n,a,n')+h(n')$ with c the cost from $n$ to $n'$ by the action $a$ (which is an action towards the goal and not in the other way). So our heuristic is admissible and consistent.
+		So, if we have N boxes/goals on our problem, we have factorial N possible pair of box and goal. We take the minimum of the sum to ensure that, first the heuristic will never overestimate the cost (since we have the pure minimal cost to move the boxes to the goals). Then the heuristic is consistent because for a state n' closer to the goal from a previous state n, we have $ h(n) \geq h(n')$ by our definition of $h$ and more precisely the difference between the two if any is of $1$, we have then $h(n) \leq c(n,a,n')+h(n')$ with c the cost from $n$ to $n'$ by the action $a$ (which is an action towards the goal and not in the other way). So our heuristic is admissible and consistent.
 		
 The third that we developed count the amount of boxes not on a goal. It is not very accurate, but it provide an indication concerning the advancement of towards the solution. It is obviously admissible and consistent, the thought behind the prove is the same as seen in the course for the 8-puzzle.
 		
@@ -236,7 +237,8 @@ The third that we developed count the amount of boxes not on a goal. It is not v
 
 		\subsection{Question 5: Experiment, compare and analyze informed (astar\_graph \_search) and uninformed (breadth\_first\_graph\_search) graph search of aima-python3 on the 15 instances of sokoban provided. Report in a table the time, the number of explored nodes and the number of steps to reach the solution. Are the number of explored nodes always smaller with astar\_graph\_search, why? When no solution can be found by a strategy in a reasonable time (say 5 min), explain the reason (time-out and/or swap of the memory).}
 			We implemented several heuristics and will use one of them for the tests. \\
-			The one we will use the sum of the manhattan distance from each box to its closest goal. \\
+			The one we will use the sum of the manhattan distance from each box to its closest goal (which means that a goals can be wanted by several boxes). \\
+			All the tests were run on the same computer to ensure consistency of the results.\\
 			
 			\begin{tabular}{|c||c||c|c||c|c|}
 				\hline 
@@ -272,17 +274,54 @@ The third that we developed count the amount of boxes not on a goal. It is not v
 				\hline
 				sokoInst15 & 56 & 3.16 & 90,014 & 3.668 & 78,777 \\ 
 				\hline
-			\end{tabular}\\ \\
+			\end{tabular}\\
 			
 			We can see that using A* with a heuristic lead to explore less nodes, but we also see a slight increase in the time of computation. This comes from the fact that avoiding to explore a node cost more time due to the computation of the heuristic.\\
 			The number of nodes is always smaller using A* search because in the worse case, A* would perform a BFS, so, in any other case, there is less nodes explored.
 			
-		
 		\subsection{Question 6: What are the performances of your program when you don’t perform dead state detection?}
 			The answer to this question is theoretically that the number of nodes would explode and so that the computation time would also increase. To have a better idea of those values, we ran the 15 instances of sokoban provided without detecting the dead states. //
 			
 			The time taken is a bit higher than should be, because we suppressed the dead states detection, but the search still goes through some functions especially designed for dead states management become useless. The process to get rid of those is heavy and the relevant information here is the amount of nodes explored which is not affected by this choice.\\
 			The following array is similar to the previous one but without dead states management:\\
 			
+			\begin{tabular}{|c||c||c|c||c|c|}
+				\hline 
+				\textbf{Problem} & \textbf{Steps} & \textbf{BFS Time [s]} & \textbf{BFS Nodes} & \textbf{A* Time [s]} & \textbf{A* Nodes} \\ 
+				\hline 
+				sokoInst01 & 15 & 0.06 & 2,409 & 0.033 & 833 \\ 
+				\hline
+				sokoInst02 & 65 & 0.68 & 30,453 & 0.99 & 29,609 \\ 
+				\hline
+				sokoInst03 & 135 & 56.07 & 1,527,231 & 93.83 & 1,524,338 \\ 
+				\hline
+				sokoInst04 & 26 & 43.18 & 1,119,877 & 82.09 & 730,806 \\ 
+				\hline
+				sokoInst05 & 108 & 4.224 & 139,784 & 5.919 & 139,603 \\ 
+				\hline
+				sokoInst06 & 27 & None & None &  &  \\ 
+				\hline
+				sokoInst07 & 98 & 0.212 & 9,392 & 0.276 & 8,993 \\ 
+				\hline
+				sokoInst08 & 90 & 0.293 & 13,626 & 0.486 & 13,348 \\ 
+				\hline
+				sokoInst09 & 101 & 7.348 & 241,258 & 11.06 & 239,760 \\ 
+				\hline
+				sokoInst10 & 42 & 0.632 & 24,058 & 0.701 & 19,038 \\ 
+				\hline
+				sokoInst11 & 179 & 25.35 & 713,439 & 35.62 & 686,897 \\ 
+				\hline
+				sokoInst12 & 70 & 10.12 & 287,851 & 11.14 & 237,661 \\ 
+				\hline
+				sokoInst13 & 182 & 15.08 & 419,669 & 18.38 & 417,814 \\ 
+				\hline
+				sokoInst14 & 65 & 47.27 & 1,332,657 & 99.08 & 1,306,553 \\ 
+				\hline
+				sokoInst15 & 56 & 29.29 & 802,991 & 50.8 & 739,200 \\ 
+				\hline
+			\end{tabular}\\
+			The "None" statement means that the search filled the memory so that the OS killed the process, this is due to the huge amount of states generated before reaching a solution.\\
+			
+			We can see by analysing that array that the number of explored nodes explodes and so does the time (but as said before, it is not the most relevant information).
 			
 \end{document}
