@@ -160,6 +160,8 @@ Assignement 2}
 			\end{center}
 				The uniform cost search is less effective than the A* using a manhattan distance, though the path is also of length 13. That path follows the following set of nodes: \{1, 2, 4, 6, 8, 11, 14, 18, 22, 27, 33, 42, 50, 56\}
 			
+	\newpage
+	
 	\section{Sokoban planning problem}
 	
 		\subsection{Question 1: As illustrated on Figure 3 some situations cannot lead to a solution. Are there other similar situations? If yes, describe them.}
@@ -193,6 +195,7 @@ Assignement 2}
 			
 			It is important to identify the dead state because it avoids to generate and explore lots of useless states.\\
 			 Let's assume that one box is on a dead state case, and two boxes can still be moved. Let's also say that there is about 20 reachable cases for the boxes left and for the character, the number of useless states would be around $ 20^{3} $ (not exactly) for only one box on one dead state. This is what shows the following example.\\
+
 	\begin{center}
 	\begin{tabular}{ccccccc}
 		\# & \# & \# & \# & \# & \# & \# \\ 
@@ -203,7 +206,9 @@ Assignement 2}
 		\# & \# & \# & \# & \# & \# & \# \\ 
 	\end{tabular}\\ 
 	\end{center}
-			The upper left box can not be moved anymore.\\
+
+	
+		The upper left box can not be moved anymore.\\
 			To avoid that kind of state, we created two type of dead state. Both are detected at the beginning of the execution but do not imply the same behaviour.
 			
 			\subsubsection{Static Dead States}
@@ -216,9 +221,15 @@ Assignement 2}
 				The move actions update this list and allow moves for boxes that are on it.				
 				
 		\subsection{Question 3: Describe possible (non trivial) heuristic(s) to reach a goal state (with reference if any). Is(are) your heuristic(s) admissible and/or consistent?}
+
+		Except the trivial heuristic, we developed three heuristics, the one used in the question 5 for tests is described in later in the document.
+		The second non trivial is the following:\\ 		
 		
-		One that has been tested in our implementation is minimize the sum of the manhattan distance for the set of possibles configurations from boxes to goals. \\
-		So, if we have N boxes/goals on our problem, we have factorial N possibles matchs boxes to goal. We take the minimum of the manhattan distance for the set of configurations to ensure that, first the heuristic will never overestimate the cost (Since we have the pure minimal cost to move the box to the goal). Then the heuristic is consistent because for a state n' closer to the goal from a previous state n, we have $ h(n) < h(n')$ by our difinition of $h$ and more precisely, we have $h(n) <= c(n,a,n')+h(n')$ with c the cost from $n$ to $n'$ by the action $a$. So our heuristic is admissible and consitent
+		The h(n) function minimizes the sum of the manhattan distance for the set of possibles configurations from boxes to goals (one box associated to one goal and one goal is targeted by one and only one box). \\
+		So, if we have N boxes/goals on our problem, we have factorial N possible pair of box and goal. We take the minimum of this to ensure that, first the heuristic will never overestimate the cost (Since we have the pure minimal cost to move the boxes to the goals). Then the heuristic is consistent because for a state n' closer to the goal from a previous state n, we have $ h(n) \geq h(n')$ by our definition of $h$ and more precisely the difference between the two if any is of $1$, we have then $h(n) \leq c(n,a,n')+h(n')$ with c the cost from $n$ to $n'$ by the action $a$ (which is an action towards the goal and not in the other way). So our heuristic is admissible and consistent.
+		
+The third that we developed count the amount of boxes not on a goal. It is not very accurate, but it provide an indication concerning the advancement of towards the solution. It is obviously admissible and consistent, the thought behind the prove is the same as seen in the course for the 8-puzzle.
+		
 		\subsection{Question 4: Implement this problem. Extend the Problem class and implement the necessary methods and other class(es) if necessary. Your file must be named sokoban.py. You program must print to the standard output a solution to the sokoban instance given in argument satisfying the described format.}
 			The resolution is launched using python3 sokoban.py sokoInstxy with $x = \{0,1\}$ and $y = \{0 \ to \ 9\}$\\
 			There is no need to add the extensions.
@@ -267,6 +278,6 @@ Assignement 2}
 			The number of nodes is always smaller using A* search because in the worse case, A* would perform a BFS, so, in any other case, there is less nodes explored.
 			
 		
-		\subsection{Question 6}
+		\subsection{Question 6: What are the performances of your program when you don’t perform dead state detection?}
 		
 \end{document}

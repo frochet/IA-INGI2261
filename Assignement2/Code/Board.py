@@ -42,8 +42,8 @@ class Board:
             j=0
             i+=1
             self.board.append(boardLine)
-        self.detect_dead_state()
-        self.detect_possible_dead_state()
+#        self.detect_dead_state()
+#        self.detect_possible_dead_state()
     
     
     def detect_possible_dead_state(self):
