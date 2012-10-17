@@ -110,18 +110,16 @@ class Sokoban(Problem):
         #  HEURISTIC 2 : SUM OF THE MIN OF THE MANHATTAN DISTANCE
         #
         ###
-        boxes = node.state.clone_boxes(node.state.boxes)
         sums = []
         conf = []
-        for goal in self.board.positionGoal:
-            for box in boxes :
+        for box in node.state.boxes :
+            for goal in self.board.positionGoal:
                 sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
             mini = 10000
             for elem in sums :
                 if elem < mini :
-                        mini=elem
+                    mini=elem
             conf.append(mini)
-            boxes.pop(sums.index(mini))
             sums = []
         val = sum(conf)
         return val
