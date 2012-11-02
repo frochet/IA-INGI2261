@@ -89,10 +89,21 @@ Assignement 3 - Mid-Project}
 						\hline 
 					\end{tabular}
 				\end{center} 
+				This meets our expectations as we first run Alpha-Beta and it already took some time, it is normal that MiniMax takes so much time.
 
-			\subsubsection{Question 6: For both algorithms, report the number of nodes that are visited at each depth
-level of the tree.a What do you observe? Explain.}
-	
+			\subsubsection{Question 6: For both algorithms, report the number of nodes that are visited at each depth level of the tree.a What do you observe? Explain.}
+				As we only reached a solution for the Alpha-Beta algorithm here is the number of nodes visited per depth.\\
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+						\hline 
+						\textbf{Depth} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ 
+						\hline 
+						\textbf{Nodes} & 1 & 24 & 63 & 659 & 2,113 & 11,427 & 28,131 & 78,554 & 95,481 & 109,704 & 45,018 \\ 
+						\hline 
+					\end{tabular} 
+				\end{center}
+				What is worth observing is the obvious result of 24 nodes at the depth 1 which correspond to $ 1*4 + 4*3 + 4*2 $ that is the possible moves per position (center, edge and corner).\\
+				Also, we can see that at the depth 10, there is less moves than for the depth 9. That is because some game progressions can lead to only 9 moves to completion.
 	\section{Search Algorithms}
 		\subsection{Statments to be proven}
 			\subsubsection{Question 1: Prove that depth-first is a special case of uniform-cost search}
