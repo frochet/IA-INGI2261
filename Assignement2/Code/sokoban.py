@@ -170,8 +170,8 @@ for n in path:
     numberOfSteps += 1
     n.state.print_board() #assume that the __str__ function of states output the correct format
     print("")
-#print (enlapsed, ' seconds')
-#print (numberOfSteps, ' steps')
-#print (problem.numbernodes, ' noeuds explorés')
+print (enlapsed, ' seconds')
+print (numberOfSteps, ' steps')
+print (problem.numbernodes, ' noeuds explorés')
 
         
