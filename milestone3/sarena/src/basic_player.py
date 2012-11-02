@@ -52,7 +52,9 @@ class AlphaBetaPlayer(Player, minimax.Game):
         state = (Board(percepts), player)
         start = time.time()
         m = minimax.search(state, self)
-        print("temps elapsed :%").format(time.time()-start)
+        print("nombre de noeuds explorés : ", self.count)
+        self.count = 0
+        print("temps elapsed : ", format(time.time()-start))
         return m
 
 

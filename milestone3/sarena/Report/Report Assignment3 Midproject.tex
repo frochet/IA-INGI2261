@@ -75,7 +75,21 @@ Assignement 3 - Mid-Project}
 		
 		\subsection{Comparison of MiniMax and Alpha-Beta}
 			\subsubsection{Question 4: What action will be played when using the MiniMax algorithm and when using the Alpha-Beta algorithm? Is there a difference between both results?}
+			The two played actions will be the same because the difference between MiniMax and Alpha-Beta is that the latter uses pruning. The only difference between the two results is that Alpha-Beta will visit less nodes than MiniMax and so, less time is needed.
 			\subsubsection{Question 5: For both algorithms, give the time taken and the number of nodes that are visited when searching the tree. Does this meet your expectations?}
+				The results of the tests are below. We didn't get to completion by using the MiniMax strategy, the amount of nodes goes past 10M nodes and so, we didn't let the game run long enough to see a result.
+				\begin{center}
+					\begin{tabular}{|c||c|c|}
+						\hline 
+						 & \textbf{Time [s]} & \textbf{Nodes} \\ 
+						\hline 
+						\textbf{MiniMax} & / & / \\ 
+						\hline 
+						\textbf{Alpha-Beta} & 87.82 & 371,175 \\
+						\hline 
+					\end{tabular}
+				\end{center} 
+
 			\subsubsection{Question 6: For both algorithms, report the number of nodes that are visited at each depth
 level of the tree.a What do you observe? Explain.}
 	
