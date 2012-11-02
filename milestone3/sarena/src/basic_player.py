@@ -58,15 +58,12 @@ class AlphaBetaPlayer(Player, minimax.Game):
             player = 1
         state = (Board(percepts), player)
         m = minimax.search(state, self)
-<<<<<<< HEAD
-        print("temps elapsed :%",time.time()-start)
-=======
+
         print("nombre de noeuds explorés : ", self.count)
         print("nombre de noeuds explorés par depth : ", self.depthCount)
         self.count = 0
         depthCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         print("temps elapsed : ", format(time.time()-self.start))
->>>>>>> bd81c412c316fbe52ca943b15e2316452be10288
         return m
 
 
