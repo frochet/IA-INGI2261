@@ -50,7 +50,7 @@ class AlphaBetaPlayer(Player, minimax.Game):
         state = (Board(percepts), player)
         start = time.time()
         m = minimax.search(state, self)
-        print("temps elapsed :%").format(time.time()-start)
+        print("temps elapsed :%",time.time()-start)
         return m
 
 
