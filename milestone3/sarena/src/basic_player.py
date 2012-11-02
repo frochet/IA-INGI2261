@@ -15,13 +15,15 @@ class AlphaBetaPlayer(Player, minimax.Game):
     the board.
 
     """
-
+    count = 0
+    
     def successors(self, state):
         board, player = state 
         for action in board.get_actions():
             yield (action,(board.clone().play_action(action), -player))
 
     def cutoff(self, state, depth):
+        self.count += 1
         board, player = state
         return board.is_finished()
 
