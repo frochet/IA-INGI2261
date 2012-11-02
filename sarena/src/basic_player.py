@@ -47,7 +47,7 @@ class AlphaBetaPlayer(Player, minimax.Game):
         else:
             player = 1
         state = (Board(percepts), player)
-        return minimax.search(state, self)
+        return minimax.search(state, self,False)
 
 
 if __name__ == "__main__":
