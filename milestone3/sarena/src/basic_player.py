@@ -5,6 +5,7 @@ import random
 
 from sarena import *
 import minimax
+import time
 
 
 class AlphaBetaPlayer(Player, minimax.Game):
@@ -47,7 +48,10 @@ class AlphaBetaPlayer(Player, minimax.Game):
         else:
             player = 1
         state = (Board(percepts), player)
-        return minimax.search(state, self,False)
+        start = time.time()
+        m = minimax.search(state, self)
+        print("temps elapsed :%").format(time.time()-start)
+        return m
 
 
 if __name__ == "__main__":
