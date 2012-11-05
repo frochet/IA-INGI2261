@@ -28,10 +28,10 @@ class AlphaBetaPlayer(Player, minimax.Game):
     def cutoff(self, state, depth):
         self.depthCount[depth] += 1
         self.count += 1
-#        if self.count % 1000000:
-#            print("% noeud totaux", self.count)
-#            print("% par depth", self.depthCount)
-#            print("% secondes", time.time()-self.start)
+        if self.count % 1000000 == 0:
+            print("% noeud totaux", self.count)
+            print("% par depth", self.depthCount)
+            print("% secondes", time.time()-self.start)
         board, player = state
         return board.is_finished()
 
@@ -57,7 +57,7 @@ class AlphaBetaPlayer(Player, minimax.Game):
         else:
             player = 1
         state = (Board(percepts), player)
-        m = minimax.search(state, self)
+        m = minimax.search(state, self, False)
 
         print("nombre de noeuds explorés : ", self.count)
         print("nombre de noeuds explorés par depth : ", self.depthCount)
