@@ -369,7 +369,8 @@ def player_main(player, options_cb=None, setup_cb=None):
     parser.add_option("-b", "--bind", dest="address", default="",
                       help="bind to address ADDRESS (default: all addresses)")
     parser.add_option("-p", "--port", type="int", dest="port", default=8000,
-                      help="set port number (default: %default)")
+                
+                       help="set port number (default: %default)")
     if options_cb is not None:
         options_cb(player, parser)
     (options, args) = parser.parse_args()

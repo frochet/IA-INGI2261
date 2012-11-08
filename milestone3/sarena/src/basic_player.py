@@ -37,27 +37,15 @@ class AlphaBetaPlayer(Player, minimax.Game):
 
     def evaluate(self, state):
         board, player = state
-        score = board.get_score()
-        if player == 1 :
-            if score > 0 :
-                return 1
-            elif score < 0:
-                return -1
-            else: return 0
-        else:
-            if score > 0 :
-                return -1
-            elif score < 0 :
-                return 1
-            else: return 0
-
+        return board.get_score()
+    
     def play(self, percepts, step, time_left):
         if step % 2 == 0:
             player = -1
         else:
             player = 1
         state = (Board(percepts), player)
-        m = minimax.search(state, self, False)
+        m = minimax.search(state, self)
 
         print("nombre de noeuds explorés : ", self.count)
         print("nombre de noeuds explorés par depth : ", self.depthCount)
