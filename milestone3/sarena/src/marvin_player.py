@@ -28,8 +28,8 @@ class Marvin_player(Player,minimax.Game):
     
     def successors(self, state):
         board, player = state
-        
-        # TODO
+        for action in board.get_actions():
+            yield (action,(board.clone().play_action(action), -player))
 
     def cutoff(self, state, depth):
         board, player = state
@@ -68,12 +68,8 @@ class Marvin_player(Player,minimax.Game):
                             differenttowers[1] = [i, j]
                     j += 1
                 i += 1        
-            counterpercept = self.get_counter_percept(board.get_percepts(), board, differenttowers)          
-            counterboard = Board(counterpercept)
-            counteraction = minimax.search((counterboard, player), self)
-            #Need to compare action and counter action
-        
-        
+            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
+            
         self.previousboard = board.clone.play_action(action)
         return action 
     
@@ -119,7 +115,8 @@ class Marvin_player(Player,minimax.Game):
         return (subboardaction,(board.clone().play_action(subboardaction), -player))
     
     
-    def get_counter_percept(self, bigboardpercept, board, differenttowers):
+    def get_counter_action(self, bigboardpercept, board, differenttowers, player):
+        x, y = 0
         if differenttowers[0][0] == differenttowers[1][0]:
             #The different towers are on the same row
             if differenttowers[0][0] == 0:
@@ -136,12 +133,15 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(board.columns-3, board.columns)] \
                     for i in range(2)]
+                    y = differenttowers[0][1] - 1
                 else:
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
                     for i in range(2)]
+                    y = differenttowers[0][1] - 1
             elif differenttowers[0][0] == board.rows - 1:     
                 #The different towers are on the lower row
+                x = board.rows - 2
                 if differenttowers[0][1] == 0:
                     #The left tower is on the left side of the board
                     #We can check only difftower[0]because of the way it is fill earlier
@@ -154,10 +154,12 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(board.columns-3, board.columns)] \
                     for i in range(board.rows-2, board.rows)]
+                    y = differenttowers[0][1] - 1
                 else:
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
                     for i in range(board.rows-2, board.rows)]
+                    y = differenttowers[0][1] - 1
             else:
                 #on the middle rows
                 if differenttowers[0][1] == 0:
@@ -176,6 +178,8 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
+                x = differenttowers[0][0] - 1
+                y = differenttowers[0][1] - 1
         else:
             #The different towers are on the same column
             if differenttowers[0][0] == 0:
@@ -190,12 +194,15 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(board.columns-2, board.columns)] \
                     for i in range(3)]
+                    y = differenttowers[0][1] - 1
                 else:
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[0][1]+2)] \
                     for i in range(3)]     
+                    y = differenttowers[0][1] - 1
             elif differenttowers[1][0] == board.rows - 1:     
                 #The lower tower is on the lower row
+                x = board.rows - 3
                 if differenttowers[0][1] == 0:
                     #The towers are on the left side of the board
                     counterpercept = [[bigboardpercept[i][j] \
@@ -206,10 +213,12 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(board.columns-2, board.columns)] \
                     for i in range(board.rows-3, board.rows)]
+                    y = differenttowers[0][1] - 1
                 else:
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
                     for i in range(board.rows-3, board.rows)]
+                    y = differenttowers[0][1] - 1
             else:
                 #on the middle rows
                 if differenttowers[0][1] == 0:
@@ -226,8 +235,16 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[0][1]+2)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
-        
-        return counterpercept
+                x = differenttowers[0][0] - 1
+                y = differenttowers[0][1] - 1
+            
+        counterboard = Board(counterpercept)
+        counteraction = minimax.search((counterboard, player), self)
+        counteraction[0] += x
+        counteraction[1] += y
+        counteraction[2] += x
+        counteraction[3] += y 
+        return (counteraction,(board.clone().play_action(counteraction), -player))
                         
     
     def _init_pattern(self):
