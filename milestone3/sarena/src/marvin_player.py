@@ -24,6 +24,7 @@ class Marvin_player(Player,minimax.Game):
         self.count_played = 0 # In order to know how many time we have played.
         # remplir les dict de pattern TODO
         #self.miniboard = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+        self.previousboard = 0
     
     def successors(self, state):
         board, player = state
@@ -56,12 +57,12 @@ class Marvin_player(Player,minimax.Game):
         
         i = best[1]
         j = best[2]
-        bigboardprecept = board.getprecepts()
-        newprecept = [0,0,0,0]
+        bigboardpercept = board.get_percepts()
+        newpercept = [0,0,0,0]
         for x in range(4):
-            newprecept[x] = bigboardprecept[x+i][j:j+4]
+            newpercept[x] = bigboardpercept[x+i][j:j+4]
         
-        subboard = Board(newprecept)
+        subboard = Board(newpercept)
         for action in subboard.get_actions():
             action[0] += i
             action[1] += j
@@ -90,9 +91,28 @@ class Marvin_player(Player,minimax.Game):
             player = 1
             
         # TODO
-        state = (Board(percepts), player)
+        board = Board(percepts)
+        state = (board, player)
         action = minimax.search(state, self)
         #we must perform two searches on both subboard and return the best move
+        if self.previousboard:
+            differenttowers = [0,0]
+            i = 0
+            while differenttowers[1] == 0 and i <= range(board.rows):
+                j = 0
+            #for i in range(board.rows):
+                while differenttowers[1] == 0 and j <= range(board.columns):
+                #for j in range(board.columns):
+                    if board.m[i][j] == self.previousboard[i][j]:
+                        if differenttowers[0] == 0:
+                            differenttowers[0] = [i, j]
+                        else:
+                            differenttowers[1] = [i, j]
+                    j += 1
+                i += 1        
+            #Need to build the subboard around differenttowers
+        
+        self.previousboard = board.clone.play_action(action)
         return action 
     
     def _init_pattern(self):
