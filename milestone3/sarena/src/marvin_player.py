@@ -112,73 +112,126 @@ class Marvin_player(Player,minimax.Game):
                             differenttowers[1] = [i, j]
                     j += 1
                 i += 1        
-            #Need to build the subboard around differenttowers
-            bigboardpercept = board.get_percepts()
-            counterpercept = 0
-            if differenttowers[0][0] == differenttowers[1][0]:
-                #The different towers are on the same row
-                if differenttowers[0][0] == 0:
-                    #The different towers are on the upper row
-                    if differenttowers[0][1] == 0:
-                        #The left tower is on the left side of the board
-                        #We can check only difftower[0]because of the way it is fill earlier
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(3)] \
-                        for i in range(2)]
-                    elif differenttowers[1][1]:
-                        #Right tower on the right side
-                        #Only need to check difftower[1]
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(board.columns-3, board.columns)] \
-                        for i in range(2)]
-                    else:
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
-                        for i in range(2)]
-                elif differenttowers[0][0] == board.rows - 1:     
-                    #The different towers are on the lower row
-                    if differenttowers[0][1] == 0:
-                        #The left tower is on the left side of the board
-                        #We can check only difftower[0]because of the way it is fill earlier
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(3)] for i in range(board.rows-2, board.rows)]
-                    elif differenttowers[1][1]:
-                        #Right tower on the right side
-                        #Only need to check difftower[1]
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(board.columns-3, board.columns)] \
-                        for i in range(board.rows-2, board.rows)]
-                    else:
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
-                        for i in range(board.rows-2, board.rows)]
-                    
-                else:
-                    #on the middle rows
-                    if differenttowers[0][1] == 0:
-                        #The left tower is on the left side of the board
-                        #We can check only difftower[0]because of the way it is fill earlier
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(3)] \
-                        for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
-                    elif differenttowers[1][1]:
-                        #Right tower on the right side
-                        #Only need to check difftower[1]
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(board.columns-3, board.columns)] \
-                        for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
-                    else:
-                        counterpercept = [[bigboardpercept[i][j] \
-                        for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
-                        for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
-            else:
-                #The different towers are on the same column
-                pass
-            
+            counterpercept = self.get_counter_percept(board.get_percepts(), board, differenttowers)          
+            counterboard = Board(counterpercept)
+            counteraction = minimax.search((counterboard, player), self)
+            #Need to compare action and counter action
         
         
         self.previousboard = board.clone.play_action(action)
         return action 
+    
+    
+    def get_counter_percept(self, bigboardpercept, board, differenttowers):
+        if differenttowers[0][0] == differenttowers[1][0]:
+            #The different towers are on the same row
+            if differenttowers[0][0] == 0:
+                #The different towers are on the upper row
+                if differenttowers[0][1] == 0:
+                    #The left tower is on the left side of the board
+                    #We can check only difftower[0]because of the way it is fill earlier
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(3)] \
+                    for i in range(2)]
+                elif differenttowers[1][1] == board.columns - 1:
+                    #Right tower on the right side
+                    #Only need to check difftower[1]
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(board.columns-3, board.columns)] \
+                    for i in range(2)]
+                else:
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
+                    for i in range(2)]
+            elif differenttowers[0][0] == board.rows - 1:     
+                #The different towers are on the lower row
+                if differenttowers[0][1] == 0:
+                    #The left tower is on the left side of the board
+                    #We can check only difftower[0]because of the way it is fill earlier
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(3)] \
+                    for i in range(board.rows-2, board.rows)]
+                elif differenttowers[1][1] == board.columns - 1:
+                    #Right tower on the right side
+                    #Only need to check difftower[1]
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(board.columns-3, board.columns)] \
+                    for i in range(board.rows-2, board.rows)]
+                else:
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
+                    for i in range(board.rows-2, board.rows)]
+            else:
+                #on the middle rows
+                if differenttowers[0][1] == 0:
+                    #The left tower is on the left side of the board
+                    #We can check only difftower[0]because of the way it is fill earlier
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(3)] \
+                    for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
+                elif differenttowers[1][1] == board.columns - 1:
+                    #Right tower on the right side
+                    #Only need to check difftower[1]
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(board.columns-3, board.columns)] \
+                    for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
+                else:
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
+                    for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
+        else:
+            #The different towers are on the same column
+            if differenttowers[0][0] == 0:
+                #The upper tower is on the upper row
+                if differenttowers[0][1] == 0:
+                    #The towers are on the left side of the board
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(2)] \
+                    for i in range(3)]
+                elif differenttowers[1][1] == board.columns - 1:
+                    #Towers on the right side
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(board.columns-2, board.columns)] \
+                    for i in range(3)]
+                else:
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(differenttowers[0][1]-1, differenttowers[0][1]+2)] \
+                    for i in range(3)]     
+            elif differenttowers[1][0] == board.rows - 1:     
+                #The lower tower is on the lower row
+                if differenttowers[0][1] == 0:
+                    #The towers are on the left side of the board
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(2)] \
+                    for i in range(board.rows-3, board.rows)]
+                elif differenttowers[0][1] == board.columns - 1:
+                    #Right tower on the right side
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(board.columns-2, board.columns)] \
+                    for i in range(board.rows-3, board.rows)]
+                else:
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
+                    for i in range(board.rows-3, board.rows)]
+            else:
+                #on the middle rows
+                if differenttowers[0][1] == 0:
+                    #The towers are on the left side of the board
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(2)] \
+                    for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
+                elif differenttowers[1][1]:
+                    #Towers on the right side
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(board.columns-2, board.columns)] \
+                    for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
+                else:
+                    counterpercept = [[bigboardpercept[i][j] \
+                    for j in range(differenttowers[0][1]-1, differenttowers[0][1]+2)] \
+                    for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
+        
+        return counterpercept
+                        
     
     def _init_pattern(self):
         # Pattern Sandwich 
