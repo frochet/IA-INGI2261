@@ -52,7 +52,7 @@ class Marvin_player(Player,minimax.Game):
                 if miniboardvalues[i][j] > best[0]:
                     best[0] == miniboardvalues[i][j]
                     best[1] == i
-                    best[0] == j
+                    best[2] == j
         
         i = best[1]
         j = best[2]
@@ -91,7 +91,9 @@ class Marvin_player(Player,minimax.Game):
             
         # TODO
         state = (Board(percepts), player)
-        return minimax.search(state, self)  
+        action = minimax.search(state, self)
+        #we must perform two searches on both subboard and return the best move
+        return action 
     
     def _init_pattern(self):
         # Pattern Sandwich 
