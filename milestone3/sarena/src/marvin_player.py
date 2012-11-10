@@ -29,53 +29,6 @@ class Marvin_player(Player,minimax.Game):
     def successors(self, state):
         board, player = state
         
-        #Rajouter un boolean pour dire si on fait le subboard ou pas
-        #Find the subboard 4*4 in which we're going to play
-        miniboardvalues = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
-        best = [0,0,0]
-        #Need to check those -3
-        for i in range(board.rows - 3):
-            for j in range(board.columns - 3):
-                for x in range (i, i+4):
-                    for y in range (j, j+4):
-                        if board.m[i][j][0] == 3:
-                            if board.m[x][y][1][0] == -1:
-                                miniboardvalues[i][j] +=1
-                            elif board.m[x][y][1][0] == 1:
-                                miniboardvalues[i][j] +=1
-                        coin = 4
-                        while board.m[i][j][coin][1] == 0:
-                            coin -= 1
-                        if board.m[i][j][coin][1] == 1:
-                            miniboardvalues[i][j] +=1
-                        if board.m[i][j][coin][1] == -1:
-                            miniboardvalues[i][j] +=1
-                                   
-                miniboardvalues[i][j] += randint(0,1)
-                if miniboardvalues[i][j] > best[0]:
-                    best[0] == miniboardvalues[i][j]
-                    best[1] == i
-                    best[2] == j
-        
-        i = best[1]
-        j = best[2]
-        bigboardpercept = board.get_percepts()
-        newpercept = [0,0,0,0]
-        for x in range(4):
-            newpercept[x] = bigboardpercept[x+i][j:j+4]
-        
-        subboard = Board(newpercept)
-        for action in subboard.get_actions():
-            action[0] += i
-            action[1] += j
-            action[2] += i
-            action[3] += j   
-            yield (action,(board.clone().play_action(action), -player))
-            
-        
-            
-
-
         # TODO
 
     def cutoff(self, state, depth):
@@ -97,6 +50,9 @@ class Marvin_player(Player,minimax.Game):
         state = (board, player)
         action = minimax.search(state, self)
         #we must perform two searches on both subboard and return the best move
+        
+        subboardaction = self.get_sub_board_action(board, player)
+        
         if self.previousboard:
             differenttowers = [0,0]
             i = 0
@@ -120,6 +76,47 @@ class Marvin_player(Player,minimax.Game):
         
         self.previousboard = board.clone.play_action(action)
         return action 
+    
+    
+    def get_sub_board_action(self, board, player):
+        miniboardvalues = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+        best = [0,0,0]
+        #Need to check those -3
+        for i in range(board.rows - 3):
+            for j in range(board.columns - 3):
+                for x in range (i, i+4):
+                    for y in range (j, j+4):
+                        if board.m[i][j][0] == 3:
+                            if board.m[x][y][1][0] == -1:
+                                miniboardvalues[i][j] +=1
+                            elif board.m[x][y][1][0] == 1:
+                                miniboardvalues[i][j] +=1
+                        coin = 4
+                        while board.m[i][j][coin][1] == 0:
+                            coin -= 1
+                        if board.m[i][j][coin][1] == 1:
+                            miniboardvalues[i][j] +=1
+                        if board.m[i][j][coin][1] == -1:
+                            miniboardvalues[i][j] +=1
+                                   
+                miniboardvalues[i][j] += randint(0,1)
+                if miniboardvalues[i][j] > best[0]:
+                    best[0] = miniboardvalues[i][j]
+                    best[1] = i
+                    best[2] = j
+        i = best[1]
+        j = best[2]
+        bigboardpercept = board.get_percepts()
+        newpercept = [0,0,0,0]
+        for x in range(4):
+            newpercept[x] = bigboardpercept[x+i][j:j+4]
+        subboard = Board(newpercept)
+        subboardaction = minimax.search((subboard, player), self)
+        subboardaction[0] += i
+        subboardaction[1] += j
+        subboardaction[2] += i
+        subboardaction[3] += j   
+        return (subboardaction,(board.clone().play_action(subboardaction), -player))
     
     
     def get_counter_percept(self, bigboardpercept, board, differenttowers):
