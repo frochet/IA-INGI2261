@@ -67,7 +67,6 @@ class Marvin_player(Player,minimax.Game):
                         if move.is_a_pattern(self.suicideDic):
                             score+=move.weight    
                 #compute points on the current towers    
-                print(str(tower))
                 if tower[0] == 3 :
                     # look for a isolated tower :
                     isIsolated = False
@@ -96,7 +95,6 @@ class Marvin_player(Player,minimax.Game):
                             yellowCoins+=1
                         elif tower[towerHeight][1] == Color.RED :
                             redCoins +=1
-                print("end of compute fo current")
         score += (yellowCoins-redCoins)
         return score
             
