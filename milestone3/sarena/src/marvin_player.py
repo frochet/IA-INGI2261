@@ -35,16 +35,40 @@ class Marvin_player(Player,minimax.Game):
             for j in range(board.columns - 3):
                 for x in range (i, i+3):
                     for y in range (j, j+3):
-                        if board.m[x][y] == -1:
+                        if board.m[i][j][0] == 3:
+                            if board.m[x][y][1][0] == -1:
+                                miniboardvalues[i][j] +=1
+                            elif board.m[x][y][1][0] == 1:
+                                miniboardvalues[i][j] +=1
+                        coin = 4
+                        while board.m[i][j][coin][1] == 0:
+                            coin -= 1
+                        if board.m[i][j][coin][1] == 1:
                             miniboardvalues[i][j] +=1
-                        elif board.m[x][y] == 1:
+                        if board.m[i][j][coin][1] == -1:
                             miniboardvalues[i][j] +=1
+                                   
                 miniboardvalues[i][j] += randint(0,1)
                 if miniboardvalues[i][j] > best[0]:
                     best[0] == miniboardvalues[i][j]
                     best[1] == i
                     best[0] == j
         
+        i = best[1]
+        j = best[2]
+        bigboardprecept = board.getprecepts()
+        newprecept = [0,0,0,0]
+        for x in range(4):
+            newprecept[x] = bigboardprecept[x+i][j:j+4]
+        
+        subboard = Board(newprecept)
+        for action in subboard.get_actions():
+            action[0] += i
+            action[1] += j
+            action[2] += i
+            action[3] += j   
+            yield (action,(board.clone().play_action(action), -player))
+            
         
             
 
