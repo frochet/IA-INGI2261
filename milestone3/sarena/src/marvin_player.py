@@ -7,6 +7,7 @@ from sarena import *
 import minimax
 import time
 from pattern import *
+from random import randint
 
 class Marvin_player(Player,minimax.Game):
     '''
@@ -22,9 +23,32 @@ class Marvin_player(Player,minimax.Game):
         self.suicideDic = dict()
         self.count_played = 0 # In order to know how many time we have played.
         # remplir les dict de pattern TODO
+        #self.miniboard = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     
     def successors(self, state):
         board, player = state
+        
+        #Find the subboard 4*4 in which we're going to play
+        miniboardvalues = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+        best = [0,0,0]
+        for i in range(board.rows - 3):
+            for j in range(board.columns - 3):
+                for x in range (i, i+3):
+                    for y in range (j, j+3):
+                        if board.m[x][y] == -1:
+                            miniboardvalues[i][j] +=1
+                        elif board.m[x][y] == 1:
+                            miniboardvalues[i][j] +=1
+                miniboardvalues[i][j] += randint(0,1)
+                if miniboardvalues[i][j] > best[0]:
+                    best[0] == miniboardvalues[i][j]
+                    best[1] == i
+                    best[0] == j
+        
+        
+            
+
+
         # TODO
 
     def cutoff(self, state, depth):
