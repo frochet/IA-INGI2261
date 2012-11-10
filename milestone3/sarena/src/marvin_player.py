@@ -36,6 +36,9 @@ class Marvin_player(Player,minimax.Game):
     def cutoff(self, state, depth):
         board, player = state
         # TODO
+        
+        # Must cut if we played a suicide move to reach this state.
+        # Must cut with iterative depth
         return depth == 5
 
     def evaluate(self, state):
