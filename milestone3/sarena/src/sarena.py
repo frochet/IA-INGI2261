@@ -306,10 +306,10 @@ class Board:
     
     def action_played(self,previousBoard):
         """
-            return towers involved in the move of previousBoard.
-            [tower_init, tower_targeted]
+            return action + towers involved in the move of previousBoard.
+            (action,[tower_init, tower_targeted])
         """
-        towers = []
+        towers = [0,0]
         action = ()
         for i in range(self.rows) :
             for j in range(self.columns):
@@ -327,7 +327,7 @@ class Board:
                         else :
                             action += i,j
         if abs(action[2]-action[0]) + abs(action[3]-action[1]) == 1 and self.is_action_valid(action):
-            return towers
+            return (action,towers)
         else:
             return False
 

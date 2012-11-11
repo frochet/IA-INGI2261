@@ -25,10 +25,11 @@ class Marvin_player(Player,minimax.Game):
         self._init_pattern()
         #self.miniboard = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         self.previousboard = 0
+        self.previousSearchedBoard = 0
     
     def successors(self, state):
         board, player = state
-
+        self.previousSearchedBoard = board.clone()
         for action in board.get_actions():
             yield (action,(board.clone().play_action(action), -player)) 
 
@@ -38,6 +39,13 @@ class Marvin_player(Player,minimax.Game):
         
         # Must cut if we played a suicide move to reach this state.
         # Must cut with iterative depth
+        action_played = board.action_played(self.previousSearchedBoard)
+        move = Action(action_played[1][0],action_played[1][1])
+        if move.is_a_pattern(self.suicideDic) and depth % 2 == 0:
+            return False # if a node-max is a suicide, cut it, we do not play the move
+        elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
+            return False # if a node-min is a suicide for the opponent, cut it, he will not play that move
+
         return depth == 5
 
     def evaluate(self, state):
