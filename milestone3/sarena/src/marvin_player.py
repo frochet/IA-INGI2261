@@ -28,11 +28,10 @@ class Marvin_player(Player,minimax.Game):
         self.previousSearchedBoard = None
         self.previousDepth = 0
     
-    def successors(self, state,depth):
+    def successors(self, state):
         board, player = state
         for action in board.get_actions():
             self.previousSearchedBoard = board.clone()
-            self.previousDepth = depth
             yield (action,(board.clone().play_action(action), -player)) 
 
     def cutoff(self, state, depth):
@@ -43,14 +42,14 @@ class Marvin_player(Player,minimax.Game):
         # Must cut with iterative depth
         
         if not self.previousSearchedBoard == None :
-            action_played = board.action_played(self.previousSearchedBoard)
+            action_played = self._action_played(board,self.previousSearchedBoard)
             move = Action(action_played[1][0],action_played[1][1])
             if move.is_a_pattern(self.suicideDic) and depth % 2 == 0:
                 return True # if a node-max is a suicide, cut it, we do not play the move
             elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
                 return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
 
-        return depth == 5 
+        return depth == 2 
          
     def evaluate(self, state):
         board, player = state
@@ -325,13 +324,38 @@ class Marvin_player(Player,minimax.Game):
         counteraction[3] += y 
         return (counteraction,(board.clone().play_action(counteraction), -player))
                         
-    
+    def _action_played(self,currentBoard,previousBoard):
+        """
+            return action + towers involved in the move of previousBoard.
+            (action,[tower_init, tower_targeted])
+        """
+        towers = [0,0]
+        action = ()
+        for i in range(currentBoard.rows) :
+            for j in range(currentBoard.columns):
+                if currentBoard.get_height(currentBoard.m[i][j]) != previousBoard.get_height(previousBoard.m[i][j]) :
+                    if currentBoard.get_height(currentBoard.m[i][j]) > previousBoard.get_height(previousBoard.m[i][j]) :
+                        towers[1] = previousBoard.m[i][j]
+                        action += i,j    
+                    else :
+                        towers[0] = previousBoard.m[i][j]
+                        if len(action) != 0:
+                            tmp = action
+                            action = (i, j)
+                            action += tmp
+                        else :
+                            action += i,j
+        if previousBoard.is_action_valid(action):
+            return (action,towers)
+        else:
+            print("unvalid action_played")
+            return False
     def _see_if_isolate(self,i,j,board,score,tower):
         def compute(score,tower):
             if tower[1][0] == Color.YELLOW :
-                score += board.get_hight(tower)
+                score += board.get_height(tower)
             elif tower[1][0] == Color.RED :
-                score -= board.get_hight(tower)
+                score -= board.get_height(tower)
             return score
         i_start = 0
         j_start = 0
