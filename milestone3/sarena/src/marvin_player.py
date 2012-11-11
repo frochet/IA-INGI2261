@@ -25,11 +25,13 @@ class Marvin_player(Player,minimax.Game):
         self._init_pattern()
         #self.miniboard = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         self.previousboard = 0
-        self.previousSearchedBoard = 0
+        self.previousSearchedBoard = None
+        self.previousDepth = 0
     
-    def successors(self, state):
+    def successors(self, state,depth):
         board, player = state
         self.previousSearchedBoard = board.clone()
+        self.previousDepth = depth
         for action in board.get_actions():
             yield (action,(board.clone().play_action(action), -player)) 
 
@@ -39,12 +41,15 @@ class Marvin_player(Player,minimax.Game):
         
         # Must cut if we played a suicide move to reach this state.
         # Must cut with iterative depth
-        action_played = board.action_played(self.previousSearchedBoard)
-        move = Action(action_played[1][0],action_played[1][1])
-        if move.is_a_pattern(self.suicideDic) and depth % 2 == 0:
-            return False # if a node-max is a suicide, cut it, we do not play the move
-        elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
-            return False # if a node-min is a suicide for the opponent, cut it, he will not play that move
+        if abs(self.previousDepth-depth) > 1 : self.previousSearchedBoard = None # for the moment
+        
+        if not self.previousSearchedBoard == None :
+            action_played = board.action_played(self.previousSearchedBoard)
+            move = Action(action_played[1][0],action_played[1][1])
+            if move.is_a_pattern(self.suicideDic) and depth % 2 == 0:
+                return True # if a node-max is a suicide, cut it, we do not play the move
+            elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
+                return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
 
         return depth == 5
 
@@ -124,26 +129,26 @@ class Marvin_player(Player,minimax.Game):
         action = minimax.search(state, self)
         #we must perform two searches on both subboard and return the best move
         
-        subboardaction = self.get_sub_board_action(board, player)
-        
-        if self.previousboard:
-            differenttowers = [0,0]
-            i = 0
-            while differenttowers[1] == 0 and i <= range(board.rows):
-                j = 0
-            #for i in range(board.rows):
-                while differenttowers[1] == 0 and j <= range(board.columns):
-                #for j in range(board.columns):
-                    if board.m[i][j] == self.previousboard[i][j]:
-                        if differenttowers[0] == 0:
-                            differenttowers[0] = [i, j]
-                        else:
-                            differenttowers[1] = [i, j]
-                    j += 1
-                i += 1        
-            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
-            
-        self.previousboard = board.clone().play_action(action)
+#        subboardaction = self.get_sub_board_action(board, player)
+#        
+#        if self.previousboard:
+#            differenttowers = [0,0]
+#            i = 0
+#            while differenttowers[1] == 0 and i <= range(board.rows):
+#                j = 0
+#            #for i in range(board.rows):
+#                while differenttowers[1] == 0 and j <= range(board.columns):
+#                #for j in range(board.columns):
+#                    if board.m[i][j] == self.previousboard[i][j]:
+#                        if differenttowers[0] == 0:
+#                            differenttowers[0] = [i, j]
+#                        else:
+#                            differenttowers[1] = [i, j]
+#                    j += 1
+#                i += 1        
+#            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
+#            
+#        self.previousboard = board.clone().play_action(action)
         return action 
     
     

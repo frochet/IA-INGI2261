@@ -196,6 +196,7 @@ class Board:
                 return False
             return True
         except (TypeError, ValueError):
+            print ("the action is not valid")
             return False
 
     def get_tower_actions(self, i, j):
@@ -313,22 +314,22 @@ class Board:
         action = ()
         for i in range(self.rows) :
             for j in range(self.columns):
-                if self.m[i][j] != previousBoard.m[i][j] :
+                if self.get_height(self.m[i][j]) != previousBoard.get_height(previousBoard.m[i][j]) :
                     if self.get_height(self.m[i][j]) > previousBoard.get_height(previousBoard.m[i][j]) :
                         towers[1] = previousBoard.m[i][j]
                         action += i,j    
                     else :
                         towers[0] = previousBoard.m[i][j]
                         if len(action) != 0:
-                            tmp=()
-                            for a in action : tmp+=a
+                            tmp = action
                             action = (i, j)
-                            action += (tmp[0],tmp[1])
+                            action += tmp
                         else :
                             action += i,j
-        if abs(action[2]-action[0]) + abs(action[3]-action[1]) == 1 and self.is_action_valid(action):
+        if previousBoard.is_action_valid(action):
             return (action,towers)
         else:
+            print("unvalid action_played")
             return False
 
 def load_percepts(pickleFile):
