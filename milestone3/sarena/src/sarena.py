@@ -305,32 +305,6 @@ class Board:
             newTow.append(tower[i])
         return newTow
     
-    def action_played(self,previousBoard):
-        """
-            return action + towers involved in the move of previousBoard.
-            (action,[tower_init, tower_targeted])
-        """
-        towers = [0,0]
-        action = ()
-        for i in range(self.rows) :
-            for j in range(self.columns):
-                if self.get_height(self.m[i][j]) != previousBoard.get_height(previousBoard.m[i][j]) :
-                    if self.get_height(self.m[i][j]) > previousBoard.get_height(previousBoard.m[i][j]) :
-                        towers[1] = previousBoard.m[i][j]
-                        action += i,j    
-                    else :
-                        towers[0] = previousBoard.m[i][j]
-                        if len(action) != 0:
-                            tmp = action
-                            action = (i, j)
-                            action += tmp
-                        else :
-                            action += i,j
-        if previousBoard.is_action_valid(action):
-            return (action,towers)
-        else:
-            print("unvalid action_played")
-            return False
 
 def load_percepts(pickleFile):
     """Load percepts from a pickle file.

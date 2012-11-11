@@ -22,7 +22,7 @@ class Game:
 
     """Abstract base class for a game."""
 
-    def successors(self, state,depth):
+    def successors(self, state):
         """Return the successors of state as (action, state) pairs."""
         abstract
 
@@ -58,7 +58,7 @@ def search(state, game, prune=True):
             return game.evaluate(state), None
         val = -inf
         action = None
-        for a, s in game.successors(state,depth):
+        for a, s in game.successors(state):
             v, _ = min_value(s, alpha, beta, depth + 1)
             if v > val:
                 val = v
@@ -74,7 +74,7 @@ def search(state, game, prune=True):
             return game.evaluate(state), None
         val = inf
         action = None
-        for a, s in game.successors(state,depth):
+        for a, s in game.successors(state):
             v, _ = max_value(s, alpha, beta, depth + 1)
             if v < val:
                 val = v
