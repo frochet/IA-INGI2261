@@ -305,6 +305,10 @@ class Board:
         return newTow
     
     def action_played(self,previousBoard):
+        """
+            return towers involved in the move of previousBoard.
+            [tower_init, tower_targeted]
+        """
         towers = []
         action = ()
         for i in range(self.rows) :
@@ -323,7 +327,7 @@ class Board:
                         else :
                             action += i,j
         if abs(action[2]-action[0]) + abs(action[3]-action[1]) == 1 and self.is_action_valid(action):
-            return action
+            return towers
         else:
             return False
 
