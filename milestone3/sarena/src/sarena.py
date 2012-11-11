@@ -303,7 +303,29 @@ class Board:
         for i in range(1, height + 1):
             newTow.append(tower[i])
         return newTow
-
+    
+    def action_played(self,previousBoard):
+        towers = []
+        action = ()
+        for i in range(self.rows) :
+            for j in range(self.columns):
+                if self.m[i][j] != previousBoard.m[i][j] :
+                    if self.get_height(self.m[i][j]) > previousBoard.get_height(previousBoard.m[i][j]) :
+                        towers[1] = previousBoard.m[i][j]
+                        action += i,j    
+                    else :
+                        towers[0] = previousBoard.m[i][j]
+                        if len(action) != 0:
+                            tmp=()
+                            for a in action : tmp+=a
+                            action = (i, j)
+                            action += (tmp[0],tmp[1])
+                        else :
+                            action += i,j
+        if abs(action[2]-action[0]) + abs(action[3]-action[1]) == 1 and self.is_action_valid(action):
+            return action
+        else:
+            return False
 
 def load_percepts(pickleFile):
     """Load percepts from a pickle file.

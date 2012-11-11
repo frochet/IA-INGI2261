@@ -23,7 +23,6 @@ class Marvin_player(Player,minimax.Game):
         self.suicideDic = dict()
         self.count_played = 0 # In order to know how many time we have played.
         self._init_pattern()
-        # remplir les dict de pattern TODO
         #self.miniboard = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         self.previousboard = 0
     
@@ -136,7 +135,7 @@ class Marvin_player(Player,minimax.Game):
                 i += 1        
             counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
             
-        self.previousboard = board.clone.play_action(action)
+        self.previousboard = board.clone().play_action(action)
         return action 
     
     
