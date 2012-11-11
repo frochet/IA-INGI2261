@@ -30,8 +30,13 @@ class Marvin_player(Player,minimax.Game):
     
     def successors(self, state):
         board, player = state
+        self.previousSearchedBoard = board.clone()
+        self.previousDepth = depth
         for action in board.get_actions():
+<<<<<<< HEAD
             self.previousSearchedBoard = board.clone()
+=======
+>>>>>>> parent of 4387315... Completely working on 3x3 :-)
             yield (action,(board.clone().play_action(action), -player)) 
 
     def cutoff(self, state, depth):
@@ -40,6 +45,7 @@ class Marvin_player(Player,minimax.Game):
         
         # Must cut if we played a suicide move to reach this state.
         # Must cut with iterative depth
+        if abs(self.previousDepth-depth) > 1 : self.previousSearchedBoard = None # for the moment
         
         if not self.previousSearchedBoard == None :
             action_played = self._action_played(board,self.previousSearchedBoard)
@@ -49,11 +55,15 @@ class Marvin_player(Player,minimax.Game):
             elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
                 return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
 
+<<<<<<< HEAD
         return depth == 2 
          
+=======
+        return depth == 5
+
+>>>>>>> parent of 4387315... Completely working on 3x3 :-)
     def evaluate(self, state):
         board, player = state
-        self.previousSearchedBoard = None
         #regarder les points en cours sur le board (jeton isoles + tour a retourner + pattern must_do, suicide) + la difference entre le nombre de jeton
         # down de nos tours avec ceux de l'ennemi.
         #return board.get_score()
@@ -117,7 +127,6 @@ class Marvin_player(Player,minimax.Game):
                 
 
     def play(self, percepts, step, time_left):
-        self.previousSearchedBoard = None
         if step % 2 == 0:
             player = -1
         else:
