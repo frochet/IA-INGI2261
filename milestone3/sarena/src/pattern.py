@@ -40,6 +40,7 @@ class Action(object):
         self.t_target.append(self.weight)
         #print(self.t_target)
         self.representation = self._make_representation()
+        print(self.weight)
         #print(str(self.representation)+" tour final :"+str(self.t_target))
         if 'sub_board' in kwords :
             pass # analyse a pattern
@@ -165,10 +166,10 @@ class Action(object):
         else :
             #detect sandwich
 
-            #if self._detect_sandwich() :
-                #return self.weight
-            #if self._detect_color_up() :
-                #return self.weight
+            if self._detect_sandwich() :
+                return self.weight
+            if self._detect_color_up() :
+                return self.weight
             if self._detect_color_bot() :
                 return self.weight
             else: return 0

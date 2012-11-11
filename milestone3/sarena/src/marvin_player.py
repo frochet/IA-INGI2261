@@ -125,25 +125,36 @@ class Marvin_player(Player,minimax.Game):
         state = (board, player)
         self.previousSearchedBoard = None
         # MustDo before !
-#        mustDo = []
-#        for i in range(board.rows) :
-#            for j in range(board.columns):
-#                actions = board.get_tower_actions(i,j)
-#                for action in actions :
-#                    move = Action(board.m[action[0]][action[1]],board.m[action[2]][action[3]])
-#                    if move.is_a_pattern(self.mustDoDic):
-#                        mustDo.append([action,move.weight])
-#        if len(mustDo) > 0:
-#            action_to_play = 0
-#            weight = 0
-#            for elem in mustDo :
-#                if elem[1] > weight :
-#                    weight = elem[1]
-#                    action_to_play = elem[0]
-#            return action_to_play
-#        else :
+        mustDo = []
+        for i in range(board.rows) :
+            for j in range(board.columns):
+                actions = board.get_tower_actions(i,j)
+                for action in actions :
+                    t_1 = [board.m[action[0]][action[1]][0]]
+                    t_2 = [board.m[action[2]][action[3]][0]]
+                    t_1.extend(board.get_tower(board.m[action[0]][action[1]]))
+                    t_2.extend(board.get_tower(board.m[action[2]][action[3]]))
+                    move = Action(t_1,t_2)
+                    if move.is_a_pattern(self.mustDoDic):
+                        mustDo.append([action,move.weight])
+        if len(mustDo) > 0:
+            action_to_play = 0
+            weight = 0
+            for elem in mustDo :
+                if elem[1] > weight :
+                    weight = elem[1]
+                    action_to_play = elem[0]
+            print(action_to_play)
+            if action_to_play == 0 :
+                print("INVALIDE PLAY in PLAY")
+                print(mustDo)
+                return mustDo[0][0]
+            else:
+                return action_to_play                
+        else :
         
-        action = minimax.search(state, self)
+            action = minimax.search(state, self)
+            return action 
             #we must perform two searches on both subboard and return the best move
             
     #        subboardaction = self.get_sub_board_action(board, player)
@@ -166,7 +177,7 @@ class Marvin_player(Player,minimax.Game):
     #            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
     #            
     #        self.previousboard = board.clone().play_action(action)
-        return action 
+
     
     
     def get_sub_board_action(self, board, player):
@@ -449,6 +460,7 @@ class Marvin_player(Player,minimax.Game):
         #self.suicideDic[Action([4,[-2,-2],[-2,-2],[-2,-2],[0,0]],[3,[Color.RED,-2],[0,0],[0,0],[0,0]])] = True
         
         # broke an enemy tower. will be reversed after.
+        # BUG => WEIGHT == -3 !
         self.mustDoDic[Action([4,[-2,Color.RED],[0,0],[0,0],[0,0]],[3,[2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.mustDoDic[Action([4,[-2,-2],[-2,Color.RED],[0,0],[0,0]],[3,[2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.mustDoDic[Action([4,[-2,-2],[-2,-2],[-2,Color.RED],[0,0]],[3,[2,-2],[0,0],[0,0],[0,0]])] = True
