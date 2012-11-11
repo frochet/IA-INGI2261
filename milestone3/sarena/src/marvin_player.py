@@ -30,13 +30,8 @@ class Marvin_player(Player,minimax.Game):
     
     def successors(self, state):
         board, player = state
-        self.previousSearchedBoard = board.clone()
-        self.previousDepth = depth
         for action in board.get_actions():
-<<<<<<< HEAD
             self.previousSearchedBoard = board.clone()
-=======
->>>>>>> parent of 4387315... Completely working on 3x3 :-)
             yield (action,(board.clone().play_action(action), -player)) 
 
     def cutoff(self, state, depth):
@@ -45,7 +40,6 @@ class Marvin_player(Player,minimax.Game):
         
         # Must cut if we played a suicide move to reach this state.
         # Must cut with iterative depth
-        if abs(self.previousDepth-depth) > 1 : self.previousSearchedBoard = None # for the moment
         
         if not self.previousSearchedBoard == None :
             action_played = self._action_played(board,self.previousSearchedBoard)
@@ -55,19 +49,15 @@ class Marvin_player(Player,minimax.Game):
             elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
                 return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
 
-<<<<<<< HEAD
         return depth == 2 
-         
-=======
-        return depth == 5
 
->>>>>>> parent of 4387315... Completely working on 3x3 :-)
     def evaluate(self, state):
         board, player = state
         #regarder les points en cours sur le board (jeton isoles + tour a retourner + pattern must_do, suicide) + la difference entre le nombre de jeton
         # down de nos tours avec ceux de l'ennemi.
         #return board.get_score()
         #print("test")
+        self.previousSearchedBoard = None
         score = 0
         yellowCoins = 0
         redCoins = 0
@@ -133,26 +123,27 @@ class Marvin_player(Player,minimax.Game):
             player = 1
         board = Board(percepts)
         state = (board, player)
+        self.previousSearchedBoard = None
         # MustDo before !
-        mustDo = []
-        for i in range(board.rows) :
-            for j in range(board.columns):
-                actions = board.get_tower_actions(i,j)
-                for action in actions :
-                    move = Action(board.m[action[0]][action[1]],board.m[action[2]][action[3]])
-                    if move.is_a_pattern(self.mustDoDic):
-                        mustDo.append([action,move.weight])
-        if len(mustDo) > 0:
-            action_to_play = 0
-            weight = 0
-            for elem in mustDo :
-                if elem[1] > weight :
-                    weight = elem[1]
-                    action_to_play = elem[0]
-            return action_to_play
-        else :
+#        mustDo = []
+#        for i in range(board.rows) :
+#            for j in range(board.columns):
+#                actions = board.get_tower_actions(i,j)
+#                for action in actions :
+#                    move = Action(board.m[action[0]][action[1]],board.m[action[2]][action[3]])
+#                    if move.is_a_pattern(self.mustDoDic):
+#                        mustDo.append([action,move.weight])
+#        if len(mustDo) > 0:
+#            action_to_play = 0
+#            weight = 0
+#            for elem in mustDo :
+#                if elem[1] > weight :
+#                    weight = elem[1]
+#                    action_to_play = elem[0]
+#            return action_to_play
+#        else :
         
-            action = minimax.search(state, self)
+        action = minimax.search(state, self)
             #we must perform two searches on both subboard and return the best move
             
     #        subboardaction = self.get_sub_board_action(board, player)
@@ -175,7 +166,7 @@ class Marvin_player(Player,minimax.Game):
     #            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
     #            
     #        self.previousboard = board.clone().play_action(action)
-            return action 
+        return action 
     
     
     def get_sub_board_action(self, board, player):
