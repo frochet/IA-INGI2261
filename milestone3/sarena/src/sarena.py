@@ -304,6 +304,7 @@ class Board:
         for i in range(1, height + 1):
             newTow.append(tower[i])
         return newTow
+    
 
 def load_percepts(pickleFile):
     """Load percepts from a pickle file.

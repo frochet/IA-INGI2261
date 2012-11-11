@@ -122,34 +122,51 @@ class Marvin_player(Player,minimax.Game):
             player = -1
         else:
             player = 1
-            
-        # TODO
         board = Board(percepts)
         state = (board, player)
-        action = minimax.search(state, self)
-        #we must perform two searches on both subboard and return the best move
+        # MustDo before !
+        mustDo = []
+        for i in range(board.rows) :
+            for j in range(board.columns):
+                actions = board.get_tower_actions(i,j)
+                for action in actions :
+                    move = Action(board.m[action[0]][action[1]],board.m[action[2]][action[3]])
+                    if move.is_a_pattern(self.mustDoDic):
+                        mustDo.append([action,move.weight])
+        if len(mustDo) > 0:
+            action_to_play = 0
+            weight = 0
+            for elem in mustDo :
+                if elem[1] > weight :
+                    weight = elem[1]
+                    action_to_play = elem[0]
+            return action_to_play
+        else :
         
-#        subboardaction = self.get_sub_board_action(board, player)
-#        
-#        if self.previousboard:
-#            differenttowers = [0,0]
-#            i = 0
-#            while differenttowers[1] == 0 and i <= range(board.rows):
-#                j = 0
-#            #for i in range(board.rows):
-#                while differenttowers[1] == 0 and j <= range(board.columns):
-#                #for j in range(board.columns):
-#                    if board.m[i][j] == self.previousboard[i][j]:
-#                        if differenttowers[0] == 0:
-#                            differenttowers[0] = [i, j]
-#                        else:
-#                            differenttowers[1] = [i, j]
-#                    j += 1
-#                i += 1        
-#            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
-#            
-#        self.previousboard = board.clone().play_action(action)
-        return action 
+            action = minimax.search(state, self)
+            #we must perform two searches on both subboard and return the best move
+            
+    #        subboardaction = self.get_sub_board_action(board, player)
+    #        
+    #        if self.previousboard:
+    #            differenttowers = [0,0]
+    #            i = 0
+    #            while differenttowers[1] == 0 and i <= range(board.rows):
+    #                j = 0
+    #            #for i in range(board.rows):
+    #                while differenttowers[1] == 0 and j <= range(board.columns):
+    #                #for j in range(board.columns):
+    #                    if board.m[i][j] == self.previousboard[i][j]:
+    #                        if differenttowers[0] == 0:
+    #                            differenttowers[0] = [i, j]
+    #                        else:
+    #                            differenttowers[1] = [i, j]
+    #                    j += 1
+    #                i += 1        
+    #            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
+    #            
+    #        self.previousboard = board.clone().play_action(action)
+            return action 
     
     
     def get_sub_board_action(self, board, player):
