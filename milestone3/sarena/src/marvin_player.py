@@ -132,12 +132,11 @@ class Marvin_player(Player,minimax.Game):
         
 #        subboardaction = self.get_sub_board_action(board, player)
 #        return subboardaction[1]
-        if self.previousboard:
-            differenttowers = self.get_diff_towers(board)
-            print(differenttowers)
-            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
-            self.previousboard = board.clone().play_action(counteraction[1])
-            return counteraction[1]
+#        if self.previousboard:
+#            differenttowers = self.get_diff_towers(board)
+#            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
+#            self.previousboard = board.clone().play_action(counteraction[1])
+#            return counteraction[1]
         
         self.previousSearchedBoard = None
         # MustDo before !
@@ -170,8 +169,17 @@ class Marvin_player(Player,minimax.Game):
                 self.previousboard = board.clone().play_action(action_to_play)
                 return action_to_play                
         else :
-            
-            action = minimax.search(state, self)
+            counteraction = False
+            if self.previousboard:
+                differenttowers = self.get_diff_towers(board)
+                counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
+            subboardaction = self.get_sub_board_action(board, player)
+            if counteraction:
+                if counteraction[0] > subboardaction[0]:
+                    action = counteraction[1]
+                else:
+                    action = subboardaction[1]
+            #action = minimax.search(state, self)
             self.previousboard = board.clone().play_action(action)
             return action 
             #we must perform two searches on both subboard and return the best move
@@ -399,22 +407,13 @@ class Marvin_player(Player,minimax.Game):
             
         counterboard = Board(counterpercept)
         
-        print (counterboard)
-        print ("je suis la")
         counteraction = search((counterboard, player), self)
-        print("coucou")
-        print (counteraction)
+
         action = (counteraction[0], (counteraction[1][0] + x, \
         counteraction[1][1] + y, \
         counteraction[1][2] + x, \
         counteraction[1][3] + y))
-        print (action)
         
-#        counteraction = minimax.search((counterboard, player), self)
-#        counteraction[0] += x
-#        counteraction[1] += y
-#        counteraction[2] += x
-#        counteraction[3] += y 
         return action
                         
     def _action_played(self,currentBoard,previousBoard):
