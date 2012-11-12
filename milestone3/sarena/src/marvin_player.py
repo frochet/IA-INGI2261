@@ -152,7 +152,8 @@ class Marvin_player(Player,minimax.Game):
             else:
                 return action_to_play                
         else :
-        
+            subboardaction = self.get_sub_board_action(board, player)
+            
             action = minimax.search(state, self)
             return action 
             #we must perform two searches on both subboard and return the best move
@@ -179,6 +180,23 @@ class Marvin_player(Player,minimax.Game):
     #        self.previousboard = board.clone().play_action(action)
 
     
+    def get_diff_towers(self, board):
+        differenttowers = [0,0]
+        i = 0
+        while differenttowers[1] == 0 and i <= range(board.rows):
+            j = 0
+        #for i in range(board.rows):
+            while differenttowers[1] == 0 and j <= range(board.columns):
+            #for j in range(board.columns):
+                if board.get_height(board.m[i][j]) == board.get_height(self.previousboard[i][j]):
+                    if differenttowers[0] == 0:
+                        differenttowers[0] = [i, j]
+                    else:
+                        differenttowers[1] = [i, j]
+                j += 1
+            i += 1  
+        return differenttowers
+                
     
     def get_sub_board_action(self, board, player):
         miniboardvalues = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
