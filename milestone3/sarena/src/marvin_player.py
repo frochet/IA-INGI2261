@@ -5,7 +5,7 @@ Created on 8 nov. 2012
 '''
 from sarena import *
 import minimax
-import time
+from time import *
 from pattern import *
 from random import randint
 
@@ -27,7 +27,9 @@ class Marvin_player(Player,minimax.Game):
         self.previousboard = 0
         self.previousSearchedBoard = None
         self.previousDepth = 0
-    
+        self.time_left = 0
+        self.timer = 0
+        self.previousTimer = 0
     def successors(self, state):
         board, player = state
         self.previousSearchedBoard = board.clone()
@@ -49,7 +51,7 @@ class Marvin_player(Player,minimax.Game):
             elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
                 return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
 
-        return depth == 2 
+        return depth == 3 
 
     def evaluate(self, state):
         board, player = state
@@ -117,6 +119,10 @@ class Marvin_player(Player,minimax.Game):
                 
 
     def play(self, percepts, step, time_left):
+        
+        self.time_left = time_left
+        self.timer = time()
+        
         if step % 2 == 0:
             player = -1
         else:
@@ -144,7 +150,7 @@ class Marvin_player(Player,minimax.Game):
                 if elem[1] > weight :
                     weight = elem[1]
                     action_to_play = elem[0]
-            print(action_to_play)
+            print(mustDo)
             if action_to_play == 0 :
                 print("INVALIDE PLAY in PLAY")
                 print(mustDo)

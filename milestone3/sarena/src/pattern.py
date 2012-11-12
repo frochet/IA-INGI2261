@@ -40,7 +40,7 @@ class Action(object):
         self.t_target.append(self.weight)
         #print(self.t_target)
         self.representation = self._make_representation()
-        print(self.weight)
+        #print(self.weight)
         #print(str(self.representation)+" tour final :"+str(self.t_target))
         if 'sub_board' in kwords :
             pass # analyse a pattern
