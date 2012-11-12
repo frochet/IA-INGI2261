@@ -30,8 +30,8 @@ class Marvin_player(Player,minimax.Game):
     
     def successors(self, state):
         board, player = state
+        self.previousSearchedBoard = board.clone()
         for action in board.get_actions():
-            self.previousSearchedBoard = board.clone()
             yield (action,(board.clone().play_action(action), -player)) 
 
     def cutoff(self, state, depth):
@@ -362,11 +362,13 @@ class Marvin_player(Player,minimax.Game):
         for i in range(currentBoard.rows) :
             for j in range(currentBoard.columns):
                 if currentBoard.get_height(currentBoard.m[i][j]) != previousBoard.get_height(previousBoard.m[i][j]) :
+                    t_1 = [previousBoard.m[i][j][0]]
+                    t_1.extend(previousBoard.get_tower(previousBoard.m[i][j]))
                     if currentBoard.get_height(currentBoard.m[i][j]) > previousBoard.get_height(previousBoard.m[i][j]) :
-                        towers[1] = previousBoard.m[i][j]
+                        towers[1] = t_1
                         action += i,j    
                     else :
-                        towers[0] = previousBoard.m[i][j]
+                        towers[0] = t_1
                         if len(action) != 0:
                             tmp = action
                             action = (i, j)
