@@ -306,15 +306,21 @@ class Marvin_player(Player,minimax.Game):
         subboard = Board(newpercept)
         subboardaction = search((subboard, player), self)
         if subboardaction[1]:
+            print("begin sub")
+            print(i)
+            print(j)
+            print(subboardaction)
             boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
             subboardaction[1][1] + j, \
             subboardaction[1][2] + i, \
             subboardaction[1][3] + j))
             if board.is_action_valid(boardaction[1]):
+                print("end sub")
                 return boardaction
             else:
                 print("unvalid action_played")
                 print(boardaction)
+                print("end sub")
                 return False
         else:
             return(0, None)
@@ -381,12 +387,14 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(board.columns-3, board.columns)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
+                    y = differenttowers[0][1] - 1
                 else:
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[1][1]+2)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[0][0]+2)]
+                    y = differenttowers[0][1] - 1
                 x = differenttowers[0][0] - 1
-                y = differenttowers[0][1] - 1
+                #y = differenttowers[0][1] - 1
         else:
             #The different towers are on the same column
             if differenttowers[0][0] == 0:
@@ -438,26 +446,33 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(board.columns-2, board.columns)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
+                    y = differenttowers[0][1] - 1
                 else:
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[0][1]+2)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
+                    y = differenttowers[0][1] - 1
                 x = differenttowers[0][0] - 1
-                y = differenttowers[0][1] - 1
             
         counterboard = Board(counterpercept)
         counteraction = search((counterboard, player), self)
         if counteraction[1]:
+            print("begin counter")
+            print(x)
+            print(y)
+            print(counteraction)
             action = (counteraction[0], (counteraction[1][0] + x, \
             counteraction[1][1] + y, \
             counteraction[1][2] + x, \
             counteraction[1][3] + y))
             
-            if board.is_action_valid(counteraction[1]):
-                return counteraction
+            if board.is_action_valid(action[1]):
+                print("end counter")
+                return action
             else:
                 print("unvalid action_played")
-                print(counteraction)
+                print(action)
+                print("end counter")
                 return False
             return action
         else:
