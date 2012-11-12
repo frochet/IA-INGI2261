@@ -153,7 +153,6 @@ class Marvin_player(Player,minimax.Game):
         board = Board(percepts)
         state = (board, player)
         
-        print("AI plays")
 #        subboardaction = self.get_sub_board_action(board, player)
 #        return subboardaction[1]
 #        if self.previousboard:
@@ -196,9 +195,7 @@ class Marvin_player(Player,minimax.Game):
             counteraction = False
             if self.previousboard:
                 differenttowers = self.get_diff_towers(board)
-                print(differenttowers)
                 counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
-            print(counteraction)
             subboardaction = self.get_sub_board_action(board, player)
             #print(subboardaction)
             if counteraction:
@@ -215,7 +212,6 @@ class Marvin_player(Player,minimax.Game):
                 action = subboardaction[1]
             else:
                 action = minimax.search(state, self)
-            print(action)
             #action = minimax.search(state, self)
             self.previousboard = board.clone().play_action(action)
             return action 
@@ -278,7 +274,6 @@ class Marvin_player(Player,minimax.Game):
         '''
         miniboardvalues = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         best = [0,0,0]
-        print("in sub")
         #Need to check those -3
         for i in range(board.rows - 3):
             for j in range(board.columns - 3):
@@ -309,7 +304,6 @@ class Marvin_player(Player,minimax.Game):
         for x in range(4):
             newpercept[x] = bigboardpercept[x+i][j:j+4]
         subboard = Board(newpercept)
-        print(subboard)
         subboardaction = search((subboard, player), self)
         if subboardaction[1]:
             boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
@@ -452,9 +446,7 @@ class Marvin_player(Player,minimax.Game):
                 y = differenttowers[0][1] - 1
             
         counterboard = Board(counterpercept)
-        print(counterboard)
         counteraction = search((counterboard, player), self)
-        print(counteraction)
         if counteraction[1]:
             action = (counteraction[0], (counteraction[1][0] + x, \
             counteraction[1][1] + y, \
@@ -815,7 +807,6 @@ def search(state, game, prune=True):
         return val, action
 
     val, action = max_value(state, -inf, inf, 0)
-    print("fin search")
     return val, action
 
 
