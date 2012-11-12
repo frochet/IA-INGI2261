@@ -40,7 +40,7 @@ class Action(object):
         self.t_target.append(self.weight)
         #print(self.t_target)
         self.representation = self._make_representation()
-        print(self.weight)
+        #print(self.weight)
         #print(str(self.representation)+" tour final :"+str(self.t_target))
         if 'sub_board' in kwords :
             pass # analyse a pattern
@@ -113,8 +113,9 @@ class Action(object):
                     i+=1
                 i = 1
                 while i < self.size_t_target :
-                    self.t_target[i][0] = -2
-                    self.t_target[i][1] = -2
+                    if i > 1 :
+                        self.t_target[i][0] = -2
+                        self.t_target[i][1] = -2
                     i+=1 
                     
                 self._weight()
@@ -127,7 +128,7 @@ class Action(object):
                     #choisir pattern
                     self.weight = -self.weight
                 elif self.t_init[self.size_t_init-1][1] == Color.RED and self.t_target[0] == 3 and \
-                    self.t_target[1][0] != Color.YELLOW :
+                    self.t_target[1][0] == Color.RED :
                     self.weight = -self.weight
                     self.t_target[1][0] = 2
                 self.t_init.pop(0)
