@@ -127,8 +127,8 @@ class Marvin_player(Player,minimax.Game):
         board = Board(percepts)
         state = (board, player)
         
-#        subboardaction = self.get_sub_board_action(board, player)
-#        return subboardaction
+        subboardaction = self.get_sub_board_action(board, player)
+        return subboardaction[1]
         
         self.previousSearchedBoard = None
         # MustDo before !
@@ -205,6 +205,9 @@ class Marvin_player(Player,minimax.Game):
                 
     
     def get_sub_board_action(self, board, player):
+        '''Returnsa tuple val, action with the action on the main board \
+        and the value alpha beta found for the associated leaf
+        '''
         miniboardvalues = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         best = [0,0,0]
         #Need to check those -3
@@ -236,12 +239,14 @@ class Marvin_player(Player,minimax.Game):
         newpercept = [0,0,0,0]
         for x in range(4):
             newpercept[x] = bigboardpercept[x+i][j:j+4]
-        #print (newpercept)
         subboard = Board(newpercept)
-        subboardaction = minimax.search((subboard, player), self)
+        subboardaction = search((subboard, player), self)
+            
+        boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
+        subboardaction[1][1] + j, \
+        subboardaction[1][2] + i, \
+        subboardaction[1][3] + j))
         
-        boardaction = (subboardaction[0] + i, subboardaction[1] + j, \
-        subboardaction[2] + i, subboardaction[3] + j)
         return boardaction
     
     
@@ -449,6 +454,7 @@ class Marvin_player(Player,minimax.Game):
                 return compute(score,tower)      
         return score
         
+        
     def _init_pattern(self):
         # Pattern Sandwich 
         self.mustDoDic[Action([3,[Color.RED, -2],[0,0],[0,0],[0,0]],[4,[-2,Color.RED],[0,0],[0,0],[0,0]])] = True
@@ -495,6 +501,55 @@ class Marvin_player(Player,minimax.Game):
         self.suicideDic[Action([4,[-2,Color.YELLOW],[0,0],[0,0],[0,0]],[3,[2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.suicideDic[Action([4,[-2,-2],[-2,Color.YELLOW],[0,0],[0,0]],[3,[2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.suicideDic[Action([4,[-2,-2],[-2,-2],[-2,Color.YELLOW],[0,0]],[3,[2,-2],[0,0],[0,0],[0,0]])] = True
+
+
+inf = float("inf")
+
+
+def search(state, game, prune=True):
+    """Perform a MiniMax/AlphaBeta search and return the best action.
+
+    Arguments:
+    state -- initial state
+    game -- a concrete instance of class Game
+    prune -- whether to use AlphaBeta pruning
+
+    """
+
+    def max_value(state, alpha, beta, depth):
+        if game.cutoff(state, depth):
+            return game.evaluate(state), None
+        val = -inf
+        action = None
+        for a, s in game.successors(state):
+            v, _ = min_value(s, alpha, beta, depth + 1)
+            if v > val:
+                val = v
+                action = a
+                if prune:
+                    if v >= beta:
+                        return v, a
+                    alpha = max(alpha, v)
+        return val, action
+
+    def min_value(state, alpha, beta, depth):
+        if game.cutoff(state, depth):
+            return game.evaluate(state), None
+        val = inf
+        action = None
+        for a, s in game.successors(state):
+            v, _ = max_value(s, alpha, beta, depth + 1)
+            if v < val:
+                val = v
+                action = a
+                if prune:
+                    if v <= alpha:
+                        return v, a
+                    beta = min(beta, v)
+        return val, action
+
+    val, action = max_value(state, -inf, inf, 0)
+    return val, action
 
 
 if __name__ == "__main__" :
