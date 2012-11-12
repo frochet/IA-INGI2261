@@ -60,11 +60,14 @@ class Marvin_player(Player,minimax.Game):
                     return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
 
         
-        if (time()-self.timer) > 15 :
+        if (time()-self.timer) > 180:
             return depth >= self.previousDepth-1
-        if (time()-self.timer) > 20 :
+        if (time()-self.timer) > 200 :
             return depth >= self.previousDepth-2
         
+        if self.step < 5 :
+            self.previousDepth = 2
+            return depth == 2
         if self.step > 16 and self.step <= 25 :
             self.previousDepth = 4
             return depth == 4
@@ -74,8 +77,7 @@ class Marvin_player(Player,minimax.Game):
         
         self.previousDepth = 3
         
-        return depth == 3 
-
+        return depth == 3
     def evaluate(self, state):
         board, player = state
         #regarder les points en cours sur le board (jeton isoles + tour a retourner + pattern must_do, suicide) + la difference entre le nombre de jeton
@@ -99,7 +101,7 @@ class Marvin_player(Player,minimax.Game):
                     t_init+=board.m[k][l]
                     t_target+=board.m[m][n]
                     move = Action(t_init,t_target)
-                    if player == 1 : # si c'est a nous de jouer ?
+                    if self.previousDepth % 2 == 0 : # si c'est a nous de jouer ?
                         if move.is_a_pattern(self.mustDoDic) :
                             score+=move.weight
                     else:
@@ -143,7 +145,7 @@ class Marvin_player(Player,minimax.Game):
         self.time_left = time_left
         self.timer = time()
         self.step = step
-
+        print(self.time_left)
 #        if step == 2:
 #            init_previousboard()
         if step % 2 == 0:
@@ -192,6 +194,7 @@ class Marvin_player(Player,minimax.Game):
                 self.previousboard = board.clone().play_action(action_to_play)
                 return action_to_play                
         else :
+            #return minimax.search(state, self)
             counteraction = False
             if self.previousboard:
                 differenttowers = self.get_diff_towers(board)

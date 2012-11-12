@@ -7,7 +7,7 @@ from IO import IO
 from Case import *
 import sys
 
-class Board:
+calass Board:
     
     '''
         Represent the static game board, with wall, goal and normal cases.
