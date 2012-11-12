@@ -113,10 +113,7 @@ class Marvin_player(Player,minimax.Game):
                             redCoins +=1
         score += (yellowCoins-redCoins)
         return score
-            
-            
-            
-                
+                 
 
     def play(self, percepts, step, time_left):
         
@@ -129,6 +126,10 @@ class Marvin_player(Player,minimax.Game):
             player = 1
         board = Board(percepts)
         state = (board, player)
+        
+#        subboardaction = self.get_sub_board_action(board, player)
+#        return subboardaction
+        
         self.previousSearchedBoard = None
         # MustDo before !
         mustDo = []
@@ -158,7 +159,6 @@ class Marvin_player(Player,minimax.Game):
             else:
                 return action_to_play                
         else :
-            subboardaction = self.get_sub_board_action(board, player)
             
             action = minimax.search(state, self)
             return action 
@@ -236,13 +236,13 @@ class Marvin_player(Player,minimax.Game):
         newpercept = [0,0,0,0]
         for x in range(4):
             newpercept[x] = bigboardpercept[x+i][j:j+4]
+        #print (newpercept)
         subboard = Board(newpercept)
         subboardaction = minimax.search((subboard, player), self)
-        subboardaction[0] += i
-        subboardaction[1] += j
-        subboardaction[2] += i
-        subboardaction[3] += j   
-        return (subboardaction,(board.clone().play_action(subboardaction), -player))
+        
+        boardaction = (subboardaction[0] + i, subboardaction[1] + j, \
+        subboardaction[2] + i, subboardaction[3] + j)
+        return boardaction
     
     
     def get_counter_action(self, bigboardpercept, board, differenttowers, player):
