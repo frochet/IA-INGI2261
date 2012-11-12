@@ -204,7 +204,18 @@ class Marvin_player(Player,minimax.Game):
                 j += 1
             i += 1  
         return differenttowers
-                
+    
+    
+    def init_previousboard(self, board):
+        diffTowers = [None, None]
+        for i in board.rows:
+            for j in board.columns:
+                if board.get_height(board.m[i][j] == 0):
+                    diffTowers[0] = [i, j]
+                elif board.get_height(board.m[i][j] == 1):
+                    diffTowers[1] = [i, j]
+                    
+        # Find init board not via an action
     
     def get_sub_board_action(self, board, player):
         '''Returnsa tuple val, action with the action on the main board \
@@ -411,6 +422,8 @@ class Marvin_player(Player,minimax.Game):
         else:
             print("unvalid action_played")
             return False
+        
+        
     def _see_if_isolate(self,i,j,board,score,tower):
         def compute(score,tower):
             if tower[1][0] == Color.YELLOW :
