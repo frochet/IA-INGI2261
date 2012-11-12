@@ -77,7 +77,7 @@ class Marvin_player(Player,minimax.Game):
         
         self.previousDepth = 3
         
-
+        return depth == 3
     def evaluate(self, state):
         board, player = state
         #regarder les points en cours sur le board (jeton isoles + tour a retourner + pattern must_do, suicide) + la difference entre le nombre de jeton
@@ -194,7 +194,7 @@ class Marvin_player(Player,minimax.Game):
                 self.previousboard = board.clone().play_action(action_to_play)
                 return action_to_play                
         else :
-            return minimax.search(state, self)
+            #return minimax.search(state, self)
             counteraction = False
             if self.previousboard:
                 differenttowers = self.get_diff_towers(board)
