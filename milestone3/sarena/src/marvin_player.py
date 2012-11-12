@@ -42,6 +42,8 @@ class Marvin_player(Player,minimax.Game):
         # TODO            
         if board.is_finished() :
             return True
+        else:
+            return depth == 3
         if self.time_left - (time()-self.timer) < 30 :
             return depth >= 2
         elif self.time_left - (time()-self.timer) < 10 :
@@ -198,11 +200,21 @@ class Marvin_player(Player,minimax.Game):
                 differenttowers = self.get_diff_towers(board)
                 counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
             subboardaction = self.get_sub_board_action(board, player)
+            #print(subboardaction)
             if counteraction:
-                if counteraction[0] > subboardaction[0]:
+                if counteraction[1] and subboardaction[1]:
+                    if counteraction[0] > subboardaction[0]:
+                        action = counteraction[1]
+                    else:
+                        action = subboardaction[1]
+                elif counteraction[1]:
                     action = counteraction[1]
                 else:
                     action = subboardaction[1]
+            elif subboardaction[1]:
+                action = subboardaction[1]
+            else:
+                action = minimax.search(state, self)
             #action = minimax.search(state, self)
             self.previousboard = board.clone().play_action(action)
             return action 
@@ -238,7 +250,7 @@ class Marvin_player(Player,minimax.Game):
         #for i in range(board.rows):
             while not differenttowers[1] and j <= board.columns - 1:
             #for j in range(board.columns):
-                if board.get_height(board.m[i][j]) != board.get_height(self.previousboard.m[i][j]):
+                if board.get_height(board.m[i][j]) != self.previousboard.get_height(self.previousboard.m[i][j]):
                     if differenttowers[0] == 0:
                         differenttowers[0] = [i, j]
                     else:
@@ -276,7 +288,7 @@ class Marvin_player(Player,minimax.Game):
                             elif board.m[x][y][1][0] == 1:
                                 miniboardvalues[i][j] +=1
                         coin = 4
-                        while board.m[i][j][coin][1] == 0:
+                        while coin > 1 and board.m[i][j][coin][1] == 0:
                             coin -= 1
                         if board.m[i][j][coin][1] == 1:
                             miniboardvalues[i][j] +=1
@@ -296,14 +308,21 @@ class Marvin_player(Player,minimax.Game):
             newpercept[x] = bigboardpercept[x+i][j:j+4]
         subboard = Board(newpercept)
         subboardaction = search((subboard, player), self)
-
-        boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
-        subboardaction[1][1] + j, \
-        subboardaction[1][2] + i, \
-        subboardaction[1][3] + j))
+        if subboardaction[1]:
+            boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
+            subboardaction[1][1] + j, \
+            subboardaction[1][2] + i, \
+            subboardaction[1][3] + j))
+            if board.is_action_valid(boardaction[1]):
+                return boardaction
+            else:
+                print("unvalid action_played")
+                print(boardaction)
+                return False
+        else:
+            return(0, None)
+#        return boardaction
         
-        return boardaction
-    
     
     def get_counter_action(self, bigboardpercept, board, differenttowers, player):
         x = 0
@@ -430,15 +449,22 @@ class Marvin_player(Player,minimax.Game):
                 y = differenttowers[0][1] - 1
             
         counterboard = Board(counterpercept)
-        
         counteraction = search((counterboard, player), self)
-
-        action = (counteraction[0], (counteraction[1][0] + x, \
-        counteraction[1][1] + y, \
-        counteraction[1][2] + x, \
-        counteraction[1][3] + y))
-        
-        return action
+        if counteraction[1]:
+            action = (counteraction[0], (counteraction[1][0] + x, \
+            counteraction[1][1] + y, \
+            counteraction[1][2] + x, \
+            counteraction[1][3] + y))
+            
+            if board.is_action_valid(counteraction[1]):
+                return counteraction
+            else:
+                print("unvalid action_played")
+                print(counteraction)
+                return False
+            return action
+        else:
+            return(0, None)
                         
     def _action_played(self,currentBoard,previousBoard):
         """
@@ -738,11 +764,10 @@ class Action(object):
     def is_a_pattern(self,dico):
         return self in dico
 
+
 inf = float("inf")
 
-
 def search(state, game, prune=True):
-    print("in search")
     """Perform a MiniMax/AlphaBeta search and return the best action.
 
     Arguments:
@@ -785,7 +810,6 @@ def search(state, game, prune=True):
         return val, action
 
     val, action = max_value(state, -inf, inf, 0)
-    print("fin search")
     return val, action
 
 
