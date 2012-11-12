@@ -145,7 +145,7 @@ class Marvin_player(Player,minimax.Game):
         self.time_left = time_left
         self.timer = time()
         self.step = step
-        print(self.time_left)
+#        print(self.time_left)
 #        if step == 2:
 #            init_previousboard()
         if step % 2 == 0:
@@ -197,7 +197,6 @@ class Marvin_player(Player,minimax.Game):
         else :
             #return minimax.search(state, self)
             counteraction = False
-            allaction = False
             if self.previousboard:
                 differenttowers = self.get_diff_towers(board)
                 counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
@@ -214,15 +213,12 @@ class Marvin_player(Player,minimax.Game):
                 elif subboardaction[1]:
                     action = subboardaction[1]
                 else:
-                    allaction = minimax.search(state, self)
-                    action = allaction
+                    action = minimax.search(state, self)
             elif subboardaction[1]:
                 action = subboardaction[1]
             else:
-                allaction = minimax.search(state, self)
-                action = allaction
+                action = minimax.search(state, self)
             #action = minimax.search(state, self)
-
             self.previousboard = board.clone().play_action(action)
             return action 
             #we must perform two searches on both subboard and return the best move
@@ -314,7 +310,7 @@ class Marvin_player(Player,minimax.Game):
         for x in range(4):
             newpercept[x] = bigboardpercept[x+i][j:j+4]
         subboard = Board(newpercept)
-        subboardaction = search((subboard, player), self)
+        subboardaction = search((subboard, player), board, i, j, self)
         if subboardaction[1]:
 
             boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
@@ -324,7 +320,7 @@ class Marvin_player(Player,minimax.Game):
             if board.is_action_valid(boardaction[1]):
                 return boardaction
             else:
-                return False
+                return (0, None)
         else:
             return(0, None)
 #        return boardaction
@@ -440,20 +436,17 @@ class Marvin_player(Player,minimax.Game):
             else:
                 #on the middle rows
                 if differenttowers[0][1] == 0:
-                    print("left")
                     #The towers are on the left side of the board
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(2)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
                 elif differenttowers[1][1] == board.columns - 1:
-                    print("right")
                     #Towers on the right side
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(board.columns-2, board.columns)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
                     y = differenttowers[0][1] - 1
                 else:
-                    print("middle")
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(differenttowers[0][1]-1, differenttowers[0][1]+2)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
@@ -461,7 +454,7 @@ class Marvin_player(Player,minimax.Game):
                 x = differenttowers[0][0] - 1
             
         counterboard = Board(counterpercept)
-        counteraction = search((counterboard, player), self)
+        counteraction = search((counterboard, player), board, x, y, self)
         if counteraction[1]:
             action = (counteraction[0], (counteraction[1][0] + x, \
             counteraction[1][1] + y, \
@@ -471,11 +464,11 @@ class Marvin_player(Player,minimax.Game):
                 return action
             else:
                 print("unvalid action_played in counter")
-                print(differenttowers)
-                print(x)
-                print(y)
+#                print(differenttowers)
+#                print(x)
+#                print(y)
+#                print(counterboard)
                 print(action)
-                print(counterboard)
                 return False
             return action
         else:
@@ -782,7 +775,7 @@ class Action(object):
 
 inf = float("inf")
 
-def search(state, game, prune=True):
+def search(state, bigboard, i, j, game, prune=True):
     """Perform a MiniMax/AlphaBeta search and return the best action.
 
     Arguments:
@@ -791,14 +784,25 @@ def search(state, game, prune=True):
     prune -- whether to use AlphaBeta pruning
 
     """
-
-    def max_value(state, alpha, beta, depth):
+    def get_leaf_state(state, bigboard, i, j):
+        bigclone = bigboard.clone()
+        miniboard, player = state
+        width = len(miniboard.m)
+        hight = len(miniboard.m[0])
+        for x in range(width):
+            for y in range(hight):
+                bigclone.m[x+i][y+j] = miniboard.m[x][y]
+        return (bigclone, player)
+        
+        
+    def max_value(state, bigboard, i, j, alpha, beta, depth):
         if game.cutoff(state, depth):
-            return game.evaluate(state), None
+            bigstate = get_leaf_state(state, bigboard, i, j)
+            return game.evaluate(bigstate), None
         val = -inf
         action = None
         for a, s in game.successors(state):
-            v, _ = min_value(s, alpha, beta, depth + 1)
+            v, _ = min_value(s, bigboard, i, j, alpha, beta, depth + 1)
             if v > val:
                 val = v
                 action = a
@@ -808,13 +812,14 @@ def search(state, game, prune=True):
                     alpha = max(alpha, v)
         return val, action
 
-    def min_value(state, alpha, beta, depth):
+    def min_value(state, bigboard, i, j, alpha, beta, depth):
         if game.cutoff(state, depth):
-            return game.evaluate(state), None
+            bigstate = get_leaf_state(state, bigboard, i, j)
+            return game.evaluate(bigstate), None
         val = inf
         action = None
         for a, s in game.successors(state):
-            v, _ = max_value(s, alpha, beta, depth + 1)
+            v, _ = max_value(s, bigboard, i, j, alpha, beta, depth + 1)
             if v < val:
                 val = v
                 action = a
@@ -824,7 +829,7 @@ def search(state, game, prune=True):
                     beta = min(beta, v)
         return val, action
 
-    val, action = max_value(state, -inf, inf, 0)
+    val, action = max_value(state, bigboard, i, j, -inf, inf, 0)
     return val, action
 
 
