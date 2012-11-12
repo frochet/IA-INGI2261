@@ -16,7 +16,7 @@ class Sokoban(Problem):
         This class solve a sokoban game 
     """
 
-    def __init__(self, filename):
+    def __init__(self, fileinit, filegoal):
         """
             filename has the form pathto/sokoInstxy 
             without the .goal or .init
@@ -25,24 +25,9 @@ class Sokoban(Problem):
             to the first state.
         """
         
-        self.board = Board(filename + ".goal")
-        #self.board.print_board_repr()
+        self.board = Board(filegoal)
         self.numbernodes = 0
-        Io = IO(filename +".init")
-
-#    def __init__(self, fileinit, filegoal):
-#        """
-#            filename has the form pathto/sokoInstxy 
-#            without the .goal or .init
-#            This constructor make the static board 
-#            and give the dynamic items (boxes, char)
-#            to the first state.
-#        """
-#        
-#        self.board = Board(filegoal)
-#        #self.board.print_board_repr()
-#        self.numbernodes = 0
-#        Io = IO(fileinit)
+        Io = IO(fileinit)
         Io.init_reader()
         self.boxes = []
         i = 0
@@ -88,11 +73,6 @@ class Sokoban(Problem):
             each is a move in one of the
             directions. Each cost we be 1
         """
-        
-        #state.print_board()
-        #self.board.print_board(state.char, state.boxes)
-        #print (state.currentDeadStates)
-        
         for direct in self.direction :
             newState = state.move(direct)
             if newState :
@@ -110,18 +90,16 @@ class Sokoban(Problem):
         #  HEURISTIC 2 : SUM OF THE MIN OF THE MANHATTAN DISTANCE
         #
         ###
-        boxes = node.state.clone_boxes(node.state.boxes)
         sums = []
         conf = []
-        for goal in self.board.positionGoal:
-            for box in boxes :
+        for box in node.state.boxes :
+            for goal in self.board.positionGoal:
                 sums.append(abs(box.x-goal[1])+abs(box.y-goal[0]))
             mini = 10000
             for elem in sums :
                 if elem < mini :
-                        mini=elem
+                    mini=elem
             conf.append(mini)
-            boxes.pop(sums.index(mini))
             sums = []
         val = sum(conf)
         return val
@@ -152,15 +130,10 @@ class Sokoban(Problem):
 #            j=0
 #            k+=1
 #        self.mini = 10000    
-#        #print(boxes)
-#        #print(self.board.positionGoal)
-#        #print(self.listCombi)
-#        
-#        #print(listToMin)
+#
 #        for elem in listToMin :
 #            if elem < self.mini :
 #                    self.mini=elem
-#        print(self.mini)
 #        return self.mini
 
         ###
@@ -180,26 +153,23 @@ class Sokoban(Problem):
 
 ###################### Launch the search #########################
 
-problem=Sokoban(sys.argv[1])    
-#problem=Sokoban(sys.argv[1], sys.argv[2])
-#example of bfs search
+#problem=Sokoban(sys.argv[1])    
+problem=Sokoban(sys.argv[1], sys.argv[2])
+
 start_time = time()
 
 node=astar_graph_search(problem,problem.h)
 #node=breadth_first_graph_search(problem)
 
-#node=astar_graph_search(problem,problem.h)
-#node=breadth_first_graph_search(problem)
-#node=depth_first_graph_search(problem)
 enlapsed = time() - start_time
-#example of print
+
 path=node.path()
 path.reverse()
 numberOfSteps = 0
 for n in path:
     numberOfSteps += 1
-    ''''n.state.print_board() #assume that the __str__ function of states output the correct format
-    print("")'''
+    n.state.print_board() #assume that the __str__ function of states output the correct format
+    print("")
 print (enlapsed, ' seconds')
 print (numberOfSteps, ' steps')
 print (problem.numbernodes, ' noeuds explorés')

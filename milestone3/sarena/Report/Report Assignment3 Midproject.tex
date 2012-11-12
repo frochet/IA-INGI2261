@@ -1,0 +1,119 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french] {babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{ulem}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage[a4paper]{geometry}
+\geometry{hscale=0.7,vscale=0.7,centering}
+\usepackage{vmargin}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{moreverb}
+\usepackage{listings}
+\newtheorem{theorem}{Théorème}[section]
+\newtheorem{defi}{Définition}[section] 
+\newtheorem{prop}{Propriété}[section] 
+\usepackage{color}
+\definecolor{gris}{rgb}{0.95,0.95,0.95}
+\lstset{numbers=left, tabsize=4, backgroundcolor=\color{gris},
+frame=single, breaklines=true,
+keywordstyle=\color{black},
+stringstyle=\ttfamily,
+framexleftmargin=6mm, xleftmargin=6mm}
+%opening
+\title{LINGI 2261 : Artificial Intelligence \\
+Assignement 3 - Mid-Project}
+\author{Rochet Florentin - Debroux Léonard} 
+\date{Année académique 2011-2012}
+
+\begin{document}
+
+	\begin{titlepage}
+		\begin{center}
+			{\huge LINGI2261: Artificial Intelligence}\\
+			\vspace{0.4cm}
+			
+			{\Large {Professor : Yves Deville\\ \vspace{0.2cm} Teaching assistants : Cyrille Dejemeppe and Jean-Baptiste Mairy  }}\\
+			\vspace{0.6cm}
+			
+			{\Large \textit{ Assignement3 : Adversarial Search}}\\
+			\vspace{1.2cm}
+
+			\texttt{}\\
+			\vspace{0.2cm}
+
+			\includegraphics[height=10cm]{pageGarde.png}\\
+			\vspace{0.1cm}
+			{\Large \textbf{Universit\'e Catholique de Louvain}}
+			\vspace{0.7cm}
+
+			Groupe 37 \\
+			\vspace{0.2cm}
+			
+			Florentin Rochet \\
+			Léonard Debroux\\
+			\vspace{0.2cm}
+			2012-2013\\
+		\end{center}
+	\end{titlepage}
+
+	\newpage
+	
+
+	\section{Scipion}
+	
+		\subsection{Draw the game tree for a depth of 2, i.e. one turn for each player.}
+		\subsection{Evaluate the value of the leaves using the heuristic function (on the figure you
+draw in 1, you don’t have to implement it!).}
+		\subsection{Using the MiniMax algorithm, find the value of the other nodes.}
+		\subsection{Circle the move the root player should do.}
+		
+	\section{Alpha-Beta search}	
+		\subsection{Perform the MiniMax algorithm on the tree in Figure 4, i.e. put a value to each node. Circle the move the root player should do.}
+		\subsection{Perform the Alpha-Beta algorithm on the tree. At each non terminal node, put the successive values of $\alpha$ and $\beta$. Cross out the arcs reaching non visited nodes. Assume a left-to-right node expansion.}
+		\subsection{Do the same, assuming a right-to-left node expansion instead}
+		\subsection{Can the nodes be ordered in such a way that Alpha-Beta pruning can cut off more branches (in a left-to-right node expansion)? If no, explain why; if yes,
+give the new ordering and the resulting new pruning.}
+		Yes it can. here the new ordering :
+	\section{Sarena}
+		\subsection{A basic Alpha-Beta agent}
+		
+		\subsection{Comparison of MiniMax and Alpha-Beta}
+			\subsubsection{Question 4: What action will be played when using the MiniMax algorithm and when using the Alpha-Beta algorithm? Is there a difference between both results?}
+			The two played actions will be the same because the difference between MiniMax and Alpha-Beta is that the latter uses pruning. The only difference between the two results is that Alpha-Beta will visit less nodes than MiniMax and so, less time is needed.
+			\subsubsection{Question 5: For both algorithms, give the time taken and the number of nodes that are visited when searching the tree. Does this meet your expectations?}
+				The results of the tests are below. We didn't get to completion by using the MiniMax strategy, the amount of nodes goes past 10M nodes and so, we didn't let the game run long enough to see a result.
+				\begin{center}
+					\begin{tabular}{|c||c|c|}
+						\hline 
+						 & \textbf{Time [s]} & \textbf{Nodes} \\ 
+						\hline 
+						\textbf{MiniMax} & / & / \\ 
+						\hline 
+						\textbf{Alpha-Beta} & 87.82 & 371,175 \\
+						\hline 
+					\end{tabular}
+				\end{center} 
+				This meets our expectations as we first run Alpha-Beta and it already took some time, it is normal that MiniMax takes so much time.
+
+			\subsubsection{Question 6: For both algorithms, report the number of nodes that are visited at each depth level of the tree.a What do you observe? Explain.}
+				As we only reached a solution for the Alpha-Beta algorithm here is the number of nodes visited per depth.\\
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+						\hline 
+						\textbf{Depth} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ 
+						\hline 
+						\textbf{Nodes} & 1 & 24 & 63 & 659 & 2,113 & 11,427 & 28,131 & 78,554 & 95,481 & 109,704 & 45,018 \\ 
+						\hline 
+					\end{tabular} 
+				\end{center}
+				What is worth observing is the obvious result of 24 nodes at the depth 1 which correspond to $ 1*4 + 4*3 + 4*2 $ that is the possible moves per position (center, edge and corner).\\
+				Also, we can see that at the depth 10, there is less moves than for the depth 9. That is because some game progressions can lead to only 9 moves to completion.
+
+\end{document}
