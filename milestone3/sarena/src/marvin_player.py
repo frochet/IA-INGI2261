@@ -120,6 +120,8 @@ class Marvin_player(Player,minimax.Game):
         self.time_left = time_left
         self.timer = time()
         
+#        if step == 2:
+#            init_previousboard()
         if step % 2 == 0:
             player = -1
         else:
@@ -127,8 +129,8 @@ class Marvin_player(Player,minimax.Game):
         board = Board(percepts)
         state = (board, player)
         
-        subboardaction = self.get_sub_board_action(board, player)
-        return subboardaction[1]
+#        subboardaction = self.get_sub_board_action(board, player)
+#        return subboardaction[1]
         
         self.previousSearchedBoard = None
         # MustDo before !
@@ -241,7 +243,7 @@ class Marvin_player(Player,minimax.Game):
             newpercept[x] = bigboardpercept[x+i][j:j+4]
         subboard = Board(newpercept)
         subboardaction = search((subboard, player), self)
-            
+
         boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
         subboardaction[1][1] + j, \
         subboardaction[1][2] + i, \
