@@ -7,6 +7,7 @@ from sarena import *
 import minimax
 from time import *
 from random import randint
+import operator
 
 class Marvin_player(Player,minimax.Game):
     '''
@@ -32,18 +33,26 @@ class Marvin_player(Player,minimax.Game):
         
     def successors(self, state):
         board, player = state
-        #self.previousSearchedBoard = board.clone()
+    
+        
+        actions_ordered = []
         for action in board.get_actions():
+            tmpBoard = board.clone()
+            tmpBoard.play_action(action)
+            actions_ordered.append(OrderedBoard(self.evaluate((tmpBoard,player)),action))
+        if player == 1:
+            actions_ordered.sort(key=operator.attrgetter('eval'))
+        else : 
+            actions_ordered.sort(key=operator.attrgetter('eval'),reverse=True)
+        for orderedBoard in actions_ordered:
             self.previousSearchedBoard = board.clone()
-            yield (action,(board.clone().play_action(action), -player)) 
+            yield (orderedBoard.action,(board.clone().play_action(orderedBoard.action), -player)) 
 
     def cutoff(self, state, depth):
         board, player = state
         # TODO            
         if board.is_finished() :
             return True
-        else:
-            return depth == 3
         if self.time_left - (time()-self.timer) < 30 :
             return depth >= 2
         elif self.time_left - (time()-self.timer) < 10 :
@@ -194,7 +203,7 @@ class Marvin_player(Player,minimax.Game):
                 self.previousboard = board.clone().play_action(action_to_play)
                 return action_to_play                
         else :
-            #return minimax.search(state, self)
+            return minimax.search(state, self)
             counteraction = False
             if self.previousboard:
                 differenttowers = self.get_diff_towers(board)
@@ -309,23 +318,18 @@ class Marvin_player(Player,minimax.Game):
         subboard = Board(newpercept)
         subboardaction = search((subboard, player), self)
         if subboardaction[1]:
-            print("begin sub")
-            print(i)
-            print(j)
-            print(subboardaction)
             boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
             subboardaction[1][1] + j, \
             subboardaction[1][2] + i, \
             subboardaction[1][3] + j))
             if board.is_action_valid(boardaction[1]):
-                print("end sub")
                 return boardaction
             else:
-                print("unvalid action_played")
+                print("unvalid action_played in sub")
                 print(boardaction)
-                print("end sub")
                 return False
         else:
+            print("je retourne comme un leo dans sub")
             return(0, None)
 #        return boardaction
         
@@ -460,25 +464,20 @@ class Marvin_player(Player,minimax.Game):
         counterboard = Board(counterpercept)
         counteraction = search((counterboard, player), self)
         if counteraction[1]:
-            print("begin counter")
-            print(x)
-            print(y)
-            print(counteraction)
             action = (counteraction[0], (counteraction[1][0] + x, \
             counteraction[1][1] + y, \
             counteraction[1][2] + x, \
             counteraction[1][3] + y))
             
             if board.is_action_valid(action[1]):
-                print("end counter")
                 return action
             else:
-                print("unvalid action_played")
+                print("unvalid action_played in counter")
                 print(action)
-                print("end counter")
                 return False
             return action
         else:
+            print("je retourne None comme un gland dans counter")
             return(0, None)
                         
     def _action_played(self,currentBoard,previousBoard):
@@ -507,7 +506,7 @@ class Marvin_player(Player,minimax.Game):
         if previousBoard.is_action_valid(action):
             return (action,towers)
         else:
-            print("unvalid action_played")
+            print("unvalid action_played in _action_played")
             print(action)
             return False
         
@@ -527,34 +526,6 @@ class Marvin_player(Player,minimax.Game):
             if board.get_height(board.m[i][j+1])+board.get_height(board.m[i][j-1]) + \
                 board.get_height(board.m[i+1][j])+ board.get_height(board.m[i-1][j]) == 0 :
                 return compute(score,tower)
-        elif i==i_start and j==j_start:
-            if board.get_height(board.m[i][j+1]) + board.get_height(board.m[i+1][j]) == 0 :
-                return compute(score,tower)
-        elif i==i_end and j == j_start:
-            if board.get_height(board.m[i][j+1]) + board.get_height(board.m[i-1][j]) == 0 :
-                return compute(score,tower)
-        elif i==i_start and j == j_end:
-            if board.get_height(board.m[i+1][j]) + board.get_height(board.m[i-1][j]) == 0 :
-                return compute(score,tower)  
-        elif i==i_end and j == j_end:
-            if board.get_height(board.m[i-1][j]) + board.get_height(board.m[i][j-1]) == 0 :
-                return compute(score,tower) 
-        elif i==i_start and (j > j_start and j < j_end) :
-            if board.get_height(board.m[i][j+1]) +board.get_height(board.m[i][j-1])+ \
-                board.get_height(board.m[i+1][j]) == 0:
-                return compute(score,tower)
-        elif i==i_end and (j > j_start and j < j_end) :
-            if board.get_height(board.m[i][j+1]) +board.get_height(board.m[i][j-1])+ \
-                board.get_height(board.m[i-1][j]) == 0:
-                return compute(score,tower)
-        elif (i > i_start and i < i_end) and j==j_start :
-            if board.get_height(board.m[i+1][j]) +board.get_height(board.m[i-1][j])+ \
-                board.get_height(board.m[i][j+1]) == 0:
-                return compute(score,tower)
-        elif (i > i_start and i < i_end) and j==i_end :
-            if board.get_height(board.m[i+1][j]) +board.get_height(board.m[i-1][j])+ \
-                board.get_height(board.m[i][j-1]) == 0:
-                return compute(score,tower)      
         return score
         
         
@@ -714,9 +685,8 @@ class Action(object):
                     i+=1
                 i = 1
                 while i < self.size_t_target :
-                    if i > 1 :
-                        self.t_target[i][0] = -2
-                        self.t_target[i][1] = -2
+                    self.t_target[i][0] = -2
+                    self.t_target[i][1] = -2
                     i+=1 
                     
                 self._weight()
@@ -827,6 +797,20 @@ def search(state, game, prune=True):
     val, action = max_value(state, -inf, inf, 0)
     return val, action
 
-
+class OrderedBoard(object):
+    
+    def __init__(self, eval,action):
+        self.eval = eval
+        self.action = action
+    
+    def __eq__(self,other):
+        return self.eval == other.eval
+    def __cmp__(self,other):
+        if self.eval > other.eval:
+            return 1
+        elif self.eval < other.eval:
+            return -1
+        else: return 0
+        
 if __name__ == "__main__" :
     player_main(Marvin_player())

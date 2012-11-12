@@ -119,6 +119,6 @@ give the new ordering and the resulting new pruning.}
 				The evaluation function look for each towers of the board. For each of them, it first calculate all the possible actions and create an object Action \footnote{see our class Action}, then it checks if this action is contained in our dictionnaries of "mustDo" and "suicide" move. Those dictionnaries are used to recognize some patterns that we assume they must be done in the next move. It's a look-forward for some precise case. A weight is associate in each of those pattern\footnote{see the action again} and this weight is part of the score. The weight is positive for mustDo and negative for suicide.\\
 After, we compute the points associate to each coins that are lost or win. the points are positive for win coins and negative for the lost coins. Thoses points are add to the score.
 And finally, the function count the numbers of yellow coins and red coins that are, first on bottom of towers located in blank case and second on top of towers locatad in arrows coins. the value (yellowCoins-redCoins) is added to the score, which make the final score.\\
-This score is positive if we are evaluate to winner and negative on the other hand.
+This score is positive if we are evaluate to be the winner and negative on the other hand.
 
 \end{document}

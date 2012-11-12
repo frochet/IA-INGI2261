@@ -197,6 +197,7 @@ class Board:
             return True
         except (TypeError, ValueError):
             print ("the action is not valid")
+            print(action)
             return False
 
     def get_tower_actions(self, i, j):
