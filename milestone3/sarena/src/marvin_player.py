@@ -155,6 +155,7 @@ class Marvin_player(Player,minimax.Game):
         board = Board(percepts)
         state = (board, player)
         
+        print(step)
 #        subboardaction = self.get_sub_board_action(board, player)
 #        return subboardaction[1]
 #        if self.previousboard:
@@ -184,7 +185,7 @@ class Marvin_player(Player,minimax.Game):
                 if elem[1] > weight :
                     weight = elem[1]
                     action_to_play = elem[0]
-            print(mustDo)
+            #print(mustDo)
             if action_to_play == 0 :
                 print("INVALIDE PLAY in PLAY")
                 print(mustDo)
@@ -196,6 +197,7 @@ class Marvin_player(Player,minimax.Game):
         else :
             #return minimax.search(state, self)
             counteraction = False
+            allaction = False
             if self.previousboard:
                 differenttowers = self.get_diff_towers(board)
                 counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
@@ -209,13 +211,18 @@ class Marvin_player(Player,minimax.Game):
                         action = subboardaction[1]
                 elif counteraction[1]:
                     action = counteraction[1]
-                else:
+                elif subboardaction[1]:
                     action = subboardaction[1]
+                else:
+                    allaction = minimax.search(state, self)
+                    action = allaction
             elif subboardaction[1]:
                 action = subboardaction[1]
             else:
-                action = minimax.search(state, self)
+                allaction = minimax.search(state, self)
+                action = allaction
             #action = minimax.search(state, self)
+
             self.previousboard = board.clone().play_action(action)
             return action 
             #we must perform two searches on both subboard and return the best move
@@ -251,7 +258,7 @@ class Marvin_player(Player,minimax.Game):
             while not differenttowers[1] and j <= board.columns - 1:
             #for j in range(board.columns):
                 if board.get_height(board.m[i][j]) != self.previousboard.get_height(self.previousboard.m[i][j]):
-                    if differenttowers[0] == 0:
+                    if not differenttowers[0]:
                         differenttowers[0] = [i, j]
                     else:
                         differenttowers[1] = [i, j]
@@ -309,21 +316,14 @@ class Marvin_player(Player,minimax.Game):
         subboard = Board(newpercept)
         subboardaction = search((subboard, player), self)
         if subboardaction[1]:
-            print("begin sub")
-            print(i)
-            print(j)
-            print(subboardaction)
+
             boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
             subboardaction[1][1] + j, \
             subboardaction[1][2] + i, \
             subboardaction[1][3] + j))
             if board.is_action_valid(boardaction[1]):
-                print("end sub")
                 return boardaction
             else:
-                print("unvalid action_played")
-                print(boardaction)
-                print("end sub")
                 return False
         else:
             return(0, None)
@@ -460,22 +460,18 @@ class Marvin_player(Player,minimax.Game):
         counterboard = Board(counterpercept)
         counteraction = search((counterboard, player), self)
         if counteraction[1]:
-            print("begin counter")
-            print(x)
-            print(y)
-            print(counteraction)
             action = (counteraction[0], (counteraction[1][0] + x, \
             counteraction[1][1] + y, \
             counteraction[1][2] + x, \
             counteraction[1][3] + y))
-            
             if board.is_action_valid(action[1]):
-                print("end counter")
                 return action
             else:
-                print("unvalid action_played")
+                print("unvalid action_played in counter")
+                print(differenttowers)
+                print(x)
+                print(y)
                 print(action)
-                print("end counter")
                 return False
             return action
         else:
