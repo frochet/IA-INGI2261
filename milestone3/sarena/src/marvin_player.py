@@ -101,7 +101,7 @@ class Marvin_player(Player,minimax.Game):
                     t_init+=board.m[k][l]
                     t_target+=board.m[m][n]
                     move = Action(t_init,t_target)
-                    if player == 1 : # si c'est a nous de jouer ?
+                    if self.previousDepth % 2 == 0 : # si c'est a nous de jouer ?
                         if move.is_a_pattern(self.mustDoDic) :
                             score+=move.weight
                     else:
