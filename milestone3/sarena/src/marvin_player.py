@@ -219,33 +219,36 @@ class Marvin_player(Player,minimax.Game):
                 return action_to_play                
         else :
             #return minimax.search(state, self)
-            counteraction = False
-            if self.previousboard:
-                differenttowers = self.get_diff_towers(board)
-                counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
-            subboardaction = self.get_sub_board_action(board, player)
-            #print(subboardaction)
-            print(counteraction)
-            print(subboardaction)
-            if counteraction:
-                if counteraction[1] and subboardaction[1]:
-                    if counteraction[0] > subboardaction[0]:
+            if step < 20:
+                counteraction = False
+                if self.previousboard:
+                    differenttowers = self.get_diff_towers(board)
+                    counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
+                subboardaction = self.get_sub_board_action(board, player)
+                #print(subboardaction)
+#                print(counteraction)
+#                print(subboardaction)
+                if counteraction:
+                    if counteraction[1] and subboardaction[1]:
+                        if counteraction[0] > subboardaction[0]:
+                            action = counteraction[1]
+                        else:
+                            action = subboardaction[1]
+                    elif counteraction[1]:
                         action = counteraction[1]
-                    else:
+                    elif subboardaction[1]:
                         action = subboardaction[1]
-                elif counteraction[1]:
-                    action = counteraction[1]
+                    else:
+                        self.symetricDic = dict()
+                        action = minimax.search(state, self)
                 elif subboardaction[1]:
                     action = subboardaction[1]
                 else:
                     self.symetricDic = dict()
                     action = minimax.search(state, self)
-            elif subboardaction[1]:
-                action = subboardaction[1]
             else:
                 self.symetricDic = dict()
                 action = minimax.search(state, self)
-            print(action)
             #action = minimax.search(state, self)
             self.previousboard = board.clone().play_action(action)
             return action 
