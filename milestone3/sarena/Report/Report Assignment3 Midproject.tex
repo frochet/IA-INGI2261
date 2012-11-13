@@ -128,6 +128,7 @@ This score is positive if we are evaluate to winner and negative on the other ha
 					This increases the change to have pruning when backtracking the evaluations of the leaves.\\
 					The only drawback would be the computation time to perform the sort, but as it increases the pruning enough, it is better to do so.
 				\subsubsection{Question 9: Make an agent using the successor function of the basic player (section 3.1), using your new evaluation function and cutting the tree at its root to use the evaluation function on its direct successors (you can achieve this by making cutoff always return True). Let this agent play against another similar agent using Board.get\_score as evaluation function. Try out multiple matches and vary who plays first. How well does your evaluation function fare?}
+					Our evaluation function alone doesn't do so well when search with a depth of 1, we launched 10 games, 5 with basic_player beginning and 5 with the other beginning. The basic_player won 9 times over 10, the other player won only once as he began the game.
 			
 			\subsection{Successors function}
 				\subsubsection{Question 10: Give an upper bound on the number of successors for one state.}
@@ -152,5 +153,9 @@ actions at each step of the game. Plot the results in a graph. What do you obser
 						AJOUTER LE DESSIN
 					\end{huge}
 				\subsubsection{Question 17: Explain why it might be useful (for the Sarena contest) to cut off the search for another reason than the depth.}
+					There is two other reasons than depth to cut the search in our case. the first one is the time that is taken to perform the search and the second one is the detection of the suicides as we want to avoid computing their children.
 				\subsubsection{Question 18: Describe your cut-off function.}
+					Our cut-off function works in three phases, the first is checking if there is enough time remaining. If not, the search of depth 2 or 1.\\
+					Then, we check if the current state made from a suicidal move, if yes, it returns True.\\
+					And finally, if the search took to much time, we decrease the depth of the following search, if not, we increase it.
 \end{document}
