@@ -33,6 +33,7 @@ class Marvin_player(Player,minimax.Game):
         self.timer = 0
         self.step = 0
         self.timeout = False
+        self.actualdepth = 3
     
         
     def successors(self, state):
@@ -75,6 +76,16 @@ class Marvin_player(Player,minimax.Game):
                     return True # if a node-max is a suicide, cut it, we do not play the move
                 elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
                     return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
+        
+        #####################""
+        maxtime = self.time_left / ((1 + (31/(self.step-5))**2)/2)      
+        if (time()-self.timer) > maxtime:
+            print(maxtime)
+            self.timeout = True
+            return True
+        else:
+            return depth == self.actualdepth
+        ########################"       
         
         if self.step == 17 :
             self.currentDepth = 5
@@ -208,7 +219,7 @@ class Marvin_player(Player,minimax.Game):
                 if elem[1] > weight :
                     weight = elem[1]
                     action_to_play = elem[0]
-            #print(mustDo)
+            print(mustDo)
             if action_to_play == 0 :
                 print("INVALIDE PLAY in PLAY")
                 print(mustDo)
@@ -219,12 +230,16 @@ class Marvin_player(Player,minimax.Game):
                 return action_to_play                
         else :
             #return minimax.search(state, self)
-            if step < 20:
+            if step < 10:
                 counteraction = False
                 if self.previousboard:
                     differenttowers = self.get_diff_towers(board)
+                    self.timeout = False
                     counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
+                    self.check_timeout()
+                self.timeout = False
                 subboardaction = self.get_sub_board_action(board, player)
+                self.check_timeout()
                 #print(subboardaction)
 #                print(counteraction)
 #                print(subboardaction)
@@ -240,15 +255,21 @@ class Marvin_player(Player,minimax.Game):
                         action = subboardaction[1]
                     else:
                         self.symetricDic = dict()
+                        self.timeout = False
                         action = minimax.search(state, self)
+                        self.check_timeout()
                 elif subboardaction[1]:
                     action = subboardaction[1]
                 else:
                     self.symetricDic = dict()
+                    self.timeout = False
                     action = minimax.search(state, self)
+                    self.check_timeout()
             else:
                 self.symetricDic = dict()
+                self.timeout = False
                 action = minimax.search(state, self)
+                self.check_timeout()
             #action = minimax.search(state, self)
             self.previousboard = board.clone().play_action(action)
             return action 
@@ -275,6 +296,15 @@ class Marvin_player(Player,minimax.Game):
     #            
     #        self.previousboard = board.clone().play_action(action)
 
+
+    def check_timeout(self):
+        if self.timeout:
+            self.actualdepth -= 2
+            print("minus")
+        else:
+            self.actualdepth += 1
+            print("plus")
+        return True
     
     def get_diff_towers(self, board):
         differenttowers = [False,False]
