@@ -21,24 +21,27 @@ class Marvin_player(Player,minimax.Game):
         '''
         self.mustDoDic = dict()
         self.suicideDic = dict()
+        self.symetricDic = dict()
         self.count_played = 0 # In order to know how many time we have played.
         self._init_pattern()
         #self.miniboard = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         self.previousboard = 0
         self.previousSearchedBoard = None
         self.previousDepth = 0
+        self.currentDepth = 5
         self.time_left = 0
         self.timer = 0
         self.step = 0
-        
-    def successors(self, state):
-        board, player = state
+        self.timeout = False
     
         
+    def successors(self, state):
+        board, player = state        
         actions_ordered = []
         for action in board.get_actions():
             tmpBoard = board.clone()
             tmpBoard.play_action(action)
+            
             actions_ordered.append(OrderedBoard(self.evaluate((tmpBoard,player)),action))
         if player == 1:
             actions_ordered.sort(key=operator.attrgetter('eval'),reverse=True)
@@ -69,14 +72,19 @@ class Marvin_player(Player,minimax.Game):
                     return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
 
         
-        if (time()-self.timer) > 180:
-            return depth >= self.previousDepth-1
-        if (time()-self.timer) > 200 :
-            return depth >= self.previousDepth-2
+        if (time()-self.timer) > 90 :
+            self.timeout = True
+            return depth >= self.currentDepth-1
+         
+        if self.timeout == True :
+            self.currentDepth = self.previousDepth-1
         
-        if self.step > 22 :
-            self.previousDepth = 6
-            return depth == 6
+        if depth == self.currentDepth :
+            self.timeout = False
+            self.previousDepth = self.currentDepth
+            self.currentDepth+=1
+            return True
+            
         
         self.previousDepth = 5 
         return depth == 5
@@ -215,10 +223,12 @@ class Marvin_player(Player,minimax.Game):
                 elif subboardaction[1]:
                     action = subboardaction[1]
                 else:
+                    self.symetricDic = dict()
                     action = minimax.search(state, self)
             elif subboardaction[1]:
                 action = subboardaction[1]
             else:
+                self.symetricDic = dict()
                 action = minimax.search(state, self)
             #action = minimax.search(state, self)
             self.previousboard = board.clone().play_action(action)
@@ -456,6 +466,7 @@ class Marvin_player(Player,minimax.Game):
                 x = differenttowers[0][0] - 1
             
         counterboard = Board(counterpercept)
+        self.symetricDic = dict() # reinit le dic
         counteraction = search((counterboard, player), board, x, y, self)
         if counteraction[1]:
             action = (counteraction[0], (counteraction[1][0] + x, \
