@@ -107,7 +107,10 @@ class Marvin_player(Player,minimax.Game):
         # down de nos tours avec ceux de l'ennemi.
         #return board.get_score()
         #print("test")
+        
         self.previousSearchedBoard = None
+        if self.step >= 25 :
+            return board.get_score()
         score = 0
         yellowCoins = 0
         redCoins = 0
@@ -237,7 +240,7 @@ class Marvin_player(Player,minimax.Game):
                     action = subboardaction[1]
                 else:
                     self.symetricDic = dict()
-                    action = minimax(state, self)
+                    action = search(state, self)
             elif subboardaction[1]:
                 action = subboardaction[1]
             else:
