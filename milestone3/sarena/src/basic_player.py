@@ -26,8 +26,10 @@ class AlphaBetaPlayer(Player, minimax.Game):
             yield (action,(board.clone().play_action(action), -player))
     
     def cutoff(self, state, depth):
-
-        if depth == 1:
+        board, player = state
+        if board.is_finished():
+            return True
+        elif depth == 2:
             return True
 #        self.depthCount[depth] += 1
 #        self.count += 1

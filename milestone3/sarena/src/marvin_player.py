@@ -78,17 +78,16 @@ class Marvin_player(Player,minimax.Game):
         
         if self.step == 17 :
             self.currentDepth = 5
-        if self.step == 25 :
-            self.currentDepth = 6
         
         if (time()-self.timer) > 90 :
             self.timeout = True
-            if time()-self.timer > 130 :
+            if time()-self.timer > 200 :
                 print(time()-self.timer)
                 return True
                 return depth>=self.currentDepth-2
             return depth >= self.currentDepth-1
-         
+        if self.step >= 25 :
+            self.currentDepth = 6
         if self.timeout == True :
             self.currentDepth = self.previousDepth-1
         
@@ -222,27 +221,37 @@ class Marvin_player(Player,minimax.Game):
                 return action_to_play                
         else :
             #return minimax.search(state, self)
-            counteraction = False
-            if self.previousboard:
-                differenttowers = self.get_diff_towers(board)
-                counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
-            subboardaction = self.get_sub_board_action(board, player)
-            #print(subboardaction)
-            if counteraction:
-                if counteraction[1] and subboardaction[1]:
-                    if counteraction[0] > subboardaction[0]:
+            if step < 20:
+                counteraction = False
+                if self.previousboard:
+                    differenttowers = self.get_diff_towers(board)
+                    counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
+                subboardaction = self.get_sub_board_action(board, player)
+                #print(subboardaction)
+#                print(counteraction)
+#                print(subboardaction)
+                if counteraction:
+                    if counteraction[1] and subboardaction[1]:
+                        if counteraction[0] > subboardaction[0]:
+                            action = counteraction[1]
+                        else:
+                            action = subboardaction[1]
+                    elif counteraction[1]:
                         action = counteraction[1]
-                    else:
+                    elif subboardaction[1]:
                         action = subboardaction[1]
-                elif counteraction[1]:
-                    action = counteraction[1]
+                    else:
+                        self.symetricDic = dict()
+                        action = minimax.search(state, self)
                 elif subboardaction[1]:
                     action = subboardaction[1]
                 else:
                     self.symetricDic = dict()
-                    action = search(state, self)
-            elif subboardaction[1]:
-                action = subboardaction[1]
+
+#            elif subboardaction[1]:
+#                action = subboardaction[1]
+
+                    action = minimax.search(state, self)
             else:
                 self.symetricDic = dict()
                 action = minimax.search(state, self)

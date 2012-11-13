@@ -28,11 +28,13 @@ class RandomPlayer(Player):
 
     """A dumb random Sarena player."""
 
+    def __init__(self):
+        self.listoflen = []
+    
     def play(self, percepts, step, time_left):
         b = Board(percepts)
         actions = list(b.get_actions())
-        print(step)
-        print(len(actions))
+        self.listoflen += [len(actions)]
         return random.choice(list(b.get_actions()))
 
 
