@@ -225,6 +225,8 @@ class Marvin_player(Player,minimax.Game):
                 counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
             subboardaction = self.get_sub_board_action(board, player)
             #print(subboardaction)
+            print(counteraction)
+            print(subboardaction)
             if counteraction:
                 if counteraction[1] and subboardaction[1]:
                     if counteraction[0] > subboardaction[0]:
@@ -237,12 +239,13 @@ class Marvin_player(Player,minimax.Game):
                     action = subboardaction[1]
                 else:
                     self.symetricDic = dict()
-                    action = minimax(state, self)
+                    action = minimax.search(state, self)
             elif subboardaction[1]:
                 action = subboardaction[1]
             else:
                 self.symetricDic = dict()
                 action = minimax.search(state, self)
+            print(action)
             #action = minimax.search(state, self)
             self.previousboard = board.clone().play_action(action)
             return action 

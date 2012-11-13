@@ -29,7 +29,7 @@ class AlphaBetaPlayer(Player, minimax.Game):
         board, player = state
         if board.is_finished():
             return True
-        elif depth == 3:
+        elif depth == 2:
             return True
 #        self.depthCount[depth] += 1
 #        self.count += 1

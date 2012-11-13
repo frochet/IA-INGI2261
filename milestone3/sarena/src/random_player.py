@@ -28,11 +28,12 @@ class RandomPlayer(Player):
 
     """A dumb random Sarena player."""
 
+    list = []
+    
     def play(self, percepts, step, time_left):
         b = Board(percepts)
         actions = list(b.get_actions())
-        print(step)
-        print(len(actions))
+        list.append(len(actions))
         return random.choice(list(b.get_actions()))
 
 
