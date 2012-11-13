@@ -89,17 +89,16 @@ class Marvin_player(Player,minimax.Game):
         
         if self.step == 17 :
             self.currentDepth = 5
-        if self.step == 25 :
-            self.currentDepth = 6
         
         if (time()-self.timer) > 90 :
             self.timeout = True
-            if time()-self.timer > 130 :
+            if time()-self.timer > 200 :
                 print(time()-self.timer)
                 return True
                 return depth>=self.currentDepth-2
             return depth >= self.currentDepth-1
-         
+        if self.step >= 25 :
+            self.currentDepth = 6
         if self.timeout == True :
             self.currentDepth = self.previousDepth-1
         
@@ -118,7 +117,10 @@ class Marvin_player(Player,minimax.Game):
         # down de nos tours avec ceux de l'ennemi.
         #return board.get_score()
         #print("test")
+        
         self.previousSearchedBoard = None
+        if self.step >= 25 :
+            return board.get_score()
         score = 0
         yellowCoins = 0
         redCoins = 0
@@ -265,13 +267,13 @@ class Marvin_player(Player,minimax.Game):
                     self.timeout = False
                     action = minimax.search(state, self)
                     self.check_timeout()
+                self.previousboard = board.clone().play_action(action)
             else:
                 self.symetricDic = dict()
                 self.timeout = False
                 action = minimax.search(state, self)
                 self.check_timeout()
             #action = minimax.search(state, self)
-            self.previousboard = board.clone().play_action(action)
             return action 
             #we must perform two searches on both subboard and return the best move
             
