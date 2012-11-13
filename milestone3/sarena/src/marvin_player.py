@@ -28,7 +28,7 @@ class Marvin_player(Player,minimax.Game):
         self.previousboard = 0
         self.previousSearchedBoard = None
         self.previousDepth = 0
-        self.currentDepth = 5
+        self.currentDepth = 4
         self.time_left = 0
         self.timer = 0
         self.step = 0
@@ -36,13 +36,18 @@ class Marvin_player(Player,minimax.Game):
     
         
     def successors(self, state):
+        
+        """
+        Successor handle symetric depth and order the tree
+        """
         board, player = state        
         actions_ordered = []
         for action in board.get_actions():
             tmpBoard = board.clone()
             tmpBoard.play_action(action)
-            
-            actions_ordered.append(OrderedBoard(self.evaluate((tmpBoard,player)),action))
+            if tmpBoard not in self.symetricDic :
+                self.symetricDic[str(tmpBoard)] = True
+                actions_ordered.append(OrderedBoard(self.evaluate((tmpBoard,player)),action))
         if player == 1:
             actions_ordered.sort(key=operator.attrgetter('eval'),reverse=True)
         else : 
@@ -70,10 +75,18 @@ class Marvin_player(Player,minimax.Game):
                     return True # if a node-max is a suicide, cut it, we do not play the move
                 elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
                     return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
-
+        
+        if self.step == 17 :
+            self.currentDepth = 5
+        if self.step == 25 :
+            self.currentDepth = 6
         
         if (time()-self.timer) > 90 :
             self.timeout = True
+            if time()-self.timer > 130 :
+                print(time()-self.timer)
+                return True
+                return depth>=self.currentDepth-2
             return depth >= self.currentDepth-1
          
         if self.timeout == True :
@@ -224,7 +237,7 @@ class Marvin_player(Player,minimax.Game):
                     action = subboardaction[1]
                 else:
                     self.symetricDic = dict()
-                    action = minimax.search(state, self)
+                    action = minimax(state, self)
             elif subboardaction[1]:
                 action = subboardaction[1]
             else:
@@ -322,6 +335,9 @@ class Marvin_player(Player,minimax.Game):
         for x in range(4):
             newpercept[x] = bigboardpercept[x+i][j:j+4]
         subboard = Board(newpercept)
+        self.symetricStateDic = dict()
+        self.time_left = (time()-self.timer)
+        self.timer = time()
         subboardaction = search((subboard, player), board, i, j, self)
         if subboardaction[1]:
             boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
@@ -333,7 +349,6 @@ class Marvin_player(Player,minimax.Game):
             else:
                 return (0, None)
         else:
-            print("je retourne comme un leo dans sub")
             return(0, None)
 #        return boardaction
         
@@ -481,7 +496,6 @@ class Marvin_player(Player,minimax.Game):
                 return False
             return action
         else:
-            print("je retourne None comme un gland dans counter")
             return(0, None)
                         
     def _action_played(self,currentBoard,previousBoard):
