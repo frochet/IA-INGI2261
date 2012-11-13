@@ -16,8 +16,8 @@ class AlphaBetaPlayer(Player, minimax.Game):
     the board.
 
     """
-    count = 0
-    depthCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#    count = 0
+#    depthCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
     
     def successors(self, state):
@@ -26,14 +26,15 @@ class AlphaBetaPlayer(Player, minimax.Game):
             yield (action,(board.clone().play_action(action), -player))
     
     def cutoff(self, state, depth):
-        if depth == 5:
+
+        if depth == 1:
             return True
-        self.depthCount[depth] += 1
-        self.count += 1
-        if self.count % 1000000 == 0:
-            print("% noeud totaux", self.count)
-            print("% par depth", self.depthCount)
-            print("% secondes", time.time()-self.start)
+#        self.depthCount[depth] += 1
+#        self.count += 1
+#        if self.count % 1000000 == 0:
+#            print("% noeud totaux", self.count)
+#            print("% par depth", self.depthCount)
+#            print("% secondes", time.time()-self.start)
         board, player = state
         return board.is_finished()
 
@@ -50,10 +51,10 @@ class AlphaBetaPlayer(Player, minimax.Game):
         state = (Board(percepts), player)
         m = minimax.search(state, self)
 
-        print("nombre de noeuds explorés : ", self.count)
-        print("nombre de noeuds explorés par depth : ", self.depthCount)
-        self.count = 0
-        depthCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#        print("nombre de noeuds explorés : ", self.count)
+#        print("nombre de noeuds explorés par depth : ", self.depthCount)
+#        self.count = 0
+#        depthCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         print("temps elapsed : ", format(time.time()-start))
         return m
 

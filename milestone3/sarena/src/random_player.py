@@ -30,6 +30,9 @@ class RandomPlayer(Player):
 
     def play(self, percepts, step, time_left):
         b = Board(percepts)
+        actions = list(b.get_actions())
+        print(step)
+        print(len(actions))
         return random.choice(list(b.get_actions()))
 
 
