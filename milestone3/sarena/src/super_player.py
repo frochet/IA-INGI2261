@@ -200,7 +200,7 @@ class Marvin_player(Player,minimax.Game):
                 self.previousboard = board.clone().play_action(action_to_play)
                 return action_to_play                
         else :
-#            maxtime = (self.time_left - 4) / ((1 + (37/(self.step+1))**1.75)/2)
+#            maxtime = (self.time_left - 9) / ((1 + (37/(self.step+1))**1.75)/2)
 #            print("maxtime", maxtime)
 #            print("timeleft", self.time_left)
 #            print("step", self.step)
