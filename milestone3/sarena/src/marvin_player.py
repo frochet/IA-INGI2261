@@ -48,14 +48,15 @@ class Marvin_player(Player,minimax.Game):
             tmpBoard.play_action(action)
             if tmpBoard not in self.symetricDic :
                 self.symetricDic[str(tmpBoard)] = True
-                actions_ordered.append(OrderedBoard(self.evaluate((tmpBoard,player)),action))
-        if player == 1:
-            actions_ordered.sort(key=operator.attrgetter('eval'),reverse=True)
-        else : 
-            actions_ordered.sort(key=operator.attrgetter('eval'))
-        for orderedBoard in actions_ordered:
-            self.previousSearchedBoard = board.clone()
-            yield (orderedBoard.action,(board.clone().play_action(orderedBoard.action), -player)) 
+                yield (action,(tmpBoard, -player))
+#                actions_ordered.append(OrderedBoard(self.evaluate((tmpBoard,player)),action))
+#        if player == 1:
+#            actions_ordered.sort(key=operator.attrgetter('eval'),reverse=True)
+#        else : 
+#            actions_ordered.sort(key=operator.attrgetter('eval'))
+#        for orderedBoard in actions_ordered:
+#            self.previousSearchedBoard = board.clone()
+#            yield (orderedBoard.action,(board.clone().play_action(orderedBoard.action), -player)) 
 
     def cutoff(self, state, depth):
         board, player = state
@@ -137,7 +138,7 @@ class Marvin_player(Player,minimax.Game):
                     t_init+=board.m[k][l]
                     t_target+=board.m[m][n]
                     move = Action(t_init,t_target)
-                    if self.previousDepth % 2 == 0 : # si c'est a nous de jouer ?
+                    if player == 1 : # si c'est a nous de jouer ?
                         if move.is_a_pattern(self.mustDoDic) :
                             score+=move.weight
                     else:
@@ -151,7 +152,10 @@ class Marvin_player(Player,minimax.Game):
                     if newScore != score : 
                         isIsolated = True
                         score = newScore
-                     
+                        if tower[1][0] == Color.YELLOW :
+                            score += 4 # 1 for 1 coin win
+                        elif tower[1][0] == Color.RED :
+                            score -= 4
                     if not isIsolated:
                         if tower[1][0] == Color.YELLOW :
                             yellowCoins += 1
@@ -168,10 +172,10 @@ class Marvin_player(Player,minimax.Game):
                             score += 4 # 1 for 1 coin win
                         elif tower[4][1] == Color.RED :
                             score -= 4
-                        if tower[towerHeight][1] == Color.YELLOW :
-                            yellowCoins+=1
-                        elif tower[towerHeight][1] == Color.RED :
-                            redCoins +=1
+                if tower[towerHeight][1] == Color.YELLOW :
+                        yellowCoins+=1
+                elif tower[towerHeight][1] == Color.RED :
+                        redCoins +=1
         score += (yellowCoins-redCoins)
         return score
                  
@@ -582,6 +586,34 @@ class Marvin_player(Player,minimax.Game):
             if board.get_height(board.m[i][j+1])+board.get_height(board.m[i][j-1]) + \
                 board.get_height(board.m[i+1][j])+ board.get_height(board.m[i-1][j]) == 0 :
                 return compute(score,tower)
+        elif i==i_start and j==j_start:
+            if board.get_height(board.m[i][j+1]) + board.get_height(board.m[i+1][j]) == 0 :
+                return compute(score,tower)
+        elif i==i_end and j == j_start:
+            if board.get_height(board.m[i][j+1]) + board.get_height(board.m[i-1][j]) == 0 :
+                return compute(score,tower)
+        elif i==i_start and j == j_end:
+            if board.get_height(board.m[i+1][j]) + board.get_height(board.m[i-1][j]) == 0 :
+                return compute(score,tower)  
+        elif i==i_end and j == j_end:
+            if board.get_height(board.m[i-1][j]) + board.get_height(board.m[i][j-1]) == 0 :
+                return compute(score,tower) 
+        elif i==i_start and (j > j_start and j < j_end) :
+            if board.get_height(board.m[i][j+1]) +board.get_height(board.m[i][j-1])+ \
+                board.get_height(board.m[i+1][j]) == 0:
+                return compute(score,tower)
+        elif i==i_end and (j > j_start and j < j_end) :
+            if board.get_height(board.m[i][j+1]) +board.get_height(board.m[i][j-1])+ \
+                board.get_height(board.m[i-1][j]) == 0:
+                return compute(score,tower)
+        elif (i > i_start and i < i_end) and j==j_start :
+            if board.get_height(board.m[i+1][j]) +board.get_height(board.m[i-1][j])+ \
+                board.get_height(board.m[i][j+1]) == 0:
+                return compute(score,tower)
+        elif (i > i_start and i < i_end) and j==i_end :
+            if board.get_height(board.m[i+1][j]) +board.get_height(board.m[i-1][j])+ \
+                board.get_height(board.m[i][j-1]) == 0:
+                return compute(score,tower)      
         return score
         
         
@@ -871,14 +903,14 @@ class OrderedBoard(object):
         self.eval = eval
         self.action = action
     
-    def __eq__(self,other):
-        return self.eval == other.eval
-    def __cmp__(self,other):
-        if self.eval > other.eval:
-            return 1
-        elif self.eval < other.eval:
-            return -1
-        else: return 0
+#    def __eq__(self,other):
+#        return self.eval == other.eval
+#    def __cmp__(self,other):
+#        if self.eval > other.eval:
+#            return 1
+#        elif self.eval < other.eval:
+#            return -1
+#        else: return 0
         
 if __name__ == "__main__" :
     player_main(Marvin_player())
