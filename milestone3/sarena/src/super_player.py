@@ -7,7 +7,6 @@ from sarena import *
 import minimax
 from time import *
 from random import randint
-import operator
 
 class Marvin_player(Player,minimax.Game):
     '''
@@ -54,18 +53,10 @@ class Marvin_player(Player,minimax.Game):
         board, player = state
 
         if board.is_finished():
-#            print("finished")
             return True
-#        print (self.time_left - (time()-self.timer))
         if self.time_left - (time()-self.timer) <= 15 :
-#            print("expired")
-#            print (time()-self.timer)
             self.timeout = True
             return depth >= 1
-#        elif self.time_left - (time()-self.timer) < 15 :
-#            return depth >= 2
-#        elif self.time_left - (time()-self.timer) < 10 :
-#            return True
         # Must cut if we played a suicide move to reach this state.
         # Must cut with iterative depth
         if not self.previousSearchedBoard == None :
@@ -157,7 +148,6 @@ class Marvin_player(Player,minimax.Game):
         self.time_left = time_left
         self.timer = time()
         self.step = step
-        print(self.time_left)
         #print(self.actualdepth)
 
         if step % 2 == 0:
@@ -871,21 +861,6 @@ def search(state, bigboard, i, j, game, prune=True):
 
     val, action = max_value(state, bigboard, i, j, -inf, inf, 0)
     return val, action
-
-class OrderedBoard(object):
-    
-    def __init__(self,eval,action):
-        self.eval = eval
-        self.action = action
-    
-#    def __eq__(self,other):
-#        return self.eval == other.eval
-#    def __cmp__(self,other):
-#        if self.eval > other.eval:
-#            return 1
-#        elif self.eval < other.eval:
-#            return -1
-#        else: return 0
         
 if __name__ == "__main__" :
     player_main(Marvin_player())
