@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+'''
+@author: Debroux Léonard - Rochet Florentin
+'''
 import random
 
 from sarena import *
@@ -35,6 +37,7 @@ class AlphaBetaPlayer(Player, minimax.Game):
             return True
 #        self.depthCount[depth] += 1
 #        self.count += 1
+
 #        if self.count % 1000000 == 0:
 #            print("% noeud totaux", self.count)
 #            print("% par depth", self.depthCount)
@@ -51,7 +54,7 @@ class AlphaBetaPlayer(Player, minimax.Game):
             player = -1
         else:
             player = 1
-        start = time.time()
+#        start = time.time()
         state = (Board(percepts), player)
         m = minimax.search(state, self)
 
@@ -59,7 +62,7 @@ class AlphaBetaPlayer(Player, minimax.Game):
 #        print("nombre de noeuds explorés par depth : ", self.depthCount)
 #        self.count = 0
 #        depthCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        print("temps elapsed : ", format(time.time()-start))
+#        print("temps elapsed : ", format(time.time()-start))
         return m
 
 
