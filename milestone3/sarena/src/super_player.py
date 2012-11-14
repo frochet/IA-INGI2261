@@ -38,7 +38,8 @@ class Marvin_player(Player,minimax.Game):
     def successors(self, state):
         
         """
-        Successor handle symetric depth and order the tree
+        Successor handle symetric depth but does not
+        order the tree. When we tried this, the successor take too long time
         """
         board, player = state        
         for action in board.get_actions():
@@ -56,7 +57,7 @@ class Marvin_player(Player,minimax.Game):
 #            print("finished")
             return True
 #        print (self.time_left - (time()-self.timer))
-        if self.time_left - (time()-self.timer) <= 10 :
+        if self.time_left - (time()-self.timer) <= 15 :
 #            print("expired")
 #            print (time()-self.timer)
             self.timeout = True
@@ -77,7 +78,7 @@ class Marvin_player(Player,minimax.Game):
                     return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
         
         #######################
-        maxtime = (self.time_left - 9) / ((1 + (37/(self.step+1))**1.75)/2)
+        maxtime = (self.time_left - 14) / ((1 + (37/(self.step+1))**1.8)/2)
         if (time()-self.timer) >= maxtime:
 #            print(maxtime)
             self.timeout = True
@@ -156,7 +157,7 @@ class Marvin_player(Player,minimax.Game):
         self.time_left = time_left
         self.timer = time()
         self.step = step
-        #print(self.time_left)
+        print(self.time_left)
         #print(self.actualdepth)
 
         if step % 2 == 0:
