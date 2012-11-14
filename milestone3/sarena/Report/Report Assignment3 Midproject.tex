@@ -67,13 +67,13 @@ Assignement 3 - Mid-Project}
 	
 
 	\section{Scipion}
-		Here is the tree representing the game of scipion, we also included the representation of the board of the game.
+		Here is the tree representing the game of scipion, we also included the representation of the board of the game at each step.
 		\begin{figure}[h!]
 			\centering
 				\includegraphics[scale=0.5]{minmax_tree_scipion_specs.png}
 			\caption{Scipion Tree}
 		\end{figure}\\
-		On this tree, we can find at the bottom the values of the leaves. From them are derived the values of the other nodes using minimax. We see that as the root is max, it will play the right action.
+		On this tree, we can find at the bottom the values of the leaves. From them are derived the values of the other nodes using minimax. We see that as the root is max, it should play the right action.
 	\section{Alpha-Beta search}	
 		\subsection{Perform the MiniMax algorithm on the tree in Figure 4, i.e. put a value to each node. Circle the move the root player should do.}
 		\begin{figure}[h!]
@@ -134,10 +134,10 @@ give the new ordering and the resulting new pruning.}
 			
 			\subsection{Evaluation function}
 				\subsubsection{Question 7: Describe your evaluation function.}
-				The evaluation function look for each towers of the board. For each of them, it first calculate all the possible actions and create an object Action \footnote{see our class Action}, then it checks if this action is contained in our dictionaries of "mustDo" and "suicide" move. Those dictionaries are used to recognize some patterns that we assume they must be done in the next move. It's a look-forward for some precise case. A weight is associate in each of those pattern\footnote{see the action again} and this weight is part of the score. The weight is positive for mustDo and negative for suicide.\\
-After, we compute the points associate to each coins that are lost or win. the points are positive for win coins and negative for the lost coins. Those points are add to the score.
-And finally, the function count the numbers of yellow coins and red coins that are, first on bottom of towers located in blank case and second on top of towers located in arrows coins. the value (yellowCoins-redCoins) is added to the score, which make the final score.\\
-This score is positive if we are evaluate to winner and negative on the other hand.
+				The evaluation function look for each tower of the board. For each one, it first calculate all the possible actions and create an object Action \footnote{see our class Action}, then it checks if this action is contained in our dictionaries of "mustDo" and "suicide" move. Those dictionaries are used to recognize some patterns that we assume that must be done in the next move. It's a look-forward for some precise case. A weight is associate in each of those pattern\footnote{see the action again} and this weight is part of the score. The weight is positive for mustDo and negative for suicide.\\
+After, we compute the points associate to each coins that are lost or won. The points are positive for won coins and negative for the lost coins. Those points are add to the score.
+And finally, the function counts the numbers of yellow coins and red coins that are, first on bottom of towers located on blank cases and second on top of towers located on arrows cases. The value (yellowCoins-redCoins) is added to the score, which gives the final score.\\
+A positive score indicates that we are winning and a negative one tells us that we are losing.
 
 				\subsubsection{Question 8: In Alpha-Beta, the evaluation function is used to evaluate leaf nodes (when the cut-off occurs). As seen in previous questions, the pruning of Alpha-Betadepends on the order of the successors. Explain how your evaluation function could be used to (we hope) obtain more pruning with Alpha-Beta. Are there any drawbacks to your approach?}
 					The evaluation function can be used at each state that we compute to order the children of a given node. The order is increasing of decreasing following the parent (min or max).\\
@@ -159,10 +159,10 @@ This score is positive if we are evaluate to winner and negative on the other ha
 						\hline 
 						\end{tabular} 
 					\end{center}
-					We see that our successor function is better that get\_score.
+					We see that our successor function is better than get\_score.
 			\subsection{Successors function}
 				\subsubsection{Question 10: Give an upper bound on the number of successors for one state.}
-					There is at most 120 possible actions on one board, we can easily convince ourselves that this is the very first state that allows the most actions. Then, we count how many possible actions for each coin which gives $4*2+4*4*3+4*4*4$ (corner, edges and center coins).
+					There is at most 120 possible actions on one board, we can easily convince ourselves that this is the very first state that allows the most actions. Then, we count how many possible actions for each coin which gives $4*2+4*4*3+4*4*4$ ($4$ corners, $4*4$ edge coins and $4*4$ center coins).
 				\subsubsection{Question 11: From random games (at least 100), compute the average number of possible
 actions at each step of the game. Plot the results in a graph. What do you observe?}
 					Here is the graph generated :
@@ -179,9 +179,9 @@ actions at each step of the game. Plot the results in a graph. What do you obser
 					If we have two independent action $a$ and $b$, the traces $a\rightarrow b$ and $b\rightarrow a$ lead to the same state, so it is unnecessary to treat it twice.\\
 					The way to deal with those states is to add a dictionary containing all the visited states for one step of the game. When an action leads to a state that is already in it, we simply don't yield it.
 				\subsubsection{Question 13: If the number of successors is still too large, can you think of states that might be ignored, at the expense of loosing completeness?}
-					Yes, there are some "suicidal" actions that a normal player wouldn't do because they would lead to certain defeat. We can assume that the opponent won't play "his suicidal action" and we don't want our AI to perform its own "suicidal actions". Thus, we can simply ignore those actions. This detection is done in the cutoff function.
+					Yes, there are some "suicidal" actions that a normal player wouldn't do because they would lead to certain defeat. We can assume that the opponent won't play "his suicidal action" and we don't want our AI to perform its own "suicidal actions". Thus, we can simply avoid to expand those actions. This detection is done in the cutoff function.
 				\subsubsection{Question 14: Describe your successors function.}
-					Our successor gets all the possible actions from a state, and only keeps the asymmetrical ones. Than it performs a sort on the states, the order depending on the player that perform the actions (min or max) and then yields all the actions in that order.
+					Our successor gets all the possible actions from a state, and only keeps the asymmetrical ones. After that, it simply yields the kept actions. As told before, we could have ordered the successors at this point, but the experience showed that it took way to much time.
 				\subsubsection{Question 15: On average, how deep can you explore the tree made by your successors function starting from random initial states (as generated by the constructor of the Board class) in less than 30 seconds? Use an Alpha-Beta agent with the basic evaluation function and increase progressively the cut-off depth.}
 					When using only our evaluate, we get the following result for the depths 1, 2 and 3. Those times are an mean on five tries.
 					\begin{center}
@@ -202,7 +202,7 @@ actions at each step of the game. Plot the results in a graph. What do you obser
 				
 			\subsection{Cut-off function}
 				\subsubsection{Question 16: The cutoff method receives an argument called depth. Explain precisely what is called the depth in the minimax.py implementation. Illustrate on an example (draw a search tree and indicate the depths).}
-					When drawing the tree of the search, the depth is the level on which we are. It represents in the minimax algorithm the number of action we see in advance. In other words, for a depth d, it means that we have though of all the actions scheme in a range of d actions.\\
+					When drawing the tree of the search, the depth is the level on which we are. It represents in the minimax algorithm the number of action we see in advance. In other words, for a depth d, it means that we have though of all the actions schemes in a range of d actions.\\
 					\begin{figure}[h!]
 						\centering
 							\includegraphics[scale=0.4]{arbre_depth.png}
@@ -211,8 +211,8 @@ actions at each step of the game. Plot the results in a graph. What do you obser
 				\subsubsection{Question 17: Explain why it might be useful (for the Sarena contest) to cut off the search for another reason than the depth.}
 					There is two other reasons than depth to cut the search in our case. the first one is the time that is taken to perform the search and the second one is the detection of the suicides as we want to avoid computing their children.
 				\subsubsection{Question 18: Describe your cut-off function.}
-					Our cut-off function works in three phases, the first is checking if there is enough time remaining. If not, the search of depth 2 or 1.\\
-					Then, we check if the action considered is a suicidal move, if yes, it returns True.\\
-					And finally, if the search took to much time, based on a maxtime computed with the time\_left, and the current step, we decrease the depth of the next search, if not, we increase it.\\
-					The way it works is by setting a boolean variable to True if a time-out has occurred and when the search is over, we decrease or increase the depth of the next search.
+					Our cut-off function works in three phases, the first is checking if there is enough time remaining, typically, if only 15 seconds or less remains, we just return True.
+					Then, given enough time is left, we check if the action considered is a suicidal move, if yes, it returns True.\\
+					And finally, if the search took too much time, based on a maxtime computed with the time\_left and the current step, we decrease the depth of the next search, or, if not, we increase it.\\
+					The way it works is by setting a boolean variable to True if a time-out has occurred and when the search is over, we decrease or increase the depth of the next search following the value of the flag.
 \end{document}
