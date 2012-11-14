@@ -52,12 +52,19 @@ class Marvin_player(Player,minimax.Game):
     def cutoff(self, state, depth):
         board, player = state
 
-        if board.is_finished() :
+        if board.is_finished():
+#            print("finished")
             return True
-        if self.time_left - (time()-self.timer) < 30 :
-            return depth >= 2
-        elif self.time_left - (time()-self.timer) < 10 :
-            return True
+#        print (self.time_left - (time()-self.timer))
+        if self.time_left - (time()-self.timer) <= 10 :
+#            print("expired")
+#            print (time()-self.timer)
+            self.timeout = True
+            return depth >= 1
+#        elif self.time_left - (time()-self.timer) < 15 :
+#            return depth >= 2
+#        elif self.time_left - (time()-self.timer) < 10 :
+#            return True
         # Must cut if we played a suicide move to reach this state.
         # Must cut with iterative depth
         if not self.previousSearchedBoard == None :
@@ -70,14 +77,15 @@ class Marvin_player(Player,minimax.Game):
                     return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
         
         #######################
-        maxtime = self.time_left / ((1 + (37/(self.step+1))**1.75)/2)      
-        if (time()-self.timer) > maxtime:
-            print(maxtime)
+        maxtime = (self.time_left - 9) / ((1 + (37/(self.step+1))**1.75)/2)
+        if (time()-self.timer) >= maxtime:
+#            print(maxtime)
             self.timeout = True
             return True
         else:
             return depth == self.actualdepth
         #######################     
+        return depth >= 1
         
     def evaluate(self, state):
         board, player = state
@@ -181,7 +189,7 @@ class Marvin_player(Player,minimax.Game):
                 if elem[1] > weight :
                     weight = elem[1]
                     action_to_play = elem[0]
-            print(mustDo)
+            #print(mustDo)
             if action_to_play == 0 :
                 print("INVALIDE PLAY in PLAY")
                 print(mustDo)
@@ -191,6 +199,10 @@ class Marvin_player(Player,minimax.Game):
                 self.previousboard = board.clone().play_action(action_to_play)
                 return action_to_play                
         else :
+#            maxtime = (self.time_left - 4) / ((1 + (37/(self.step+1))**1.75)/2)
+#            print("maxtime", maxtime)
+#            print("timeleft", self.time_left)
+#            print("step", self.step)
             if step < 10:
                 counteraction = False
                 if self.previousboard:
@@ -235,10 +247,10 @@ class Marvin_player(Player,minimax.Game):
     def check_timeout(self):
         if self.timeout:
             self.actualdepth -= 1
-            print("minus")
+            #print("minus")
         else:
             self.actualdepth += 1
-            print("plus")
+            #print("plus")
         return True
     
     
