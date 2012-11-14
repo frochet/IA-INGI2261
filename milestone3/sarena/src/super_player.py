@@ -79,7 +79,7 @@ class Marvin_player(Player,minimax.Game):
                     return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
         
         #####################""
-        maxtime = self.time_left / ((1 + (37/(self.step+1))**1.5)/2)      
+        maxtime = self.time_left / ((1 + (37/(self.step+1))**1.7)/2)      
         if (time()-self.timer) > maxtime:
             print(maxtime)
             self.timeout = True
@@ -660,6 +660,7 @@ class Marvin_player(Player,minimax.Game):
         self.mustDoDic[Action([4,[-2,Color.RED],[0,0],[0,0],[0,0]],[3,[2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.mustDoDic[Action([4,[-2,-2],[-2,Color.RED],[0,0],[0,0]],[3,[2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.mustDoDic[Action([4,[-2,-2],[-2,-2],[-2,Color.RED],[0,0]],[3,[2,-2],[0,0],[0,0],[0,0]])] = True
+        
         self.mustDoDic[Action([3,[Color.RED,-2],[-2,-2],[-2,-2],[0,0]],[4, [-2,-2],[0,0],[0,0],[0,0]])] = True
         self.mustDoDic[Action([3,[Color.RED,-2],[-2,-2],[0,0],[0,0]],[4, [-2,-2],[-2,-2],[0,0],[0,0]])] = True
         self.mustDoDic[Action([3,[Color.RED,-2],[0,0],[0,0],[0,0]],[4, [-2,-2],[-2,-2],[-2,-2],[0,0]])] = True
