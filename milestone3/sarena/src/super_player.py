@@ -33,7 +33,7 @@ class Marvin_player(Player,minimax.Game):
         self.timer = 0
         self.step = 0
         self.timeout = False
-        self.actualdepth = 3
+        self.actualdepth = 4
     
         
     def successors(self, state):
@@ -641,6 +641,7 @@ class Marvin_player(Player,minimax.Game):
         #self.mustDoDic[Action([3,[-2,-2],[-2,Color.YELLOW],[0,0],[0,0]],[4,[-2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.mustDoDic[Action([3,[-2,-2],[-2,-2],[-2,Color.YELLOW],[0,0]],[4,[-2,-2],[0,0],[0,0],[0,0]])] = True
         
+        
         self.suicideDic[Action([3,[-2,Color.RED],[0,0],[0,0],[0,0]],[4,[-2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.suicideDic[Action([3,[-2,-2],[-2,Color.RED],[0,0],[0,0]],[4,[-2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.suicideDic[Action([3,[-2,-2],[-2,-2],[-2,Color.RED],[0,0]],[4,[-2,-2],[0,0],[0,0],[0,0]])] = True
@@ -659,7 +660,13 @@ class Marvin_player(Player,minimax.Game):
         self.mustDoDic[Action([4,[-2,Color.RED],[0,0],[0,0],[0,0]],[3,[2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.mustDoDic[Action([4,[-2,-2],[-2,Color.RED],[0,0],[0,0]],[3,[2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.mustDoDic[Action([4,[-2,-2],[-2,-2],[-2,Color.RED],[0,0]],[3,[2,-2],[0,0],[0,0],[0,0]])] = True
-       
+        self.mustDoDic[Action([3,[Color.RED,-2],[-2,-2],[-2,-2],[0,0]],[4, [-2,-2],[0,0],[0,0],[0,0]])] = True
+        self.mustDoDic[Action([3,[Color.RED,-2],[-2,-2],[0,0],[0,0]],[4, [-2,-2],[-2,-2],[0,0],[0,0]])] = True
+        self.mustDoDic[Action([3,[Color.RED,-2],[0,0],[0,0],[0,0]],[4, [-2,-2],[-2,-2],[-2,-2],[0,0]])] = True
+        
+        self.mustDoDic[Action([4,[-2,-2],[0,0],[0,0],[0,0]],[3, [-2,-2],[-2,-2],[-2,Color.RED],[0,0]])] = True
+        self.mustDoDic[Action([4,[-2,-2],[-2,-2],[0,0],[0,0]],[3, [-2,-2],[-2,Color.RED],[0,0],[0,0]])] = True
+        self.mustDoDic[Action([4,[-2,-2],[-2,-2],[-2,-2],[0,0]],[3 ,[-2,Color.RED],[0,0],[0,0],[0,0]])] = True
         # broke one of our tower.
         self.suicideDic[Action([4,[-2,Color.YELLOW],[0,0],[0,0],[0,0]],[3,[2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.suicideDic[Action([4,[-2,-2],[-2,Color.YELLOW],[0,0],[0,0]],[3,[2,-2],[-2,-2],[0,0],[0,0]])] = True
@@ -793,6 +800,25 @@ class Action(object):
                     self.t_target[1][0] = 2
                 self.t_init.pop(0)
                 return True
+            elif self.t_target[self.size_t_target-1][1] == Color.RED and self.t_target[1][0] != Color.RED and self.t_target[0] == 3 :
+                i = 1
+                while i < self.size_t_init :
+                    self.t_init[i][0] = -2
+                    self.t_init[i][1] = -2
+                    i+=1
+                i = 1
+                while i < self.size_t_target :
+                    if i == self.size_t_target-1 :
+                        self.t_target[i][0] = -2
+                    else :
+                        self.t_target[i][0] = -2
+                        self.t_target[i][1] = -2
+                    i+=1 
+                self._weight()
+                self.t_init.pop(0)
+                return True
+            return False
+                 
         return False
     def _detect_color_bot(self):
         if self.size_t_init + self.size_t_target == 6 and self.size_t_target > 1 :
@@ -820,16 +846,16 @@ class Action(object):
                 
                 i = 1
                 while i < self.size_t_init :
-                        self.t_init[i][0] = -2
+                    if i == 1 :
                         self.t_init[i][1] = -2
-                        i+=1 
+                    else:
+                        self.t_init[i][0] = -2
+                        self.t_init[i][1] = -2    
+                    i+=1 
                 i = 1
                 while i < self.size_t_target :
-                    if i == 1 :
-                        self.t_target[i][1] = -2
-                    else :
-                        self.t_target[i][0] = -2
-                        self.t_target[i][1] = -2
+                    self.t_target[i][0] = -2
+                    self.t_target[i][1] = -2
                     i+=1
                 self._weight()
                 self.t_init.pop(0)
