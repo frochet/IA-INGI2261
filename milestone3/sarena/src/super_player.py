@@ -1,7 +1,7 @@
 '''
 Created on 8 nov. 2012
 
-@author: Florentin
+@author: Debroux Léonard - Rochet Florentin
 '''
 from sarena import *
 import minimax
@@ -21,42 +21,51 @@ class Marvin_player(Player,minimax.Game):
         '''
         self.mustDoDic = dict()
         self.suicideDic = dict()
+        self.symetricDic = dict()
         self.count_played = 0 # In order to know how many time we have played.
         self._init_pattern()
-        #self.miniboard = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         self.previousboard = 0
         self.previousSearchedBoard = None
-        self.previousDepth = 0
+        #self.previousDepth = 0
+        #self.currentDepth = 4
         self.time_left = 0
         self.timer = 0
         self.step = 0
+        self.timeout = False
+        self.actualdepth = 4
+    
         
     def successors(self, state):
-        board, player = state
-        #self.previousSearchedBoard = board.clone()
-        actions_ordered = []
+        
+        """
+        Successor handle symetric depth but does not
+        order the tree. When we tried this, the successor take too long time
+        """
+        board, player = state        
         for action in board.get_actions():
             tmpBoard = board.clone()
             tmpBoard.play_action(action)
-            actions_ordered.append(OrderedBoard(self.evaluate((tmpBoard,player)),action))
-        if player == 1:
-            actions_ordered.sort(key=operator.attrgetter('eval'),reverse=True)
-        else : 
-            actions_ordered.sort(key=operator.attrgetter('eval'))
-        for orderedBoard in actions_ordered:
-            self.previousSearchedBoard = board.clone()
-            yield (orderedBoard.action,(board.clone().play_action(orderedBoard.action), -player)) 
+            if tmpBoard not in self.symetricDic :
+                self.symetricDic[str(tmpBoard)] = True
+                yield (action,(tmpBoard, -player))
+
 
     def cutoff(self, state, depth):
         board, player = state
-        # TODO            
-        if board.is_finished() :
+
+        if board.is_finished():
+#            print("finished")
             return True
-        
-        if self.time_left - (time()-self.timer) < 30 :
-            return depth >= 2
-        elif self.time_left - (time()-self.timer) < 10 :
-            return True
+#        print (self.time_left - (time()-self.timer))
+        if self.time_left - (time()-self.timer) <= 15 :
+#            print("expired")
+#            print (time()-self.timer)
+            self.timeout = True
+            return depth >= 1
+#        elif self.time_left - (time()-self.timer) < 15 : and order the tree
+#            return depth >= 2
+#        elif self.time_left - (time()-self.timer) < 10 :
+#            return True
         # Must cut if we played a suicide move to reach this state.
         # Must cut with iterative depth
         if not self.previousSearchedBoard == None :
@@ -67,33 +76,24 @@ class Marvin_player(Player,minimax.Game):
                     return True # if a node-max is a suicide, cut it, we do not play the move
                 elif move.is_a_pattern(self.mustDoDic) and depth % 2 == 1 :
                     return True # if a node-min is a suicide for the opponent, cut it, he will not play that move
-
         
-        if (time()-self.timer) > 180:
-            return depth >= self.previousDepth-1
-        if (time()-self.timer) > 200 :
-            return depth >= self.previousDepth-2
+        #######################
+        maxtime = (self.time_left - 14) / ((1 + (37/(self.step+1))**1.8)/2)
+        if (time()-self.timer) >= maxtime:
+#            print(maxtime)
+            self.timeout = True
+            return True
+        else:
+            return depth == self.actualdepth
+        #######################     
+        return depth >= 1
         
-        if self.step < 5 :
-            self.previousDepth = 2
-            return depth == 2
-        if self.step > 16 and self.step <= 25 :
-            self.previousDepth = 4
-            return depth == 4
-        if self.step > 25 :
-            self.previousDepth = 5
-            return depth == 5
-        
-        self.previousDepth = 3
-        
-        return depth == 3
     def evaluate(self, state):
         board, player = state
-        #regarder les points en cours sur le board (jeton isoles + tour a retourner + pattern must_do, suicide) + la difference entre le nombre de jeton
-        # down de nos tours avec ceux de l'ennemi.
-        #return board.get_score()
-        #print("test")
+        
         self.previousSearchedBoard = None
+        if self.step >= 25 :
+            return board.get_score()
         score = 0
         yellowCoins = 0
         redCoins = 0
@@ -110,7 +110,7 @@ class Marvin_player(Player,minimax.Game):
                     t_init+=board.m[k][l]
                     t_target+=board.m[m][n]
                     move = Action(t_init,t_target)
-                    if self.previousDepth % 2 == 0 : # si c'est a nous de jouer ?
+                    if player == 1 : # si c'est a nous de jouer ?
                         if move.is_a_pattern(self.mustDoDic) :
                             score+=move.weight
                     else:
@@ -124,7 +124,10 @@ class Marvin_player(Player,minimax.Game):
                     if newScore != score : 
                         isIsolated = True
                         score = newScore
-                     
+                        if tower[1][0] == Color.YELLOW :
+                            score += 4 # 1 for 1 coin win
+                        elif tower[1][0] == Color.RED :
+                            score -= 4
                     if not isIsolated:
                         if tower[1][0] == Color.YELLOW :
                             yellowCoins += 1
@@ -141,10 +144,10 @@ class Marvin_player(Player,minimax.Game):
                             score += 4 # 1 for 1 coin win
                         elif tower[4][1] == Color.RED :
                             score -= 4
-                        if tower[towerHeight][1] == Color.YELLOW :
-                            yellowCoins+=1
-                        elif tower[towerHeight][1] == Color.RED :
-                            redCoins +=1
+                if tower[towerHeight][1] == Color.YELLOW :
+                        yellowCoins+=1
+                elif tower[towerHeight][1] == Color.RED :
+                        redCoins +=1
         score += (yellowCoins-redCoins)
         return score
                  
@@ -155,8 +158,8 @@ class Marvin_player(Player,minimax.Game):
         self.timer = time()
         self.step = step
         print(self.time_left)
-#        if step == 2:
-#            init_previousboard()
+        #print(self.actualdepth)
+
         if step % 2 == 0:
             player = -1
         else:
@@ -164,13 +167,7 @@ class Marvin_player(Player,minimax.Game):
         board = Board(percepts)
         state = (board, player)
         
-#        subboardaction = self.get_sub_board_action(board, player)
-#        return subboardaction[1]
-#        if self.previousboard:
-#            differenttowers = self.get_diff_towers(board)
-#            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
-#            self.previousboard = board.clone().play_action(counteraction[1])
-#            return counteraction[1]
+        #print(step)
         
         self.previousSearchedBoard = None
         # MustDo before !
@@ -193,7 +190,7 @@ class Marvin_player(Player,minimax.Game):
                 if elem[1] > weight :
                     weight = elem[1]
                     action_to_play = elem[0]
-            print(mustDo)
+            #print(mustDo)
             if action_to_play == 0 :
                 print("INVALIDE PLAY in PLAY")
                 print(mustDo)
@@ -203,53 +200,60 @@ class Marvin_player(Player,minimax.Game):
                 self.previousboard = board.clone().play_action(action_to_play)
                 return action_to_play                
         else :
-            return minimax.search(state, self)
-            counteraction = False
-            if self.previousboard:
-                differenttowers = self.get_diff_towers(board)
-                counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
-            subboardaction = self.get_sub_board_action(board, player)
-            #print(subboardaction)
-            if counteraction:
-                if counteraction[1] and subboardaction[1]:
-                    if counteraction[0] > subboardaction[0]:
+#            maxtime = (self.time_left - 9) / ((1 + (37/(self.step+1))**1.75)/2)
+#            print("maxtime", maxtime)
+#            print("timeleft", self.time_left)
+#            print("step", self.step)
+            if step < 10:
+                counteraction = False
+                if self.previousboard:
+                    differenttowers = self.get_diff_towers(board)
+                    #self.timeout = False
+                    counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)
+                    #self.check_timeout()
+                self.timeout = False
+                subboardaction = self.get_sub_board_action(board, player)
+                self.check_timeout()
+                if counteraction:
+                    if counteraction[1] and subboardaction[1]:
+                        if counteraction[0] > subboardaction[0]:
+                            action = counteraction[1]
+                        else:
+                            action = subboardaction[1]
+                    elif counteraction[1]:
                         action = counteraction[1]
-                    else:
+                    elif subboardaction[1]:
                         action = subboardaction[1]
-                elif counteraction[1]:
-                    action = counteraction[1]
-                else:
+                    else:
+                        self.symetricDic = dict()
+                        self.timeout = False
+                        action = minimax.search(state, self)
+                        self.check_timeout()
+                elif subboardaction[1]:
                     action = subboardaction[1]
-            elif subboardaction[1]:
-                action = subboardaction[1]
+                else:
+                    self.symetricDic = dict()
+                    self.timeout = False
+                    action = minimax.search(state, self)
+                    self.check_timeout()
+                self.previousboard = board.clone().play_action(action)
             else:
+                self.symetricDic = dict()
+                self.timeout = False
                 action = minimax.search(state, self)
-            #action = minimax.search(state, self)
-            self.previousboard = board.clone().play_action(action)
+                self.check_timeout()
             return action 
-            #we must perform two searches on both subboard and return the best move
-            
-    #        subboardaction = self.get_sub_board_action(board, player)
-    #        
-    #        if self.previousboard:
-    #            differenttowers = [0,0]
-    #            i = 0
-    #            while differenttowers[1] == 0 and i <= range(board.rows):
-    #                j = 0
-    #            #for i in range(board.rows):
-    #                while differenttowers[1] == 0 and j <= range(board.columns):
-    #                #for j in range(board.columns):
-    #                    if board.m[i][j] == self.previousboard[i][j]:
-    #                        if differenttowers[0] == 0:
-    #                            differenttowers[0] = [i, j]
-    #                        else:
-    #                            differenttowers[1] = [i, j]
-    #                    j += 1
-    #                i += 1        
-    #            counteraction = self.get_counter_action(board.get_percepts(), board, differenttowers, player)          
-    #            
-    #        self.previousboard = board.clone().play_action(action)
 
+
+    def check_timeout(self):
+        if self.timeout:
+            self.actualdepth -= 1
+            #print("minus")
+        else:
+            self.actualdepth += 1
+            #print("plus")
+        return True
+    
     
     def get_diff_towers(self, board):
         differenttowers = [False,False]
@@ -260,25 +264,14 @@ class Marvin_player(Player,minimax.Game):
             while not differenttowers[1] and j <= board.columns - 1:
             #for j in range(board.columns):
                 if board.get_height(board.m[i][j]) != self.previousboard.get_height(self.previousboard.m[i][j]):
-                    if differenttowers[0] == 0:
+                    if not differenttowers[0]:
                         differenttowers[0] = [i, j]
                     else:
                         differenttowers[1] = [i, j]
                 j += 1
             i += 1  
         return differenttowers
-    
-    
-    def init_previousboard(self, board):
-        diffTowers = [None, None]
-        for i in board.rows:
-            for j in board.columns:
-                if board.get_height(board.m[i][j] == 0):
-                    diffTowers[1] = [i, j]
-                elif board.get_height(board.m[i][j] == 1):
-                    diffTowers[0] = [i, j]
-        self.previousboard = board
-        # Find init board not via an action
+
     
     def get_sub_board_action(self, board, player):
         '''Returnsa tuple val, action with the action on the main board \
@@ -286,7 +279,6 @@ class Marvin_player(Player,minimax.Game):
         '''
         miniboardvalues = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
         best = [0,0,0]
-        #Need to check those -3
         for i in range(board.rows - 3):
             for j in range(board.columns - 3):
                 for x in range (i, i+4):
@@ -316,7 +308,10 @@ class Marvin_player(Player,minimax.Game):
         for x in range(4):
             newpercept[x] = bigboardpercept[x+i][j:j+4]
         subboard = Board(newpercept)
-        subboardaction = search((subboard, player), self)
+        self.symetricStateDic = dict()
+        self.time_left = (time()-self.timer)
+        self.timer = time()
+        subboardaction = search((subboard, player), board, i, j, self)
         if subboardaction[1]:
             boardaction = (subboardaction[0], (subboardaction[1][0] + i, \
             subboardaction[1][1] + j, \
@@ -325,13 +320,9 @@ class Marvin_player(Player,minimax.Game):
             if board.is_action_valid(boardaction[1]):
                 return boardaction
             else:
-                print("unvalid action_played in sub")
-                print(boardaction)
-                return False
+                return (0, None)
         else:
-            print("je retourne comme un leo dans sub")
             return(0, None)
-#        return boardaction
         
     
     def get_counter_action(self, bigboardpercept, board, differenttowers, player):
@@ -422,7 +413,7 @@ class Marvin_player(Player,minimax.Game):
                     for j in range(differenttowers[0][1]-1, differenttowers[0][1]+2)] \
                     for i in range(3)]     
                     y = differenttowers[0][1] - 1
-            elif differenttowers[1][0] == board.rows - 1:     
+            elif differenttowers[1][0] == board.rows - 1:  
                 #The lower tower is on the lower row
                 x = board.rows - 3
                 if differenttowers[0][1] == 0:
@@ -448,7 +439,7 @@ class Marvin_player(Player,minimax.Game):
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(2)] \
                     for i in range(differenttowers[0][0]-1, differenttowers[1][0]+2)]
-                elif differenttowers[1][1]:
+                elif differenttowers[1][1] == board.columns - 1:
                     #Towers on the right side
                     counterpercept = [[bigboardpercept[i][j] \
                     for j in range(board.columns-2, board.columns)] \
@@ -462,13 +453,13 @@ class Marvin_player(Player,minimax.Game):
                 x = differenttowers[0][0] - 1
             
         counterboard = Board(counterpercept)
-        counteraction = search((counterboard, player), self)
+        self.symetricDic = dict() # reinit le dic
+        counteraction = search((counterboard, player), board, x, y, self)
         if counteraction[1]:
             action = (counteraction[0], (counteraction[1][0] + x, \
             counteraction[1][1] + y, \
             counteraction[1][2] + x, \
             counteraction[1][3] + y))
-            
             if board.is_action_valid(action[1]):
                 return action
             else:
@@ -477,7 +468,6 @@ class Marvin_player(Player,minimax.Game):
                 return False
             return action
         else:
-            print("je retourne None comme un gland dans counter")
             return(0, None)
                         
     def _action_played(self,currentBoard,previousBoard):
@@ -506,7 +496,7 @@ class Marvin_player(Player,minimax.Game):
         if previousBoard.is_action_valid(action):
             return (action,towers)
         else:
-            print("unvalid action_played")
+            print("unvalid action_played in _action_played")
             print(action)
             return False
         
@@ -580,6 +570,7 @@ class Marvin_player(Player,minimax.Game):
         #self.mustDoDic[Action([3,[-2,-2],[-2,Color.YELLOW],[0,0],[0,0]],[4,[-2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.mustDoDic[Action([3,[-2,-2],[-2,-2],[-2,Color.YELLOW],[0,0]],[4,[-2,-2],[0,0],[0,0],[0,0]])] = True
         
+        
         self.suicideDic[Action([3,[-2,Color.RED],[0,0],[0,0],[0,0]],[4,[-2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.suicideDic[Action([3,[-2,-2],[-2,Color.RED],[0,0],[0,0]],[4,[-2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.suicideDic[Action([3,[-2,-2],[-2,-2],[-2,Color.RED],[0,0]],[4,[-2,-2],[0,0],[0,0],[0,0]])] = True
@@ -598,7 +589,14 @@ class Marvin_player(Player,minimax.Game):
         self.mustDoDic[Action([4,[-2,Color.RED],[0,0],[0,0],[0,0]],[3,[2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.mustDoDic[Action([4,[-2,-2],[-2,Color.RED],[0,0],[0,0]],[3,[2,-2],[-2,-2],[0,0],[0,0]])] = True
         #self.mustDoDic[Action([4,[-2,-2],[-2,-2],[-2,Color.RED],[0,0]],[3,[2,-2],[0,0],[0,0],[0,0]])] = True
-       
+        
+        self.mustDoDic[Action([3,[Color.RED,-2],[-2,-2],[-2,-2],[0,0]],[4, [-2,-2],[0,0],[0,0],[0,0]])] = True
+        self.mustDoDic[Action([3,[Color.RED,-2],[-2,-2],[0,0],[0,0]],[4, [-2,-2],[-2,-2],[0,0],[0,0]])] = True
+        self.mustDoDic[Action([3,[Color.RED,-2],[0,0],[0,0],[0,0]],[4, [-2,-2],[-2,-2],[-2,-2],[0,0]])] = True
+        
+        self.mustDoDic[Action([4,[-2,-2],[0,0],[0,0],[0,0]],[3, [-2,-2],[-2,-2],[-2,Color.RED],[0,0]])] = True
+        self.mustDoDic[Action([4,[-2,-2],[-2,-2],[0,0],[0,0]],[3, [-2,-2],[-2,Color.RED],[0,0],[0,0]])] = True
+        self.mustDoDic[Action([4,[-2,-2],[-2,-2],[-2,-2],[0,0]],[3 ,[-2,Color.RED],[0,0],[0,0],[0,0]])] = True
         # broke one of our tower.
         self.suicideDic[Action([4,[-2,Color.YELLOW],[0,0],[0,0],[0,0]],[3,[2,-2],[-2,-2],[-2,-2],[0,0]])] = True
         #self.suicideDic[Action([4,[-2,-2],[-2,Color.YELLOW],[0,0],[0,0]],[3,[2,-2],[-2,-2],[0,0],[0,0]])] = True
@@ -732,6 +730,25 @@ class Action(object):
                     self.t_target[1][0] = 2
                 self.t_init.pop(0)
                 return True
+            elif self.t_target[self.size_t_target-1][1] == Color.RED and self.t_target[1][0] != Color.RED and self.t_target[0] == 3 :
+                i = 1
+                while i < self.size_t_init :
+                    self.t_init[i][0] = -2
+                    self.t_init[i][1] = -2
+                    i+=1
+                i = 1
+                while i < self.size_t_target :
+                    if i == self.size_t_target-1 :
+                        self.t_target[i][0] = -2
+                    else :
+                        self.t_target[i][0] = -2
+                        self.t_target[i][1] = -2
+                    i+=1 
+                self._weight()
+                self.t_init.pop(0)
+                return True
+            return False
+                 
         return False
     def _detect_color_bot(self):
         if self.size_t_init + self.size_t_target == 6 and self.size_t_target > 1 :
@@ -753,6 +770,24 @@ class Action(object):
                 
                 if self.t_target[1][0] == Color.RED :
                     self.weight = -self.weight
+                self.t_init.pop(0)
+                return True
+            elif (self.t_init[1][0] == Color.RED  and self.t_target[0] == 4) :
+                
+                i = 1
+                while i < self.size_t_init :
+                    if i == 1 :
+                        self.t_init[i][1] = -2
+                    else:
+                        self.t_init[i][0] = -2
+                        self.t_init[i][1] = -2    
+                    i+=1 
+                i = 1
+                while i < self.size_t_target :
+                    self.t_target[i][0] = -2
+                    self.t_target[i][1] = -2
+                    i+=1
+                self._weight()
                 self.t_init.pop(0)
                 return True
         return False
@@ -780,7 +815,7 @@ class Action(object):
 
 inf = float("inf")
 
-def search(state, game, prune=True):
+def search(state, bigboard, i, j, game, prune=True):
     """Perform a MiniMax/AlphaBeta search and return the best action.
 
     Arguments:
@@ -789,14 +824,25 @@ def search(state, game, prune=True):
     prune -- whether to use AlphaBeta pruning
 
     """
-
-    def max_value(state, alpha, beta, depth):
+    def get_leaf_state(state, bigboard, i, j):
+        bigclone = bigboard.clone()
+        miniboard, player = state
+        width = len(miniboard.m)
+        hight = len(miniboard.m[0])
+        for x in range(width):
+            for y in range(hight):
+                bigclone.m[x+i][y+j] = miniboard.m[x][y]
+        return (bigclone, player)
+        
+        
+    def max_value(state, bigboard, i, j, alpha, beta, depth):
         if game.cutoff(state, depth):
-            return game.evaluate(state), None
+            bigstate = get_leaf_state(state, bigboard, i, j)
+            return game.evaluate(bigstate), None
         val = -inf
         action = None
         for a, s in game.successors(state):
-            v, _ = min_value(s, alpha, beta, depth + 1)
+            v, _ = min_value(s, bigboard, i, j, alpha, beta, depth + 1)
             if v > val:
                 val = v
                 action = a
@@ -806,13 +852,14 @@ def search(state, game, prune=True):
                     alpha = max(alpha, v)
         return val, action
 
-    def min_value(state, alpha, beta, depth):
+    def min_value(state, bigboard, i, j, alpha, beta, depth):
         if game.cutoff(state, depth):
-            return game.evaluate(state), None
+            bigstate = get_leaf_state(state, bigboard, i, j)
+            return game.evaluate(bigstate), None
         val = inf
         action = None
         for a, s in game.successors(state):
-            v, _ = max_value(s, alpha, beta, depth + 1)
+            v, _ = max_value(s, bigboard, i, j, alpha, beta, depth + 1)
             if v < val:
                 val = v
                 action = a
@@ -822,7 +869,7 @@ def search(state, game, prune=True):
                     beta = min(beta, v)
         return val, action
 
-    val, action = max_value(state, -inf, inf, 0)
+    val, action = max_value(state, bigboard, i, j, -inf, inf, 0)
     return val, action
 
 class OrderedBoard(object):
@@ -831,14 +878,14 @@ class OrderedBoard(object):
         self.eval = eval
         self.action = action
     
-    def __eq__(self,other):
-        return self.eval == other.eval
-    def __cmp__(self,other):
-        if self.eval > other.eval:
-            return 1
-        elif self.eval < other.eval:
-            return -1
-        else: return 0
-
+#    def __eq__(self,other):
+#        return self.eval == other.eval
+#    def __cmp__(self,other):
+#        if self.eval > other.eval:
+#            return 1
+#        elif self.eval < other.eval:
+#            return -1
+#        else: return 0
+        
 if __name__ == "__main__" :
     player_main(Marvin_player())
