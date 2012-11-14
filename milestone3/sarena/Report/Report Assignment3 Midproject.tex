@@ -67,12 +67,11 @@ Assignement 3 - Mid-Project}
 	
 
 	\section{Scipion}
-		Here is the tree representing the game of scipion :
+		Here is the tree representing the game of scipion, we also included the representation of the board of the game.
 		\begin{figure}[h!]
 			\centering
 				\includegraphics[scale=0.5]{minmax_tree_scipion_specs.png}
 			\caption{Scipion Tree}
-			\label{fig:server_connection}	
 		\end{figure}\\
 		On this tree, we can find at the bottom the values of the leaves. From them are derived the values of the other nodes using minimax. We see that as the root is max, it will play the right action.
 	\section{Alpha-Beta search}	
@@ -80,21 +79,20 @@ Assignement 3 - Mid-Project}
 		\begin{figure}[h!]
 			\centering
 				\includegraphics[scale=0.4]{arbre_minimax.png}
-			\caption{Scipion Tree}
+			\caption{MiniMax}
 		\end{figure}
-		Due to the not-so-easy-to-use Gimp, there is no circle, but the chosen action will be the right one.
-		\subsection{Perform the Alpha-Beta algorithm on the tree. At each non terminal node, put the successive values of $\alpha$ and $\beta$. Cross out the arcs reaching non visited nodes. Assume a left-to-right node expansion.}
+		The action to be played is thus the one at the right of the root.
+		\subsection{Perform the Alpha-Beta algorithm on the tree. At each non terminal node, put the successive values of $\alpha$ and $\beta$. Cross out the arcs reaching non visited nodes. Assume a left-to-right node expansion.}		
 		\begin{figure}[h!]
 			\centering
 				\includegraphics[scale=0.8]{tree-fig5.png}
-			\caption{Scipion Tree}
+			\caption{AlphaBeta from left right}
 		\end{figure}
 		\subsection{Do the same, assuming a right-to-left node expansion instead}
 		\begin{figure}[h!]
 			\centering
 				\includegraphics[scale=0.8]{tree-fig6.png}
-			\caption{Scipion Tree}
-			\label{fig:server_connection}	
+			\caption{AlphaBeta from right to left}
 		\end{figure}
 		\subsection{Can the nodes be ordered in such a way that Alpha-Beta pruning can cut off more branches (in a left-to-right node expansion)? If no, explain why; if yes,
 give the new ordering and the resulting new pruning.}
@@ -209,7 +207,6 @@ actions at each step of the game. Plot the results in a graph. What do you obser
 						\centering
 							\includegraphics[scale=0.4]{arbre_depth.png}
 						\caption{Depth of a minimax tree}
-						\label{fig:server_connection}	
 					\end{figure}
 				\subsubsection{Question 17: Explain why it might be useful (for the Sarena contest) to cut off the search for another reason than the depth.}
 					There is two other reasons than depth to cut the search in our case. the first one is the time that is taken to perform the search and the second one is the detection of the suicides as we want to avoid computing their children.
