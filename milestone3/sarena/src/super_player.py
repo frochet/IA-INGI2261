@@ -62,7 +62,7 @@ class Marvin_player(Player,minimax.Game):
 #            print (time()-self.timer)
             self.timeout = True
             return depth >= 1
-#        elif self.time_left - (time()-self.timer) < 15 : and order the tree
+#        elif self.time_left - (time()-self.timer) < 15 :
 #            return depth >= 2
 #        elif self.time_left - (time()-self.timer) < 10 :
 #            return True

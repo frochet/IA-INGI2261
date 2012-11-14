@@ -67,23 +67,39 @@ Assignement 3 - Mid-Project}
 	
 
 	\section{Scipion}
-	
-		\subsection{Draw the game tree for a depth of 2, i.e. one turn for each player.}
-		\subsection{Evaluate the value of the leaves using the heuristic function (on the figure you
-draw in 1, you don’t have to implement it!).}
-		\subsection{Using the MiniMax algorithm, find the value of the other nodes.}
-		\subsection{Circle the move the root player should do.}
-		
+		Here is the tree representing the game of scipion, we also included the representation of the board of the game.
+		\begin{figure}[h!]
+			\centering
+				\includegraphics[scale=0.5]{minmax_tree_scipion_specs.png}
+			\caption{Scipion Tree}
+		\end{figure}\\
+		On this tree, we can find at the bottom the values of the leaves. From them are derived the values of the other nodes using minimax. We see that as the root is max, it will play the right action.
 	\section{Alpha-Beta search}	
 		\subsection{Perform the MiniMax algorithm on the tree in Figure 4, i.e. put a value to each node. Circle the move the root player should do.}
-		\subsection{Perform the Alpha-Beta algorithm on the tree. At each non terminal node, put the successive values of $\alpha$ and $\beta$. Cross out the arcs reaching non visited nodes. Assume a left-to-right node expansion.}
+		\begin{figure}[h!]
+			\centering
+				\includegraphics[scale=0.4]{arbre_minimax.png}
+			\caption{MiniMax}
+		\end{figure}
+		The action to be played is thus the one at the right of the root.
+		\subsection{Perform the Alpha-Beta algorithm on the tree. At each non terminal node, put the successive values of $\alpha$ and $\beta$. Cross out the arcs reaching non visited nodes. Assume a left-to-right node expansion.}		
+		\begin{figure}[h!]
+			\centering
+				\includegraphics[scale=0.8]{tree-fig5.png}
+			\caption{AlphaBeta from left right}
+		\end{figure}
 		\subsection{Do the same, assuming a right-to-left node expansion instead}
+		\begin{figure}[h!]
+			\centering
+				\includegraphics[scale=0.8]{tree-fig6.png}
+			\caption{AlphaBeta from right to left}
+		\end{figure}
 		\subsection{Can the nodes be ordered in such a way that Alpha-Beta pruning can cut off more branches (in a left-to-right node expansion)? If no, explain why; if yes,
 give the new ordering and the resulting new pruning.}
-		Yes it can. here the new ordering :
+		Yes it can. What we have to do is to order the successors of every nodes when creating them. If we compute the children of a min, we must order them in increasing order and if we compute the children of a max, we must order them in decreasing order.
 	\section{Sarena}
 		\subsection{A basic Alpha-Beta agent}
-		
+			The implementation of the basic\_player is given on the svn repository.
 		\subsection{Comparison of MiniMax and Alpha-Beta}
 			\subsubsection{Question 4: What action will be played when using the MiniMax algorithm and when using the Alpha-Beta algorithm? Is there a difference between both results?}
 			The two played actions will be the same because the difference between MiniMax and Alpha-Beta is that the latter uses pruning. The only difference between the two results is that Alpha-Beta will visit less nodes than MiniMax and so, less time is needed.
@@ -124,12 +140,26 @@ And finally, the function count the numbers of yellow coins and red coins that a
 This score is positive if we are evaluate to winner and negative on the other hand.
 
 				\subsubsection{Question 8: In Alpha-Beta, the evaluation function is used to evaluate leaf nodes (when the cut-off occurs). As seen in previous questions, the pruning of Alpha-Betadepends on the order of the successors. Explain how your evaluation function could be used to (we hope) obtain more pruning with Alpha-Beta. Are there any drawbacks to your approach?}
-					The evaluation function can be used at each state that we compute to order successively every level of the search tree. The order is increasing of decreasing following the parent (min or max).\\
-					This increases the change to have pruning when backtracking the evaluations of the leaves.\\
-					The only drawback would be the computation time to perform the sort, but as it increases the pruning enough, it is better to do so.
+					The evaluation function can be used at each state that we compute to order the children of a given node. The order is increasing of decreasing following the parent (min or max).\\
+					This increases the chance to have pruning and so, less nodes need to be visited.\\
+					The drawback of this is the computation time to perform the sort. We run a few tests, and saw that it was better to avoid doing the sort because the gain in pruning was not worth the time spent ordering.
+					The pruning in our implementation comes mostly from the cutoff function that returns True when detecting a suicide action.
 				\subsubsection{Question 9: Make an agent using the successor function of the basic player (section 3.1), using your new evaluation function and cutting the tree at its root to use the evaluation function on its direct successors (you can achieve this by making cutoff always return True). Let this agent play against another similar agent using Board.get\_score as evaluation function. Try out multiple matches and vary who plays first. How well does your evaluation function fare?}
-					Our evaluation function alone doesn't do so well when search with a depth of 1, we launched 10 games, 5 with basic\_player beginning and 5 with the other beginning. The basic\_player won 9 times over 10, the other player won only once as he began the game.
-			
+					To test this, we launched 40 games, 20 began by the player using our evaluation function and 20 began by the basic\_player.
+					\begin{center}
+					\begin{tabular}{|c|c|c|c|}
+						\hline 
+						 & New Eval Begin & Basicplayer begin & Total \\ 
+						\hline 
+						Won by eval & 15 & 8 & 22 \\ 
+						\hline 
+						Won by basic & 5 & 11 & 17 \\ 
+						\hline 
+						Draw & 0 & 1 & 1 \\ 
+						\hline 
+						\end{tabular} 
+					\end{center}
+					We see that our successor function is better that get\_score.
 			\subsection{Successors function}
 				\subsubsection{Question 10: Give an upper bound on the number of successors for one state.}
 					There is at most 120 possible actions on one board, we can easily convince ourselves that this is the very first state that allows the most actions. Then, we count how many possible actions for each coin which gives $4*2+4*4*3+4*4*4$ (corner, edges and center coins).
@@ -149,22 +179,40 @@ actions at each step of the game. Plot the results in a graph. What do you obser
 					If we have two independent action $a$ and $b$, the traces $a\rightarrow b$ and $b\rightarrow a$ lead to the same state, so it is unnecessary to treat it twice.\\
 					The way to deal with those states is to add a dictionary containing all the visited states for one step of the game. When an action leads to a state that is already in it, we simply don't yield it.
 				\subsubsection{Question 13: If the number of successors is still too large, can you think of states that might be ignored, at the expense of loosing completeness?}
-					Yes, there are some "suicidal" action that a normal player wouldn't do because they would lead to certain defeat. We can assume that the opponent won't play "his suicidal action" and we don't want our AI to perform its own "suicidal actions". Thus, we can simply ignore those actions.
+					Yes, there are some "suicidal" actions that a normal player wouldn't do because they would lead to certain defeat. We can assume that the opponent won't play "his suicidal action" and we don't want our AI to perform its own "suicidal actions". Thus, we can simply ignore those actions. This detection is done in the cutoff function.
 				\subsubsection{Question 14: Describe your successors function.}
 					Our successor gets all the possible actions from a state, and only keeps the asymmetrical ones. Than it performs a sort on the states, the order depending on the player that perform the actions (min or max) and then yields all the actions in that order.
 				\subsubsection{Question 15: On average, how deep can you explore the tree made by your successors function starting from random initial states (as generated by the constructor of the Board class) in less than 30 seconds? Use an Alpha-Beta agent with the basic evaluation function and increase progressively the cut-off depth.}
-					When using only our evaluate, we can search a depth of 2 in about 9.6s in average, and a depth of 3 in 46.2s. Thus, with 30 seconds, we can perform the whole search on the two first level an about half of the search on the third.
+					When using only our evaluate, we get the following result for the depths 1, 2 and 3. Those times are an mean on five tries.
+					\begin{center}
+						\begin{tabular}{|c|c|}
+						\hline 
+						Depth & Time Taken [s] \\ 
+						\hline 
+						1 & 0.07712 \\ 
+						\hline 
+						2 & 0.5748 \\ 
+						\hline 
+						3 & 20.72 \\ 
+						\hline 
+						\end{tabular} 
+					\end{center}
+					Trying a depth of 4 took too much time (more than a minute), so we didn't try to find how much time was needed.\\
+					What we can see is that the whole tree of depth 3 is visited in 30 seconds and also the beginning of the forth level is visited.
 				
 			\subsection{Cut-off function}
 				\subsubsection{Question 16: The cutoff method receives an argument called depth. Explain precisely what is called the depth in the minimax.py implementation. Illustrate on an example (draw a search tree and indicate the depths).}
 					When drawing the tree of the search, the depth is the level on which we are. It represents in the minimax algorithm the number of action we see in advance. In other words, for a depth d, it means that we have though of all the actions scheme in a range of d actions.\\
-					\begin{huge}
-						AJOUTER LE DESSIN
-					\end{huge}
+					\begin{figure}[h!]
+						\centering
+							\includegraphics[scale=0.4]{arbre_depth.png}
+						\caption{Depth of a minimax tree}
+					\end{figure}
 				\subsubsection{Question 17: Explain why it might be useful (for the Sarena contest) to cut off the search for another reason than the depth.}
 					There is two other reasons than depth to cut the search in our case. the first one is the time that is taken to perform the search and the second one is the detection of the suicides as we want to avoid computing their children.
 				\subsubsection{Question 18: Describe your cut-off function.}
 					Our cut-off function works in three phases, the first is checking if there is enough time remaining. If not, the search of depth 2 or 1.\\
-					Then, we check if the current state made from a suicidal move, if yes, it returns True.\\
-					And finally, if the search took to much time, we decrease the depth of the following search, if not, we increase it.
+					Then, we check if the action considered is a suicidal move, if yes, it returns True.\\
+					And finally, if the search took to much time, based on a maxtime computed with the time\_left, and the current step, we decrease the depth of the next search, if not, we increase it.\\
+					The way it works is by setting a boolean variable to True if a time-out has occurred and when the search is over, we decrease or increase the depth of the next search.
 \end{document}
