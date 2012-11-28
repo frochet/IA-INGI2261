@@ -13,6 +13,7 @@ class StupidTravelingSalesman(Problem):
         self.closed = dict()
         self.state_init = State(initial)
         self.closed[self.state_init] = True
+        
     def successor(self, state):
         list = self.state_init.swap()
         while list :
@@ -30,7 +31,7 @@ class StupidTravelingSalesman(Problem):
     
 if __name__ == "__main__":
     
-    initial = [] # to be found with greedy method, lŽowlo-lo
+    initial = [] # to be found with greedy method, lï¿½owlo-lo
     
     salesman = StupidTravelingSalesman(initial)
     result = random_walk(salesman)
