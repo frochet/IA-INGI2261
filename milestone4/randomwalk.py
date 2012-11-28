@@ -7,7 +7,7 @@ Created on 27 nov. 2012
 from search import *
 from state import *
 
-class StupidTravelingSalesman(Problem):
+class TravelingSalesman(Problem):
     
     def __init__(self, initial, goal=None):
         self.closed = dict()
@@ -25,14 +25,14 @@ class StupidTravelingSalesman(Problem):
     
     def value(self,state):
         """Compute the path value"""
-        return state.comput_path()
+        return state.compute_path()
     
     
 if __name__ == "__main__":
     
-    initial = [] # to be found with greedy method, léowlo-lo
+    initial = [] # to be found with greedy method, leowlo-lo
     
-    salesman = StupidTravelingSalesman(initial)
+    salesman = TravelingSalesman(initial)
     result = random_walk(salesman)
     print(result)
     
