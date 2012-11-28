@@ -15,12 +15,7 @@ class TravelingSalesman(Problem):
         self.closed[self.state_init] = True
         
     def successor(self, state):
-        list = self.state_init.swap()
-        while list :
-            newState = State(list)
-            if newState not in self.closed :
-                self.closed[newState] = True
-                yield (None, newState)
+        yield (None, State(self.state_init.swap()))
                 
             
     
