@@ -18,9 +18,9 @@ class State(object):
         self.vertices = vertices
         self.cost_matrix = cost_matrix
         
-    def swap(self):
+    def swap_all(self):
         """
-            yield all the possible swap
+            yield all the possible swap_all
         """
         def lswap(L,i1,i2):
             L[i1], L[i2] = L[i2], L[i1]
@@ -32,7 +32,10 @@ class State(object):
                 lswap(self.vertices,i,j)
                 yield(self.vertices)
                 j+=1
-            i+=1    
+            i+=1   
+    
+    def swap_best(self, dic):
+        pass 
     
     def compute_path(self):
         i = 0
@@ -48,5 +51,5 @@ class State(object):
 if __name__ == "__main__" :
     
     state = State([1,2,3,4])
-    for elem in state.swap():
+    for elem in state.swap_all():
         print(elem)            
