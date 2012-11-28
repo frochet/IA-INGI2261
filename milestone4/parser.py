@@ -19,12 +19,12 @@ class Parser(object):
         '''
         self.io = IO(filename);
     
-    def parse_line(self,separator):
+    def parse_line(self,separator = " "):
         
         matrice = []
         self.io.init_reader()
         for line in self.io.file :
             if separator != None :
                 matrice += line.split(separator)
-        return matrice
+        return matrice[1:]
         
