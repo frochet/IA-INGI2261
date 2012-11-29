@@ -4,6 +4,7 @@ Created on 27 nov. 2012
 @author: Florentin
 '''
 import math
+import random
 
 class State(object):
     '''
@@ -35,9 +36,7 @@ class State(object):
                 j+=1
             i+=1   
     
-    def swap_best(self):
-        vertices_tmp = self.vertices[:]
-        
+    def swap_best(self):        
         i = 0
         best = self.compute_path()
         swap = self.vertices
@@ -50,8 +49,16 @@ class State(object):
                     swap = self.vertices[:]
                 j+=1
             i+=1
-        self.vertices = vertices_tmp[:]
+        self.vertices = swap[:]
         return swap
+    
+    def swap_random_from_bests(self,size):
+        tab = []
+        i = 0
+        while i < size :
+            tab.insert(i, self.swap_best())
+        return random.choice(tab)
+        
     
     def compute_path(self):
         i = 0
