@@ -35,7 +35,8 @@ class State(object):
             while j < len(self.vertices):
                 self.lswap(self.vertices, i, j)
                 path = self.compute_path()
-                if path < best :
+                if path > best :
+                    best = path
                     swap = self.vertices[:]
                 j+=1
             i+=1
