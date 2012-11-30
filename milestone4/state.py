@@ -48,6 +48,7 @@ class State(object):
         i = 0
         while i < size :
             tab.insert(i, self.swap_best())
+            i+=1
         return random.choice(tab)
         
     
