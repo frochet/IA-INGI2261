@@ -1,6 +1,6 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[french] {babel}
+\usepackage[english] {babel}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{graphicx}
@@ -16,6 +16,7 @@
 \usepackage{amsthm}
 \usepackage{moreverb}
 \usepackage{listings}
+\usepackage{enumerate}
 \newtheorem{theorem}{Théorème}[section]
 \newtheorem{defi}{Définition}[section] 
 \newtheorem{prop}{Propriété}[section] 
@@ -42,7 +43,7 @@ Assignement 3 - Mid-Project}
 			{\Large {Professor : Yves Deville\\ \vspace{0.2cm} Teaching assistants : Cyrille Dejemeppe and Jean-Baptiste Mairy  }}\\
 			\vspace{0.6cm}
 			
-			{\Large \textit{ Assignement3 : Adversarial Search}}\\
+			{\Large \textit{Assignment 4 : Local Search and Propositional Logic}}\\
 			\vspace{1.2cm}
 
 			\texttt{}\\
@@ -65,35 +66,91 @@ Assignement 3 - Mid-Project}
 
 	\newpage
 	
+\section{The Traveling Salesman Problem}
+\subsection{Diversification versus Intensification}
+\subsubsection{Question 1}
+The point is to find a solution that is as good as possible, while avoiding the bad complexity of the exact solution of the TSP. 
+We'll formulate each state as a list of ordered cities and a variable containing the sum of the cost of the distances between two adjacent cities in the list.\\
+A solution will be a tuple containing the list of cities, which order follows the indexes in the list, and a double containing the total cost of the solution).\\
+The successor function will take an admissible path for the tsp and yield all the possible swaps of two cities in the list.\\
+Symmetrical states will be avoided by considering that the swaps of two cities $(c1, c2)$ and $(c2, c1)$ are the same.\\
+As said before, the evaluation function sums the distance between each couple of $p_{i}, p_{i+1}$ in the list to give the total cost of the solution.
+The distances are recovered from the distance matrix given in the input file.
+\subsubsection{Question 2}
+The implementation of the tree different strategies are in the python modules: \verb@randomwalk.py@, \verb@maxvalue.py@ and \verb@randomized_maxvalue.py@.
+\subsubsection{Question 3}
+\subsubsection{Question 4}
+\subsubsection{Question 5}
+	\begin{enumerate}[(a)]
+		\item iugaef
+		\item yafub
+		\item
+		\item 
+		\item There must be a trade off between intensification and diversification because intensification ensures that we go for a good solution, while diversification ensures that we explore several possibilities. \\
+		Intensification alone (\verb@maxvalue.py@) would cause the solution to find a local optimum without considering others paths to better solutions and diversification alone (\verb@randomwalk.py@) would cause to explore other paths but no necessarily the good ones.
+	\end{enumerate}
+
+\subsection{Some well-known strategies}
+\subsubsection{Question 1}
+\subsubsection{Question 2}
+\subsubsection{Question 3}
+\subsubsection{Question 4}
+\subsubsection{Question 5}
+\subsubsection{Question 6}
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	\section{Scipion}
 		Here is the tree representing the game of scipion, we also included the representation of the board of the game at each step.
-		\begin{figure}[h!]
-			\centering
-				\includegraphics[scale=0.5]{minmax_tree_scipion_specs.png}
-			\caption{Scipion Tree}
-		\end{figure}\\
+%		\begin{figure}[h!]
+%			\centering
+%				\includegraphics[scale=0.5]{minmax_tree_scipion_specs.png}
+%			\caption{Scipion Tree}
+%		\end{figure}\\
 		On this tree, we can find at the bottom the values of the leaves. From them are derived the values of the other nodes using minimax. We see that as the root is max, it should play the right action.
 	\section{Alpha-Beta search}	
 		\subsection{Perform the MiniMax algorithm on the tree in Figure 4, i.e. put a value to each node. Circle the move the root player should do.}
-		\begin{figure}[h!]
-			\centering
-				\includegraphics[scale=0.4]{arbre_minimax.png}
-			\caption{MiniMax}
-		\end{figure}
+%		\begin{figure}[h!]
+%			\centering
+%				\includegraphics[scale=0.4]{arbre_minimax.png}
+%			\caption{MiniMax}
+%		\end{figure}
 		The action to be played is thus the one at the right of the root.
 		\subsection{Perform the Alpha-Beta algorithm on the tree. At each non terminal node, put the successive values of $\alpha$ and $\beta$. Cross out the arcs reaching non visited nodes. Assume a left-to-right node expansion.}		
-		\begin{figure}[h!]
-			\centering
-				\includegraphics[scale=0.8]{tree-fig5.png}
-			\caption{AlphaBeta from left right}
-		\end{figure}
+%		\begin{figure}[h!]
+%			\centering
+%				\includegraphics[scale=0.8]{tree-fig5.png}
+%			\caption{AlphaBeta from left right}
+%		\end{figure}
 		\subsection{Do the same, assuming a right-to-left node expansion instead}
-		\begin{figure}[h!]
-			\centering
-				\includegraphics[scale=0.8]{tree-fig6.png}
-			\caption{AlphaBeta from right to left}
-		\end{figure}
+%		\begin{figure}[h!]
+%			\centering
+%				\includegraphics[scale=0.8]{tree-fig6.png}
+%			\caption{AlphaBeta from right to left}
+%		\end{figure}
 		\subsection{Can the nodes be ordered in such a way that Alpha-Beta pruning can cut off more branches (in a left-to-right node expansion)? If no, explain why; if yes,
 give the new ordering and the resulting new pruning.}
 		Yes it can. What we have to do is to order the successors of every nodes when creating them. If we compute the children of a min, we must order them in increasing order and if we compute the children of a max, we must order them in decreasing order.
@@ -166,12 +223,12 @@ A positive score indicates that we are winning and a negative one tells us that 
 				\subsubsection{Question 11: From random games (at least 100), compute the average number of possible
 actions at each step of the game. Plot the results in a graph. What do you observe?}
 					Here is the graph generated :
-					\begin{figure}[h!]
-						\centering
-							\includegraphics[scale=0.4]{GraphPossActions.png}
-						\caption{Number of possible actions per step}
-						\label{fig:server_connection}	
-					\end{figure}
+%					\begin{figure}[h!]
+%						\centering
+%							\includegraphics[scale=0.4]{GraphPossActions.png}
+%						\caption{Number of possible actions per step}
+%						\label{fig:server_connection}	
+%					\end{figure}
 					We can observe that for the 25 first steps, the decrease is linear. The reason why it stop the be linear between the 25th and the 35 steps is because all games do not reach that much steps.
 					
 				\subsubsection{Question 12: Are all these successors necessary to be exhaustive (think about symmetry)? Why? If not, how will you consider only the necessary states?}
@@ -203,11 +260,11 @@ actions at each step of the game. Plot the results in a graph. What do you obser
 			\subsection{Cut-off function}
 				\subsubsection{Question 16: The cutoff method receives an argument called depth. Explain precisely what is called the depth in the minimax.py implementation. Illustrate on an example (draw a search tree and indicate the depths).}
 					When drawing the tree of the search, the depth is the level on which we are. It represents in the minimax algorithm the number of action we see in advance. In other words, for a depth d, it means that we have though of all the actions schemes in a range of d actions.\\
-					\begin{figure}[h!]
-						\centering
-							\includegraphics[scale=0.4]{arbre_depth.png}
-						\caption{Depth of a minimax tree}
-					\end{figure}
+%					\begin{figure}[h!]
+%						\centering
+%							\includegraphics[scale=0.4]{arbre_depth.png}
+%						\caption{Depth of a minimax tree}
+%					\end{figure}
 				\subsubsection{Question 17: Explain why it might be useful (for the Sarena contest) to cut off the search for another reason than the depth.}
 					There is two other reasons than depth to cut the search in our case. the first one is the time that is taken to perform the search and the second one is the detection of the suicides as we want to avoid computing their children.
 				\subsubsection{Question 18: Describe your cut-off function.}
