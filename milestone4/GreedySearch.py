@@ -10,7 +10,7 @@ def Greedy(N, Dist, city):
     NotExplored = []
     city -= 1
     for i in range(N):
-        NotExplored += [i]     
+        NotExplored += [i-1]     
     while NotExplored:
         NotExplored.remove(city)
         best = float('inf')
@@ -31,9 +31,9 @@ def Greedy(N, Dist, city):
 
 if __name__ == "__main__":
     
-    D = [[0], [30, 0], [7, 22, 0], [18, 9, 16]]
-    initial = 3 # to be found with greedy method, leowlo-lo
-    N = 4
+    D = [[0], [30, 0], [7, 22, 0], [18, 9, 16, 0],[6, 3, 1, 7, 0]]
+    initial = 1 # to be found with greedy method, leowlo-lo
+    N = 5
     result = Greedy(N, D, initial)
     
     

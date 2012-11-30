@@ -57,7 +57,6 @@ class Marvin_player(Player,minimax.Game):
         if self.time_left - (time()-self.timer) <= 15 :
             self.timeout = True
             return depth >= 1
-        # Must cut if we played a suicide move to reach this state.
         # Must cut with iterative depth
         if not self.previousSearchedBoard == None :
             action_played = self._action_played(board,self.previousSearchedBoard)
