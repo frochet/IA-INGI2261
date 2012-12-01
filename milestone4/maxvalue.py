@@ -7,6 +7,7 @@ from search import *
 from state import *
 from parserCity import *
 from GreedySearch import *
+from time import time
 
 class TravelingSalesman(Problem):
    
@@ -21,12 +22,13 @@ class TravelingSalesman(Problem):
     
 if __name__ == "__main__":
     
-    parser = Parser("villes.txt")
+    parser = Parser("tsp_instances/att48.tsp")
     matrice = parser.parse_line()
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)   
     salesman = TravelingSalesman(initial,matrice[1:])
     print(initial)
+    start = time()
     print(-salesman.value(salesman.initial))
     current = LSNode(salesman,salesman.initial,0)
     best = current
@@ -35,6 +37,7 @@ if __name__ == "__main__":
         for current in list :
             if current.value() > best.value() :
                 best = current
-    
+    stop = time()
+    print("temps ecoule :",format(stop-start), " seconde(s)")
     print(-best.problem.value(best.state))
     print(best.state.vertices)

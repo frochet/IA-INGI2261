@@ -8,6 +8,8 @@ from search import *
 from state import *
 from parserCity import *
 from GreedySearch import *
+from time import time
+
 
 class TravelingSalesman(Problem):
     
@@ -32,7 +34,7 @@ class TravelingSalesman(Problem):
     
 if __name__ == "__main__":
     
-    parser = Parser("villes.txt")
+    parser = Parser("tsp_instances/att48.tsp")
     matrice = parser.parse_line()
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)
@@ -40,8 +42,12 @@ if __name__ == "__main__":
     
     print(-salesman.value(salesman.initial))
     
+    start = time()
     result = random_walk(salesman)
+    stop = time()
+    interval = stop-start
+    print("Temps ecoule : ", format(interval)," seconde(s)")
     print(result.state.vertices)
-    print(-result.problem.value(result.state))
+    print("Cout : ",format(-result.problem.value(result.state)))
     
     

@@ -9,7 +9,7 @@ def Greedy(N, Dist, city):
     result = []
     NotExplored = []
     city -= 1
-    for i in range(N):
+    for i in range(int(N)):
         NotExplored += [i-1]     
     while NotExplored:
         NotExplored.remove(city)

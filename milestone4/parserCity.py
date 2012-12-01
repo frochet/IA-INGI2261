@@ -29,7 +29,7 @@ class Parser(object):
                 tab = line.split(separator)
                 i = 0
                 for elem in tab :
-                    tab[i] = int(elem)
+                    tab[i] = float(elem)
                     i+=1
                 matrice.append(tab)
         return matrice
