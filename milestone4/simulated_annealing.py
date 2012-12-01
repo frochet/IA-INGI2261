@@ -15,7 +15,7 @@ import randomwalk
     
 if __name__ == "__main__":
     
-    parser = Parser("tsp_instances/att48.tsp")
+    parser = Parser(sys.argv[1])
     matrice = parser.parse_line()
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)
