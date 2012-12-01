@@ -41,3 +41,4 @@ if __name__ == "__main__":
     print("temps ecoule :",format(stop-start), " seconde(s)")
     print(-best.problem.value(best.state))
     print(best.state.vertices)
+    print("step when best solution reached : ",format(best.step))

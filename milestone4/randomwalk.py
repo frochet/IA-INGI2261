@@ -49,5 +49,6 @@ if __name__ == "__main__":
     print("Temps ecoule : ", format(interval)," seconde(s)")
     print(result.state.vertices)
     print("Cout : ",format(-result.problem.value(result.state)))
+    print("step : ",format(result.step))
     
     

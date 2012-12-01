@@ -38,6 +38,7 @@ if __name__ == "__main__":
             if current.value() > best.value() :
                 best = current
     stop = time()
-    print("temps ecoule :",format(stop-start), " seconde(s)")
+    print("elapsed time :",format(stop-start), " second(s)")
     print(-best.problem.value(best.state))
     print(best.state.vertices)
+    print("step when best solution reached : ",format(best.step))
