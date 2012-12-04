@@ -27,18 +27,28 @@ if __name__ == "__main__":
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)   
     salesman = TravelingSalesman(initial,matrice[1:])
-    print(initial)
-    print(-salesman.value(salesman.initial))
+    #print(initial)
+    #print(-salesman.value(salesman.initial))
     start = time()
     current = LSNode(salesman,salesman.initial,0)
     best = current
+    listofval = []
     for step in range(100) :
+        #########
+        listofval += [-current.value()]
+        #########
         list = current.expand()
         for current in list :
             if current.value() > best.value() :
                 best = current
     stop = time()
-    print("elapsed time :",format(stop-start), " second(s)")
-    print(-best.problem.value(best.state))
-    print(best.state.vertices)
-    print("step when best solution reached : ",format(best.step))
+    #print("elapsed time :",format(stop-start), " second(s)")
+    #print(-best.problem.value(best.state))
+    #print(best.state.vertices)
+    #print("step when best solution reached : ",format(best.step))
+    
+#    print(format(stop-start))
+#    print(-best.problem.value(best.state))
+#    print(format(best.step)) 
+
+    print(listofval) 

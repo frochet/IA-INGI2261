@@ -22,23 +22,32 @@ class TravelingSalesman(Problem):
     
 if __name__ == "__main__":
     
-    parser = Parser("tsp_instances/bays29.tsp")
+    parser = Parser(sys.argv[1])
     matrice = parser.parse_line()
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)   
     salesman = TravelingSalesman(initial,matrice[1:])
-    print(initial)
+    #print(initial)
     start = time()
-    print(-salesman.value(salesman.initial))
+    #print(-salesman.value(salesman.initial))
     current = LSNode(salesman,salesman.initial,0)
     best = current
+    listofval = []
     for step in range(100) :
+        #########
+        listofval += [-current.value()]
+        #########
         list = current.expand()
         for current in list :
             if current.value() > best.value() :
                 best = current
     stop = time()
-    print("temps ecoule :",format(stop-start), " seconde(s)")
-    print(-best.problem.value(best.state))
-    print(best.state.vertices)
-    print("step when best solution reached : ",format(best.step))
+    #print("temps ecoule :",format(stop-start), " seconde(s)")
+    #print(-best.problem.value(best.state))
+    #print(best.state.vertices)
+    #print("step when best solution reached : ",format(best.step))
+#    print(format(stop-start))
+#    print(format(-best.problem.value(best.state)))
+#    print(format(best.step))
+    
+    print(listofval) 

@@ -1,0 +1,12 @@
+#!/bin/bash  
+cat /dev/null > test_random  
+algos=(randomwalk.py randomize_maxvalue.py)
+for alg in "${algos[@]}"; do
+  echo "${alg}"
+  for i in `seq 0 4`; do
+    #echo "Try" $i >> test_random
+    python3 "${alg}" "tsp_instances/att48.tsp" >> test_random
+    done
+  echo "Break" >> test_random
+  #echo -e "\n" >> test_random
+done 
