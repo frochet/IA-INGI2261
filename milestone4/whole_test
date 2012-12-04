@@ -1,0 +1,17 @@
+#!/bin/bash  
+echo "" > test_result  
+algos=(randomwalk.py randomize_maxvalue.py maxvalue.py)
+tsp=(att48.tsp bayg29.tsp bays29.tsp berlin52.tsp dantzig42.tsp)  
+ for tspinst in "${tsp[@]}"; do
+  echo "${tspinst}"
+  echo -e "\n" >> test_result
+  echo "${tspinst}" >> test_result
+  for alg in "${algos[@]}"; do
+    echo "${alg}"
+    echo "${alg}" >> test_result
+    python3 "${alg}" "tsp_instances/${tspinst}" >> test_result
+    echo -e "\n" >> test_result
+  done
+  echo -e "\n" >> test_result
+  echo -e "\n"
+done 
