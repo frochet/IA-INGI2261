@@ -30,7 +30,7 @@ class TravelingSalesman(Problem):
             i+=1
     def value(self,state):
         """Compute the path value"""
-        return state.compute_path()
+        return state.compute_path(state.vertices)
     
 if __name__ == "__main__":
     

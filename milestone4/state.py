@@ -28,13 +28,13 @@ class State(object):
 
     def swap_best(self):        
         i = 0
-        best = self.compute_path()
+        best = self.compute_path(self.vertices)
         swap = self.vertices
         while i < len(self.vertices)-1 :
             j = i+1
             while j < len(self.vertices):
-                self.lswap(self.vertices, i, j)
-                path = self.compute_path()
+                self.swap(i, j)
+                path = self.compute_path(self.vertices)
                 if path > best :
                     best = path
                     swap = self.vertices[:]
@@ -43,22 +43,46 @@ class State(object):
         self.vertices = swap[:]
         return swap
     
-    def swap_random_from_bests(self,size):
-        tab = []
-        i = 0
-        while i < size :
-            tab.insert(i, self.swap_best())
-            i+=1
-        return random.choice(tab)
+    def swap_random_from_bests(self):
         
+        def best_in_tab(tab, val,swap):
+            valToRemember = None
+            swapToRemember = None
+            i = 0
+            for elem in tab :
+                i+=1
+                if val < elem[1] :
+                    elemToRemember = elem[1]
+                    swapToRemember = elem[0][:]
+                    tab[tab.index(elem)][1] = val
+                    tab[tab.index(elem)][0] = swap
+                    break
+            if valToRemember != None:
+                return best_in_tab(tab[i:],elemToRemember,swapToRemember)      
+                      
+        tab = [[[],float('inf')],[[],float('inf')],[[],float('inf')],[[],float('inf')],[[],float('inf')]]
+        i = 0
+        
+        while i < len(self.vertices)-1:
+            j = i+1
+            while j < len(self.vertices):
+                L = self.lswap(self.vertices[:], i, j)
+                path = self.compute_path(L)
+                best_in_tab(tab,-path,L)
+                j+=1
+            i+=1
+        elem = random.choice(tab)
+        self.vertices = elem[0]
+        return elem[0]
     
-    def compute_path(self):
+    
+    def compute_path(self,L):
         i = 0
         sumation = 0
-        while i < len(self.vertices) -1 :
-            if self.vertices[i] > self.vertices[i+1]:
-                sumation += self.cost_matrix[self.vertices[i]][self.vertices[i+1]]
+        while i < len(L) -1 :
+            if L[i] > L[i+1]:
+                sumation += self.cost_matrix[L[i]][L[i+1]]
             else:
-                sumation += self.cost_matrix[self.vertices[i+1]][self.vertices[i]]
+                sumation += self.cost_matrix[L[i+1]][L[i]]
             i+=1
         return -sumation

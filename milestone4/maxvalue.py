@@ -18,11 +18,11 @@ class TravelingSalesman(Problem):
         yield (None, State(self.initial.swap_best(),self.matrice))
     def value(self,state):
         """Compute the path value"""
-        return state.compute_path()
+        return state.compute_path(state.vertices)
     
 if __name__ == "__main__":
     
-    parser = Parser("tsp_instances/att48.tsp")
+    parser = Parser("tsp_instances/bays29.tsp")
     matrice = parser.parse_line()
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)   
