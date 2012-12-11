@@ -203,7 +203,7 @@ When randomness was part of the algorithms, there were 5 tests for each one (lik
 	
 
 \section{Propositional logic}
-\subsection*{Models and logical connectives}
+\subsection{Models and logical connectives}
 
 \subsubsection*{Question 1 : For each sentence, give the number of models that satisfy it (considering the
 whole vocabulary).\\}
@@ -221,19 +221,19 @@ This is shown in the following tabulars. \\
 	\hline 
 	F & F & F & F & F & F \\
 	\hline
-	V & V & V & V & V & V \\
+	T & T & T & T & T & T \\
 	\hline
-	F & V & V & V & V & V \\
+	F & T & T & T & T & T \\
 	\hline
-	F & F & V & F & V & F \\
+	F & F & T & F & T & F \\
 	\hline
-	F & V & F & V & V & V \\
+	F & T & F & T & T & T \\
 	\hline
-	V & F & F & V & F & F \\
+	T & F & F & T & F & F \\
 	\hline
-	V & F & V & V & V & V \\
+	T & F & T & T & T & T \\
 	\hline
-	V & V & F & V & V & V \\
+	T & T & F & T & T & T \\
  	\hline
  \end{tabular}
  
@@ -249,11 +249,11 @@ This is shown in the following tabulars. \\
 	\hline 
 	F & F & F  \\
 	\hline
-	V & V & V  \\
+	T & T & T  \\
 	\hline
-	F & V & F \\
+	F & T & F \\
 	\hline
-	V & F & F \\
+	T & F & F \\
 	\hline
  \end{tabular}
   
@@ -269,21 +269,21 @@ This is shown in the following tabulars. \\
 	\hline
 	A & B & C & $A \rightarrow B$ & $\beta$ \\
 	\hline 
-	F & F & F & V & F \\
+	F & F & F & T & F \\
 	\hline
-	V & V & V & V & V \\
+	T & T & T & T & T \\
 	\hline
-	F & V & V & V & V \\
+	F & T & T & T & T \\
 	\hline
-	F & F & V & V & V  \\
+	F & F & T & T & T  \\
 	\hline
-	F & V & F & V & F \\
+	F & T & F & T & F \\
 	\hline
-	V & F & F & F & V \\
+	T & F & F & F & T \\
 	\hline
-	V & F & V & F & F \\
+	T & F & T & F & F \\
 	\hline
-	V & V & F & V & F \\
+	T & T & F & T & F \\
  	\hline
  \end{tabular}
   
@@ -291,9 +291,36 @@ This is shown in the following tabulars. \\
  Here we have 4 interpretations which are model of $\beta$
 \end {enumerate}
 \subsubsection*{Question 2 : Give two valid interpretations of the following sentence: $\beta : (A \wedge B) \Rightarrow C$ .}
-Two valid interpretation for \beta are :
-\begin{tabular}{|c|c|c|}
+Two valid interpretation for $\beta$ are :
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
   \hline
-
+   & \textbf{A} & \textbf{B} & \textbf{C} \\
+  \hline
+  Interpretation 1 & F & F & F \\
+  \hline
+  Interpretation 2 & F & F & T \\
+  \hline
 \end{tabular}
+\end{center}
+\subsection{Package installation problem}
+\subsubsection{Question 1 : Explain how you can express this problem with propositional logic. What are the variables and how do you translate the relations and the query?}
+In order to represent the problem, we will declare two variables per package. $I_{i}$, that is set to \texttt{True} if the package $i$ is installed and $V_{i}$, that is set to \texttt{True} if the package is a virtual package.\\
+The three contraints will be expressed as :
+\begin{itemize}
+  \item Depends : A depends on B : $I_{A} \Rightarrow I_{B}$
+  \item Conflicts : Lets be two packages A and B, A conflits with B should be : $\neg (I_{A} \wedge I_{B})$ 
+  \item Provides : A provides B : $I_{A} \Rightarrow V_{B}$
+\end{itemize}
+
+\subsubsection{Question 2 : Translate your model into CNF.}
+The point is to have conjunctions of disjunction, we get :
+\begin{itemize}
+  \item Depends : $\neg I_{A} \vee I_{B}$
+  \item Conflicts : $\neg I_{A} \vee \neg I_{B}$
+  \item Provides : $\neg I_{A} \vee V_{B}$
+\end{itemize}
+
+\subsubsection{Question 3 : An extension of the problem deals with disjunctive dependencies. For example, package A may depend on B or C, meaning A may be installed if either B or C (or both) is also installed. How can you transform this problem into the basic problem without disjunctive dependencies?}
+We can simply write for A depends on B or C as : $I_{A} \Rightarrow (I_{B} \vee I_{C})$, which gives as CNF : $\neg I_{A} \vee I_{B} \vee I_{C}$
 \end{document}
