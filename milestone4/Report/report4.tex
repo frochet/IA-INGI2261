@@ -305,12 +305,12 @@ Two valid interpretation for $\beta$ are :
 \end{center}
 \subsection{Package installation problem}
 \subsubsection{Question 1 : Explain how you can express this problem with propositional logic. What are the variables and how do you translate the relations and the query?}
-In order to represent the problem, we will declare two variables per package. $I_{i}$, that is set to \texttt{True} if the package $i$ is installed and $V_{i}$, that is set to \texttt{True} if the package is a virtual package.\\
+In order to represent the problem, we will declare two variables per package. $I_{i}$, that is set to \texttt{True} if the package $i$ is installed.\\
 The three contraints will be expressed as :
 \begin{itemize}
   \item Depends : A depends on B : $I_{A} \Rightarrow I_{B}$
   \item Conflicts : Lets be two packages A and B, A conflits with B should be : $\neg (I_{A} \wedge I_{B})$ 
-  \item Provides : A provides B : $I_{A} \Rightarrow V_{B}$
+  \item Provides : A provides B : $I_{A} \Rightarrow I_{B}$
 \end{itemize}
 
 \subsubsection{Question 2 : Translate your model into CNF.}
@@ -318,7 +318,7 @@ The point is to have conjunctions of disjunction, we get :
 \begin{itemize}
   \item Depends : $\neg I_{A} \vee I_{B}$
   \item Conflicts : $\neg I_{A} \vee \neg I_{B}$
-  \item Provides : $\neg I_{A} \vee V_{B}$
+  \item Provides : $\neg I_{A} \vee I_{B}$
 \end{itemize}
 
 \subsubsection{Question 3 : An extension of the problem deals with disjunctive dependencies. For example, package A may depend on B or C, meaning A may be installed if either B or C (or both) is also installed. How can you transform this problem into the basic problem without disjunctive dependencies?}
