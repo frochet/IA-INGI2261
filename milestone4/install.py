@@ -3,7 +3,7 @@ Created on Dec 11, 2012
 
 @author: inekar
 '''
-import packages
+from packages import *
 import sys
 
 def depends(A, B):
@@ -34,7 +34,7 @@ def get_clauses(rep, toinstall, full_list = []):
 
 if __name__ == "__main__":
     rep = Repository(sys.argv[1])
-    toinstall = syssys.argv[2:]
+    toinstall = sys.argv[2:]
     tupletoinstall = []
     for pck in toinstall:
         tupletoinstall += [(pck)]
