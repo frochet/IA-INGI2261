@@ -8,6 +8,7 @@ from state import *
 from parserCity import *
 from GreedySearch import *
 from time import time
+<<<<<<< HEAD
 from salesman import *
 #class TravelingSalesman(Problem):
 #   
@@ -19,6 +20,19 @@ from salesman import *
 #    def value(self,state):
 #        """Compute the path value"""
 #        return state.compute_path(state.vertices)
+=======
+
+class TravelingSalesman(Problem):
+   
+    def __init__(self, initial,matrice,goal=None):
+        self.matrice = matrice
+        self.initial = State(initial,self.matrice)
+    def successor(self, state):
+        yield (None, State(self.initial.clone().swap_random_from_bests(),self.matrice))
+    def value(self,state):
+        """Compute the path value"""
+        return state.compute_path(state.vertices)
+>>>>>>> a36d0bff41363400253b7264d20516ecb29e03e2
 
 if __name__ == "__main__":
     

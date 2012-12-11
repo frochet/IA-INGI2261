@@ -11,7 +11,6 @@ from GreedySearch import *
 from time import time
 from salesman import *
 
-
     
 def random_walk_override(problem, limit=100, callback=None):
     """Perform a random walk in the search space and return the best solution

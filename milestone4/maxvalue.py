@@ -24,6 +24,7 @@ def max_value(problem):
                 current = elem
     print(listofval)
     return best
+
 if __name__ == "__main__":
     
     parser = Parser(sys.argv[1])
@@ -35,6 +36,7 @@ if __name__ == "__main__":
     start = time()
     #print(-salesman.value(salesman.initial))
     best = max_value(salesman)
+
     stop = time()
     #print("temps ecoule :",format(stop-start), " seconde(s)")
     #print(-best.problem.value(best.state))

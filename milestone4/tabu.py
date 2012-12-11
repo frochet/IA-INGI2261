@@ -15,7 +15,9 @@ def tabu_search(problem, length, limit):
     current = LSNode(problem,problem.initial,0)
     best = current
     tabuList = [[],[]]
+    listofval = []
     for step in range(limit):
+        listofval += [-current.value()]
         tab = [[best,float('inf')],[best,float('inf')],[best,float('inf')],[best,float('inf')],[best,float('inf')]]
         problem.step = step
         for current in current.expand() :
@@ -33,7 +35,8 @@ def tabu_search(problem, length, limit):
         tabuList[1].append(step)
         if current.value() > best.value() :
             best = current
-    return best
+    return [best,listofval]
+
 
 if __name__ == "__main__":
     parser = Parser(sys.argv[1])
@@ -46,11 +49,14 @@ if __name__ == "__main__":
     print(-salesman.value(salesman.initial))
     
     start = time()
-    result = tabu_search(salesman,length,limit)
+    tabu_result = tabu_search(salesman,length,limit)
+    result = tabu_result[0]
+    listofval = tabu_result[1]
     stop = time()
     interval = stop-start
-    print("Temps ecoule : ", format(interval)," seconde(s)")
-    print(result.state.vertices)
+    print(listofval)
+#    print("Temps ecoule : ", format(interval)," seconde(s)")
+#    print(result.state.vertices)
     print("Cout : ",format(-result.problem.value(result.state)))
     print("step : ",format(result.step))
     

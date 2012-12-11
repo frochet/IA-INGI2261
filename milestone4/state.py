@@ -18,6 +18,9 @@ class State(object):
         '''
         self.vertices = vertices
         self.cost_matrix = cost_matrix
+        
+    def clone(self):
+        return(State(self.vertices[:], self.cost_matrix))
     
     def swap(self,i1,i2):
         self.vertices[i1], self.vertices[i2] = self.vertices[i2], self.vertices[i1]
