@@ -9,28 +9,8 @@ from state import *
 from parserCity import *
 from GreedySearch import *
 from time import time
+from salesman import *
 
-
-class TravelingSalesman(Problem):
-    
-    def __init__(self, initial,matrice, goal=None):
-        self.initial= State(initial,matrice)
-        self.matrice = matrice  
-    def successor(self, state):
-        i = 0
-        previous_state = self.initial     
-        while i < len(self.initial.vertices)-1:
-            j=i+1
-            while j < len(self.initial.vertices):
-                previous_state.clone().swap(i, j)
-                next_state = State(previous_state.vertices[:],self.matrice)
-                yield (None, next_state)
-                previous_state = next_state
-                j+=1
-            i+=1
-    def value(self,state):
-        """Compute the path value"""
-        return state.compute_path(state.vertices)
     
 def random_walk_override(problem, limit=100, callback=None):
     """Perform a random walk in the search space and return the best solution
@@ -58,7 +38,7 @@ if __name__ == "__main__":
     matrice = parser.parse_line()
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)
-    salesman = TravelingSalesman(initial,matrice[1:])
+    salesman = TravellingSalesman(initial,matrice[1:])
     
     #print(-salesman.value(salesman.initial))
     start = time()

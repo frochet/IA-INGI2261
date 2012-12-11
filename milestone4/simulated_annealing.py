@@ -7,9 +7,7 @@ from state import *
 from parserCity import *
 from GreedySearch import *
 from time import time
-
-
-import randomwalk
+from salesman import *
 
 
     
@@ -19,7 +17,7 @@ if __name__ == "__main__":
     matrice = parser.parse_line()
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)
-    salesman = randomwalk.TravelingSalesman(initial,matrice[1:])
+    salesman = TravellingSalesman(initial,matrice[1:])
     
     print(-salesman.value(salesman.initial))
     
