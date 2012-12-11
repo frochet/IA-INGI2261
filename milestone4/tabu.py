@@ -9,35 +9,30 @@ from state import *
 from parserCity import *
 from GreedySearch import *
 from time import time
-
-class TravelingSalesman(Problem):
+from salesman import *
    
-    def __init__(self, initial,matrice,goal=None):
-        self.matrice = matrice
-        self.initial = State(initial,self.matrice)
-        self.length = 0 #init
-        self.limit = 0 #init
-        self.step = 0 #init
-        self.tabuList = []
-        self.stepList = []
-        
-    def successor(self, state):
-        yield (None, State(self.initial.swap_tabu(self.tabuList,self.stepList,self.step,self.length,self.limit),self.matrice))
-    def value(self,state):
-        """Compute the path value"""
-        return state.compute_path(state.vertices)
-
 def tabu_search(problem, length, limit):
-    problem.length = length
-    problem.limit = limit
     current = LSNode(problem,problem.initial,0)
     best = current
-    for step in range(limit) :
+    tabuList = [[],[]]
+    for step in range(limit):
+        tab = [[best,float('inf')],[best,float('inf')],[best,float('inf')],[best,float('inf')],[best,float('inf')]]
         problem.step = step
-        list = current.expand()
-        for current in list :
-            if current.value() > best.value() :
-                best = current
+        for current in current.expand() :
+            if current in tabuList[0] :
+                tabuPos = tabuList[0].index(current)
+                if step - tabuList[1][tabuPos] > length :
+                    best_in_tab(tab,-current.value(),current)
+                    tabuList[0].remove(current)
+                    tabuList[1].remove(tabuPos)
+            else :
+                best_in_tab(tab,-current.value(),current)
+        elem = random.choice(tab)
+        current = elem[0]
+        tabuList[0].append(current)
+        tabuList[1].append(step)
+        if current.value() > best.value() :
+            best = current
     return best
 
 if __name__ == "__main__":
@@ -47,7 +42,7 @@ if __name__ == "__main__":
     matrice = parser.parse_line()
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)
-    salesman = TravelingSalesman(initial,matrice[1:])
+    salesman = TravellingSalesman(initial,matrice[1:])
     print(-salesman.value(salesman.initial))
     
     start = time()
