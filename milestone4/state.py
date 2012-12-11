@@ -18,6 +18,9 @@ class State(object):
         '''
         self.vertices = vertices
         self.cost_matrix = cost_matrix
+        
+    def clone(self):
+        return(State(self.vertices[:], self.cost_matrix))
     
     def lswap(self,L,i1,i2):
         L[i1], L[i2] = L[i2], L[i1]
@@ -29,7 +32,7 @@ class State(object):
     def swap_best(self):        
         i = 0
         best = self.compute_path(self.vertices)
-        swap = self.vertices
+#        swap = self.vertices
         while i < len(self.vertices)-1 :
             j = i+1
             while j < len(self.vertices):
@@ -40,7 +43,7 @@ class State(object):
                     swap = self.vertices[:]
                 j+=1
             i+=1
-        self.vertices = swap[:]
+#        self.vertices = swap[:]
         return swap
     
     def best_in_tab(self,tab, val,swap):

@@ -15,7 +15,7 @@ class TravelingSalesman(Problem):
         self.matrice = matrice
         self.initial = State(initial,self.matrice)
     def successor(self, state):
-        yield (None, State(self.initial.swap_random_from_bests(),self.matrice))
+        yield (None, State(self.initial.clone().swap_random_from_bests(),self.matrice))
     def value(self,state):
         """Compute the path value"""
         return state.compute_path(state.vertices)

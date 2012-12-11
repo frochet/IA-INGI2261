@@ -22,7 +22,7 @@ class TravelingSalesman(Problem):
         while i < len(self.initial.vertices)-1:
             j=i+1
             while j < len(self.initial.vertices):
-                previous_state.swap(i, j)
+                previous_state.clone().swap(i, j)
                 next_state = State(previous_state.vertices[:],self.matrice)
                 yield (None, next_state)
                 previous_state = next_state

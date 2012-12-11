@@ -15,7 +15,7 @@ class TravelingSalesman(Problem):
         self.matrice = matrice
         self.initial = State(initial,self.matrice)
     def successor(self, state):
-        yield (None, State(self.initial.swap_best(),self.matrice))
+        yield (None, State(self.initial.clone().swap_best(),self.matrice))
     def value(self,state):
         """Compute the path value"""
         return state.compute_path(state.vertices)
@@ -40,6 +40,7 @@ if __name__ == "__main__":
         list = current.expand()
         for current in list :
             if current.value() > best.value() :
+                print('best')
                 best = current
     stop = time()
     #print("temps ecoule :",format(stop-start), " seconde(s)")

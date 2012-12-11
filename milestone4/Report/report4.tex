@@ -152,13 +152,36 @@ Best sol. & 912.24 & 650.1 & 712.72 \\
 \hline 
 \end{tabular} 
 \end{center}
+
 \subsubsection{Question 4}
+\begin{center}
+\begin{figure}[!ht]
+		\includegraphics[scale=.4]{randomwalk.png}
+	\caption{randomwalk.py}
+\end{figure}
+\end{center}
+\begin{center}
+\begin{figure}[!ht]
+		\includegraphics[scale=.4]{maxvalue.png}
+	\caption{maxvalue.py}
+\end{figure}
+\end{center}
+\begin{center}
+\begin{figure}[!ht]
+		\includegraphics[scale=.4]{randomized_maxvalue.png}
+	\caption{randomized\_maxvalue.py}
+\end{figure}
+\end{center}
+When randomness was part of the algorithms, there were 5 tests for each one (like we did for the third question).
+
 \subsubsection{Question 5}
 	\begin{enumerate}[(a)]
-		\item iugaef
-		\item yafub
-		\item
-		\item 
+		\item \textit{maxvalue} and r\texttt{andomized\_maxvalue both} seem to work well. There no real winner between those two.
+		\item Well because our tests show that two strategies are quite good, the only suitable reason for them to beat \texttt{randomwalk} is that it does not look for a best path when choosing a step.
+		\item The limitation of \texttt{randomwalk} is that it does not look for a good path, so there is less chance to find the best one.\\
+		Concerning \texttt{maxvalue}, it might fall into a local optimum {\Huge and have difficulties to go out of it.}\\
+		\texttt{randomized\_maxvalue} should be the best as it can easily avoid local optima and so, have a chance to find the global one.
+		\item {\Huge ASK FLO}
 		\item There must be a trade off between intensification and diversification because intensification ensures that we go for a good solution, while diversification ensures that we explore several possibilities. \\
 		Intensification alone (\verb@maxvalue.py@) would cause the solution to find a local optimum without considering others paths to better solutions and diversification alone (\verb@randomwalk.py@) would cause to explore other paths but no necessarily the good ones.
 	\end{enumerate}
@@ -237,7 +260,7 @@ This is shown in the following tabulars. \\
  \end{center}
  
  Here we have 1 interpretation which is model of $\beta$
-\item $(A \rightarrow B) \equiv C $
+\item $\beta : (A \Rightarrow B) \Leftrightarrow C $
 
 
  \begin{center}
@@ -267,5 +290,10 @@ This is shown in the following tabulars. \\
  \end{center}
  Here we have 4 interpretations which are model of $\beta$
 \end {enumerate}
-\subsubsection*{Question 2 : Give two valid interpretations of the following sentence: $(A \wedge B) \rightarrow C$ .}
+\subsubsection*{Question 2 : Give two valid interpretations of the following sentence: $\beta : (A \wedge B) \Rightarrow C$ .}
+Two valid interpretation for \beta are :
+\begin{tabular}{|c|c|c|}
+  \hline
+
+\end{tabular}
 \end{document}
