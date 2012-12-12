@@ -19,14 +19,22 @@ def depends_on_or(A, B):
 def conflicts(A, B):
     return (-A, -B)
 def provides(A, B):
-    return (-A, B)
+    '''B is a list of indexes of providers for A
+    '''
+    result = (-A, )
+    for pckg in B:
+        result += (pckg, )
+    return result
 
 def look_if_is_provided_package(item,variables,clauses,rep):
+    indexes = []
     for rootPackage in rep.packages :
         for provided in rootPackage.provides:
             if item == provided :
                 get_clauses(rep, [(rootPackage,)],variables,clauses)
-                add_clause(clauses,[provides(variables.index(rootPackage)+1, variables.index(item)+1)])
+                indexes += variables.index(rootPackage)+1
+                #add_clause(clauses,[provides(variables.index(rootPackage)+1, variables.index(item)+1)])
+    addclause(clauses, [provides(variables.index(item)+1, indexes)])
 
 
 def add_clause(clauses, aClause):
@@ -47,13 +55,6 @@ def get_clauses(rep,toinstall, full_list = [], full_clause = []):
                             variables += [tuple[0]]
                         add_clause(clauses, [depends(variables.index(pckg)+1, variables.index(tuple[0])+1)])
                         look_if_is_provided_package(tuple[0],variables,clauses,rep)
-                        #for item in tuple :
-                            #clauses += [depends(variables.index(pckg)+1, variables.index(item)+1)]                
-                            # +  look if item is a provided package
-                            #look_if_is_provided_package(item,variables,clauses,rep)
-                            ##() = get_clauses(rep,packageToAddToInstallation,variables)
-                            #toinstall+=[(packageToAddToInstallation,)]
-                            #clauses += [provides(variables.index(item)+1,variables.index(packageToAddToInstallation)+1)]
                     else:
                         indexes = []
                         for item in tuple:
