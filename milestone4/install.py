@@ -34,9 +34,9 @@ def look_if_is_provided_package(item,variables,clauses,rep):
             if item == provided :
                 get_clauses(rep, [(rootPackage,)],variables,clauses)
                 indexes += [variables.index(rootPackage)+1]
-                add_clause(clauses, [provides(variables.index(item)+1, indexes)])
-                add_clause(clauses, [(-(variables.index(item)+1), )])
-                        
+    if indexes:
+        add_clause(clauses, [provides(variables.index(item)+1, indexes)])
+
 
 def add_clause(clauses, aClause):
     if aClause not in clauses :
