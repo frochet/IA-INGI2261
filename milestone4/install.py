@@ -100,4 +100,5 @@ if __name__ == "__main__":
     print(computation)
     print("Package which must be installed : ")
     for indice in computation :
-        print(n[indice-1])
+        if n[indice-1] not in rep.provides : # virtual package must not be installed, they are installed through other packages.
+            print(n[indice-1])
