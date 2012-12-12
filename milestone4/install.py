@@ -32,7 +32,7 @@ def look_if_is_provided_package(item,variables,clauses,rep):
         for provided in rootPackage.provides:
             if item == provided :
                 get_clauses(rep, [(rootPackage,)],variables,clauses)
-                indexes += variables.index(rootPackage)+1
+                indexes += [variables.index(rootPackage)+1]
                 #add_clause(clauses,[provides(variables.index(rootPackage)+1, variables.index(item)+1)])
     if indexes:
         add_clause(clauses, [provides(variables.index(item)+1, indexes)])
@@ -51,19 +51,6 @@ def get_clauses(rep,toinstall, full_list = [], full_clause = []):
                 variables += [pckg]
                 (var, cl) = get_clauses(rep,pckg.depends, variables,clauses)
                 for tuple in pckg.depends :
-#                    if(len(tuple) == 1):
-#                        if tuple[0] not in variables:
-#                            variables += [tuple[0]]
-#                        add_clause(clauses, [depends(variables.index(pckg)+1, variables.index(tuple[0])+1)])
-#                        look_if_is_provided_package(tuple[0],variables,clauses,rep)
-#                    else:
-#                        indexes = []
-#                        for item in tuple:
-#                            if item not in variables:
-#                                variables += item
-#                            indexes += [variables.index(item)+1]
-#                            look_if_is_provided_package(item,variables,clauses,rep)
-#                        add_clause(clauses, [depends_on_or(variables.index(pckg)+1, indexes)])
                     indexes = []
                     for item in tuple:
                         if item not in variables:
@@ -97,5 +84,7 @@ if __name__ == "__main__":
     print(clauses)
     print(len(n))
     
-#    computation = minisat(len(n),clauses)
-#    print(computation)
+    computation = minisat(len(n),clauses)
+    print(computation)
+    for indice in computation :
+        print(n[indice-1])
