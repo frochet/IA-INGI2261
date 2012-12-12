@@ -32,7 +32,7 @@ def look_if_is_provided_package(item,variables,clauses,rep):
         for provided in rootPackage.provides:
             if item == provided :
                 get_clauses(rep, [(rootPackage,)],variables,clauses)
-                indexes += variables.index(rootPackage)+1
+                indexes += [variables.index(rootPackage)+1]
                 #add_clause(clauses,[provides(variables.index(rootPackage)+1, variables.index(item)+1)])
     if indexes:
         add_clause(clauses, [provides(variables.index(item)+1, indexes)])
@@ -97,5 +97,7 @@ if __name__ == "__main__":
     print(clauses)
     print(len(n))
     
-#    computation = minisat(len(n),clauses)
-#    print(computation)
+    computation = minisat(len(n),clauses)
+    print(computation)
+    for indice in computation :
+        print(n[indice-1])
