@@ -8,17 +8,18 @@ import sys
 from minisat import *
 
 setOfProvided = []
+
 def depends(A, B):
-    return (-A, B)
-def depends_on_or(A, B):
     ''' B is a list of indexes of or dependencies for A
     '''
     result = (-A, )
     for pckg in B:
         result += (pckg, )
     return result
+
 def conflicts(A, B):
     return (-A, -B)
+
 def provides(A, B):
     '''B is a list of indexes of providers for A
     '''
@@ -28,6 +29,9 @@ def provides(A, B):
     return result
 
 def look_if_is_provided_package(item,variables,clauses,rep):
+    ''' Takes a packages and checks if it is a virtual package, 
+        If it is, a clause is added.
+    '''
     indexes = []
     for rootPackage in rep.packages :
         for provided in rootPackage.provides:
@@ -38,12 +42,9 @@ def look_if_is_provided_package(item,variables,clauses,rep):
     if indexes:
         add_clause(clauses, [provides(variables.index(item)+1, indexes)])
 
-
 def add_clause(clauses, aClause):
     if aClause not in clauses :
-        clauses += aClause
-
-    
+        clauses += aClause 
 
 def get_clauses(rep, toinstall, full_list = [], full_clause = [], init = False):
     """
@@ -65,7 +66,7 @@ def get_clauses(rep, toinstall, full_list = [], full_clause = [], init = False):
                             variables += [item]
                         indexes += [variables.index(item)+1]
                         look_if_is_provided_package(item,variables,clauses,rep)
-                    add_clause(clauses, [depends_on_or(variables.index(pckg)+1, indexes)])
+                    add_clause(clauses, [depends(variables.index(pckg)+1, indexes)])
                         
                 for conflict in pckg.conflicts:
                     if conflict in variables :
@@ -76,16 +77,12 @@ def get_clauses(rep, toinstall, full_list = [], full_clause = [], init = False):
                
     return (variables, clauses)
 
-            
-    
 
 if __name__ == "__main__":
     rep = Repository(sys.argv[1])
     toinstall = sys.argv[2:]
     tupletoinstall = []
     for pck in toinstall:
-#        variables += [pck]
-#        clauses += [(variables.index(pck)+1,)]
         tupletoinstall += [(rep[pck],)]
     (n, clauses) = get_clauses(rep, tupletoinstall, init = True)
     
