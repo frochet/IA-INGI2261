@@ -7,7 +7,7 @@ from packages import *
 import sys
 from minisat import *
 
-
+setOfProvided = []
 def depends(A, B):
     return (-A, B)
 def depends_on_or(A, B):
@@ -34,6 +34,7 @@ def look_if_is_provided_package(item,variables,clauses,rep):
             if item == provided :
                 get_clauses(rep, [(rootPackage,)],variables,clauses)
                 indexes += [variables.index(rootPackage)+1]
+                setOfProvided.append(item)
     if indexes:
         add_clause(clauses, [provides(variables.index(item)+1, indexes)])
 
@@ -100,5 +101,5 @@ if __name__ == "__main__":
     print(computation)
     print("Package which must be installed : ")
     for indice in computation :
-        if n[indice-1] not in rep.provides : # virtual package must not be installed, they are installed through other packages.
+        if n[indice-1] not in setOfProvided : # virtual package must not be installed, they are installed through other packages.
             print(n[indice-1])
