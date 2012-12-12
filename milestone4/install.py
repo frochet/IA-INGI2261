@@ -14,7 +14,7 @@ def depends_on_or(A, B):
     '''
     result = (-A, )
     for pckg in B:
-        result += (B, 0)
+        result += (pckg, )
     return result
 def conflicts(A, B):
     return (-A, -B)
@@ -26,8 +26,13 @@ def look_if_is_provided_package(item,variables,clauses,rep):
         for provided in rootPackage.provides:
             if item == provided :
                 get_clauses(rep, [(rootPackage,)],variables,clauses)
-                clauses += [provides(variables.index(rootPackage)+1, variables.index(item)+1)]
+                add_clause(clauses,[provides(variables.index(rootPackage)+1, variables.index(item)+1)])
 
+
+def add_clause(clauses, aClause):
+    if aClause not in clauses :
+        clauses += aClause
+    
 def get_clauses(rep,toinstall, full_list = [], full_clause = []):
     clauses = full_clause
     variables = full_list
@@ -40,7 +45,7 @@ def get_clauses(rep,toinstall, full_list = [], full_clause = []):
                     if(len(tuple) == 1):
                         if tuple[0] not in variables:
                             variables += [tuple[0]]
-                        clauses += [depends(variables.index(pckg)+1, variables.index(tuple[0])+1)] 
+                        add_clause(clauses, [depends(variables.index(pckg)+1, variables.index(tuple[0])+1)])
                         look_if_is_provided_package(tuple[0],variables,clauses,rep)
                         #for item in tuple :
                             #clauses += [depends(variables.index(pckg)+1, variables.index(item)+1)]                
@@ -54,16 +59,16 @@ def get_clauses(rep,toinstall, full_list = [], full_clause = []):
                         for item in tuple:
                             if item not in variables:
                                 variables += item
-                            indexes += variables.index(item)+1
+                            indexes += [variables.index(item)+1]
                             look_if_is_provided_package(item,variables,clauses,rep)
-                        clauses += [depends_on_or(variables.index(pckg)+1, indexes)]
+                        add_clause(clauses, [depends_on_or(variables.index(pckg)+1, indexes)])
                         
                 for conflict in pckg.conflicts:
                     if conflict in variables :
-                        clauses += [conflicts(variables.index(pckg)+1, variables.index(conflict)+1)]
+                        add_clause(clauses, [conflicts(variables.index(pckg)+1, variables.index(conflict)+1)])
                     else:
                         variables += [conflict]
-                        clauses += [conflicts(variables.index(pckg)+1, variables.index(conflict)+1)]
+                        add_clause(clauses,[conflicts(variables.index(pckg)+1, variables.index(conflict)+1)])
                
     return (variables, clauses)
 
@@ -78,4 +83,10 @@ if __name__ == "__main__":
         tupletoinstall += [(rep[pck],)]
     (n, clauses) = get_clauses(rep,tupletoinstall)
     
-    print((n,clauses))
+#    for item in n :
+#        print(item)
+    print(clauses)
+    print(len(n))
+    
+#    computation = minisat(len(n),clauses)
+#    print(computation)
