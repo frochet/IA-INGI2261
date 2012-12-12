@@ -14,7 +14,7 @@ Package: assignment4
 Depends: aima_python3
 
 Package: python-common
-Depends: dummy
+Depends: dummy | flo
 
 Package: libc
 
@@ -23,3 +23,5 @@ Package: dummy
 Package: solutions_of_assignment4
 
 Package: you_thought_it_would_be_that_easy
+
+Package: flo
