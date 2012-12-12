@@ -33,7 +33,6 @@ def look_if_is_provided_package(item,variables,clauses,rep):
             if item == provided :
                 get_clauses(rep, [(rootPackage,)],variables,clauses)
                 indexes += [variables.index(rootPackage)+1]
-                #add_clause(clauses,[provides(variables.index(rootPackage)+1, variables.index(item)+1)])
     if indexes:
         add_clause(clauses, [provides(variables.index(item)+1, indexes)])
 
@@ -41,8 +40,12 @@ def look_if_is_provided_package(item,variables,clauses,rep):
 def add_clause(clauses, aClause):
     if aClause not in clauses :
         clauses += aClause
+
     
 def get_clauses(rep,toinstall, full_list = [], full_clause = []):
+    """
+        Recursively handle the dependences. Could be tough to read.
+    """
     clauses = full_clause
     variables = full_list
     for package in toinstall:
@@ -84,7 +87,7 @@ if __name__ == "__main__":
     print(clauses)
     print(len(n))
     
-    computation = minisat(len(n),clauses)
-    print(computation)
-    for indice in computation :
-        print(n[indice-1])
+#    computation = minisat(len(n),clauses)
+#    print(computation)
+#    for indice in computation :
+#        print(n[indice-1])
