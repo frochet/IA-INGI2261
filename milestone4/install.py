@@ -43,13 +43,15 @@ def add_clause(clauses, aClause):
     if aClause not in clauses :
         clauses += aClause
     
-def get_clauses(rep,toinstall, full_list = [], full_clause = []):
+def get_clauses(rep, toinstall, full_list = [], full_clause = [], init = False):
     clauses = full_clause
     variables = full_list
     for package in toinstall:
         for pckg in package:
             if pckg not in variables :
                 variables += [pckg]
+                if init:
+                    clauses += [(pckg, )]
                 (var, cl) = get_clauses(rep,pckg.depends, variables,clauses)
                 for tuple in pckg.depends :
                     indexes = []
@@ -76,11 +78,13 @@ if __name__ == "__main__":
     rep = Repository(sys.argv[1])
     toinstall = sys.argv[2:]
     tupletoinstall = []
-    clauses = []
+#    variables = []
+#    clauses = []
     for pck in toinstall:
-        clauses += (pck,)
+#        variables += [pck]
+#        clauses += [(variables.index(pck)+1,)]
         tupletoinstall += [(rep[pck],)]
-    (n, clauses) = get_clauses(rep,tupletoinstall, [], clauses)
+    (n, clauses) = get_clauses(rep,tupletoinstall, init = True)
     
 #    for item in n :
 #        print(item)
