@@ -51,13 +51,13 @@ def get_clauses(rep, toinstall, full_list = [], full_clause = [], init = False):
             if pckg not in variables :
                 variables += [pckg]
                 if init:
-                    clauses += [(pckg, )]
+                    clauses += [(variables.index(pckg)+1, )]
                 (var, cl) = get_clauses(rep,pckg.depends, variables,clauses)
                 for tuple in pckg.depends :
                     indexes = []
                     for item in tuple:
                         if item not in variables:
-                            variables += item
+                            variables += [item]
                         indexes += [variables.index(item)+1]
                         look_if_is_provided_package(item,variables,clauses,rep)
                     add_clause(clauses, [depends_on_or(variables.index(pckg)+1, indexes)])
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 #        variables += [pck]
 #        clauses += [(variables.index(pck)+1,)]
         tupletoinstall += [(rep[pck],)]
-    (n, clauses) = get_clauses(rep,tupletoinstall, init = True)
+    (n, clauses) = get_clauses(rep, tupletoinstall, init = True)
     
 #    for item in n :
 #        print(item)
