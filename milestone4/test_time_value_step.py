@@ -5,7 +5,7 @@ Created on Dec 4, 2012
 '''
 
 
-file = open("test_random", mode='r')
+file = open("test_result_tabu", mode='r')
 state = 0
 time = 0
 value = 0
@@ -31,9 +31,9 @@ for line in file:
         value = value / amount
         step = step / amount
         
-        print(time)
-        print(value)
-        print(step)
+        print(time," ", value," ", step)
+        #print(value)
+        #print(step)
         print(" ")
         
         state = 0

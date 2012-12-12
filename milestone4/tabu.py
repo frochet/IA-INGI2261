@@ -46,7 +46,7 @@ if __name__ == "__main__":
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)
     salesman = TravellingSalesman(initial,matrice[1:])
-    print(-salesman.value(salesman.initial))
+    #print(-salesman.value(salesman.initial))
     
     start = time()
     tabu_result = tabu_search(salesman,length,limit)
@@ -57,7 +57,10 @@ if __name__ == "__main__":
     print(listofval)
 #    print("Temps ecoule : ", format(interval)," seconde(s)")
 #    print(result.state.vertices)
-    print("Cout : ",format(-result.problem.value(result.state)))
-    print("step : ",format(result.step))
+    #print("Cout : ",format(-result.problem.value(result.state)))
+    #print("step : ",format(result.step))
+#    print(format(interval))
+#    print(format(-result.problem.value(result.state)))
+#    print(format(result.step))
     
     

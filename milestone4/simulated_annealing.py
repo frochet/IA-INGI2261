@@ -19,13 +19,16 @@ if __name__ == "__main__":
     initial = Greedy(N,matrice[1:], 1)
     salesman = TravellingSalesman(initial,matrice[1:])
     
-    print(-salesman.value(salesman.initial))
+#    print(-salesman.value(salesman.initial))
     
     start = time()
     result = simulated_annealing(salesman)
     stop = time()
     interval = stop-start
-    print("Temps ecoule : ", format(interval)," seconde(s)")
-    print(result.state.vertices)
-    print("Cout : ",format(-result.problem.value(result.state)))
-    print("step : ",format(result.step))
+#    print("Temps ecoule : ", format(interval)," seconde(s)")
+#    print(result.state.vertices)
+#    print("Cout : ",format(-result.problem.value(result.state)))
+#    print("step : ",format(result.step))
+#    print(format(interval))
+#    print(format(-result.problem.value(result.state)))
+#    print(format(result.step))

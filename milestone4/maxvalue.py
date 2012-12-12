@@ -46,4 +46,4 @@ if __name__ == "__main__":
 #    print(format(-best.problem.value(best.state)))
 #    print(format(best.step))
     
-    print(-best.value()) 
+    #print(-best.value()) 
