@@ -376,9 +376,12 @@ Two valid interpretation for $\beta$ are :
 In order to represent the problem, we will declare one variable per package. $I_{i}$, that is set to \texttt{True} if the package $i$ is installed.\\
 The three contraints will be expressed as :
 \begin{itemize}
-  \item Depends : A depends on B : $I_{A} \Rightarrow I_{B}$
-  \item Conflicts : Lets be two packages A and B, A conflits with B should be : $\neg (I_{A} \wedge I_{B})$ 
-  \item Provides : A provides B : $I_{A} \Rightarrow I_{B}$
+  \item Depends : A depends on B : \\
+  $$I_{A} \Rightarrow I_{B}$$
+  \item Conflicts : Lets be two packages A and B, A conflits with B should be : \\
+  $$\neg (I_{A} \wedge I_{B})$$
+  \item Provides : It is needed when a package to be installed need a package that is provided by another. As they are possibly several packages that provide the wanted package. A is the wanted virtual package and \{B, C, D\} the packages that provide A : \\
+  $$I_{A} \Rightarrow (I_{B} \vee I_{C} \vee I_{D})$$
 \end{itemize}
 
 \subsubsection{Question 2 : Translate your model into CNF.}
@@ -386,9 +389,17 @@ The point is to have conjunctions of disjunction, we get :
 \begin{itemize}
   \item Depends : $\neg I_{A} \vee I_{B}$
   \item Conflicts : $\neg I_{A} \vee \neg I_{B}$
-  \item Provides : $\neg I_{A} \vee I_{B}$
+  \item Provides : $\neg I_{A} \vee I_{B} \vee I_{C} \vee I_{D}$
 \end{itemize}
 
 \subsubsection{Question 3 : An extension of the problem deals with disjunctive dependencies. For example, package A may depend on B or C, meaning A may be installed if either B or C (or both) is also installed. How can you transform this problem into the basic problem without disjunctive dependencies?}
-We can simply write for A depends on B or C as : $I_{A} \Rightarrow (I_{B} \vee I_{C})$, which gives as CNF : $\neg I_{A} \vee I_{B} \vee I_{C}$
+We can simply write A depends on B or C as : $I_{A} \Rightarrow (I_{B} \vee I_{C})$, which gives as CNF : $\neg I_{A} \vee I_{B} \vee I_{C}$
+
+\subsubsection{Question 7 : To reduce the search space and avoid some unneeded packages in the solution,can you think of lower and upper bounds? Given a list of packages to install, the lower bound are packages that will certainly need to be installed. Every package outside the upper bound is certainly not needed.}
+To find a lower bound, when a virtual package is needed, be should make sure that no more than one package providing this virtual package is installed. We can use a \texttt{XOR} statement between the providing package which, for two providers A and B, is written as:
+$$(I_{A} \vee I_{B}) \wedge \neg (I_{A} \wedge I_{B})$$
+The CNF is : $(I_{A} \vee I_{B}) \wedge (\neg I_{A} \vee \neg I_{B})$\\
+To find an upper bound, we can do the opposite by requesting the installation of all providing package for each needed virtual package. We should replace the prodives condition by (for A provided by B and C): 
+$$(I_{A} \Rightarrow I_{B}) \wedge (I_{A} \Rightarrow I_{C})$$ 
+The CNF is : $(\neg I_{A} \vee I_{B}) \wedge (\neg I_{A} \vee I_{C})$
 \end{document}
