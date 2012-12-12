@@ -55,6 +55,7 @@ def get_clauses(rep,toinstall, full_list = [], full_clause = []):
                             if item not in variables:
                                 variables += item
                             indexes += variables.index(item)+1
+                            look_if_is_provided_package(item,variables,clauses,rep)
                         clauses += [depends_on_or(variables.index(pckg)+1, indexes)]
                         
                 for conflict in pckg.conflicts:
