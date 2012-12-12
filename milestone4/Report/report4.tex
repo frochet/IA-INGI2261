@@ -184,7 +184,7 @@ When randomness was part of the algorithms, there were 5 tests for each one (lik
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline 
-att48.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann \\ 
+att48.tsp & Tabu3 & Tabu5 & Tabu10 & Tabu20 & Sim\_ann \\ 
 \hline 
 Comp time [s] & 3.52 & 3.52 & 3.51 & 3.5 & 0.59 \\ 
 \hline 
@@ -198,7 +198,7 @@ Best sol. & 42603.84 & 40772.16 & 42079.8 & 42278.1 & 93831.16 \\
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline 
-bayg29.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann\\ 
+bayg29.tsp & Tabu3 & Tabu5 & Tabu10 & Tabu20 & Sim\_ann \\
 \hline 
 Comp time [s] & 0.88 & 0.89 & 0.886 & 0.89 & 0.19 \\ 
 \hline 
@@ -212,7 +212,7 @@ Best sol. & 10020.96 & 9773.64 & 9930.78 & 10082.56 & 16493.74 \\
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline 
-bays29.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann\\ 
+bays29.tsp & Tabu3 & Tabu5 & Tabu10 & Tabu20 & Sim\_ann \\
 \hline 
 Comp time [s] & 0.89 & 0.88 & 0.88 & 0.88 & 0.19 \\ 
 \hline 
@@ -226,7 +226,7 @@ Best sol. & 10399.12 & 9938.8 & 10067.76 & 10410.68 & 15445.54 \\
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline 
-berlin52.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann\\ 
+berlin52.tsp & Tabu3 & Tabu5 & Tabu10 & Tabu20 & Sim\_ann \\
 \hline 
 Comp time [s] & 4.45 & 4.39 & 4.45 & 4.43 & 0.7 \\ 
 \hline 
@@ -240,7 +240,7 @@ Best sol. & 9737.52 & 9681.32 & 9709.02 & 9481.64 & 19083.78 \\
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline 
-dantzig42.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann\\ 
+dantzig42.tsp & Tabu3 & Tabu5 & Tabu10 & Tabu20 & Sim\_ann \\
 \hline 
 Comp time [s] & 2.42 & 2.47 & 2.42 & 2.46 & 0.42 \\ 
 \hline 
@@ -398,7 +398,7 @@ The point is to have conjunctions of disjunction, we get :
 We can simply write A depends on B or C as : $I_{A} \Rightarrow (I_{B} \vee I_{C})$, which gives as CNF : $\neg I_{A} \vee I_{B} \vee I_{C}$
 
 \subsubsection{Question 4 : Create a program install.py which takes as first argument the repository’s file- name (e.g., Packages.gz or Packages\_tiny.gz). All following arguments are the packages that the user wants to install. Your program shall print the packages that need to be installed.}
-The code is available in the install.py file :-)
+The code is available in the install.py file. It works in a recursive way.
 
 \subsubsection{Question 5 : What is the output of your program when asking to install “aima-python3” using the Packages\_tiny.gz repository? How many variables and how many clauses did you generate to get this result?}
 
@@ -408,7 +408,6 @@ The output of our program is given into the file aimapython3.install. We generat
 
 Available in ubuntu.install\\
 Number of packages related to ubuntu-desktop : 2632
-
 
 \subsubsection{Question 7 : To reduce the search space and avoid some unneeded packages in the solution,can you think of lower and upper bounds? Given a list of packages to install, the lower bound are packages that will certainly need to be installed. Every package outside the upper bound is certainly not needed.}
 To find a \textbf{lower bound}, at first when a virtual package is needed, be should make sure that no more than one package providing this virtual package is installed. We can use a \texttt{XOR} statement between the providing package which, for two providers A and B, is written as:
@@ -422,4 +421,9 @@ To find an \textbf{upper bound}, at first, we can do the opposite by requesting 
 $$(I_{A} \Rightarrow I_{B}) \wedge (I_{A} \Rightarrow I_{C})$$ 
 The CNF is : $(\neg I_{A} \vee I_{B}) \wedge (\neg I_{A} \vee I_{C})$\\
 We can also force to install all the packages in an or dependency. Let's use A which depends on (B | C). We add the same clause as for the virtual package but with the latter variables.
+
+\subsubsection{Question 8 : How would you modify your model to take the version constraints into account? You do not need to program anything. But explain the impact on the variables and the clause generation.}
+In order to represent the version of the packages, we would not use logical variable but we'll represent each package as a function that takes the version as input.\\
+After that, we can standardize the functions and variables to find the prenex form, then, skolem form and eventually the CNF form.\\
+Of course, we would need the most general unifier at each step of the resolution in order to find a valid interpretation for the model.
 \end{document}
