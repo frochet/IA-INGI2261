@@ -1,0 +1,25 @@
+Package: aima_python3
+Depends: python3
+
+Package: python3.1
+Depends: python-common, libc
+Provides: python3
+
+Package: python3.2
+Depends: python-common, libc
+Conflicts: python3.1
+Provides: python3
+
+Package: assignment4
+Depends: aima_python3
+
+Package: python-common
+Depends: dummy
+
+Package: libc
+
+Package: dummy
+
+Package: solutions_of_assignment4
+
+Package: you_thought_it_would_be_that_easy
