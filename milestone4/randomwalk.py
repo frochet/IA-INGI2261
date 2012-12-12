@@ -46,12 +46,11 @@ if __name__ == "__main__":
     result = rand_result[0]
     stop = time()
     interval = stop-start
-    print(rand_result[1])
-    #print("Temps ecoule : ", format(interval)," seconde(s)")
-    #print(result.state.vertices)
-    #print("Cout : ",format(-result.problem.value(result.state)))
-    #print("step : ",format(result.step))
-    #print(format(interval))
+    #print(rand_result[1])
+    print("Temps ecoule : ", format(interval)," seconde(s)")
+    print(result.state.vertices)
+    print("Cout : ",format(-result.problem.value(result.state)))
+    print("step : ",format(result.step))
     #print(format(-result.problem.value(result.state)))
     #print(format(result.step))
     #print(rand_result[1]) 

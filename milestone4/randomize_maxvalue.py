@@ -9,29 +9,6 @@ from parserCity import *
 from GreedySearch import *
 from time import time
 from salesman import *
-#class TravelingSalesman(Problem):
-#   
-#    def __init__(self, initial,matrice,goal=None):
-#        self.matrice = matrice
-#        self.initial = State(initial,self.matrice)
-#    def successor(self, state):
-#        yield (None, State(self.initial.swap_random_from_bests(),self.matrice))
-#    def value(self,state):
-#        """Compute the path value"""
-#        return state.compute_path(state.vertices)
-#=======
-#
-#class TravelingSalesman(Problem):
-#   
-#    def __init__(self, initial,matrice,goal=None):
-#        self.matrice = matrice
-#        self.initial = State(initial,self.matrice)
-#    def successor(self, state):
-#        yield (None, State(self.initial.clone().swap_random_from_bests(),self.matrice))
-#    def value(self,state):
-#        """Compute the path value"""
-#        return state.compute_path(state.vertices)
-#>>>>>>> a36d0bff41363400253b7264d20516ecb29e03e2
 
 if __name__ == "__main__":
     
@@ -40,8 +17,8 @@ if __name__ == "__main__":
     N = matrice[0][0]
     initial = Greedy(N,matrice[1:], 1)   
     salesman = TravellingSalesman(initial,matrice[1:])
-    #print(initial)
-    #print(-salesman.value(salesman.initial))
+    print(initial)
+    print(-salesman.value(salesman.initial))
     start = time()
     current = LSNode(salesman,salesman.initial,0)
     best = current
@@ -58,11 +35,11 @@ if __name__ == "__main__":
         if current.value() > best.value():
             best = current
     stop = time()
-    print(listofval)
-    #print("elapsed time :",format(stop-start), " second(s)")
-    #print(-best.problem.value(best.state))
-    #print(best.state.vertices)
-    #print("step when best solution reached : ",format(best.step))
+    #print(listofval)
+    print("elapsed time :",format(stop-start), " second(s)")
+    print(-best.problem.value(best.state))
+    print(best.state.vertices)
+    print("step when best solution reached : ",format(best.step))
     
     #print(format(stop-start))
     #print(-best.problem.value(best.state))

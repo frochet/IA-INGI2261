@@ -38,9 +38,9 @@ if __name__ == "__main__":
     best = max_value(salesman)
 
     stop = time()
-    #print("temps ecoule :",format(stop-start), " seconde(s)")
-    #print(-best.problem.value(best.state))
-    #print(best.state.vertices)
+    print("temps ecoule :",format(stop-start), " seconde(s)")
+    print(-best.problem.value(best.state))
+    print(best.state.vertices)
     #print("step when best solution reached : ",format(best.step))
 #    print(format(stop-start))
 #    print(format(-best.problem.value(best.state)))

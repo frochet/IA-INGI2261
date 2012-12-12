@@ -54,11 +54,11 @@ if __name__ == "__main__":
     listofval = tabu_result[1]
     stop = time()
     interval = stop-start
-    print(listofval)
-#    print("Temps ecoule : ", format(interval)," seconde(s)")
-#    print(result.state.vertices)
-    #print("Cout : ",format(-result.problem.value(result.state)))
-    #print("step : ",format(result.step))
+#    print(listofval)
+    print("Temps ecoule : ", format(interval)," seconde(s)")
+    print(result.state.vertices)
+    print("Cout : ",format(-result.problem.value(result.state)))
+    print("step : ",format(result.step))
 #    print(format(interval))
 #    print(format(-result.problem.value(result.state)))
 #    print(format(result.step))
