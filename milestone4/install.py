@@ -7,6 +7,7 @@ from packages import *
 import sys
 from minisat import *
 
+
 def depends(A, B):
     return (-A, B)
 def depends_on_or(A, B):
@@ -75,9 +76,11 @@ if __name__ == "__main__":
     rep = Repository(sys.argv[1])
     toinstall = sys.argv[2:]
     tupletoinstall = []
+    clauses = []
     for pck in toinstall:
+        clauses += (pck,)
         tupletoinstall += [(rep[pck],)]
-    (n, clauses) = get_clauses(rep,tupletoinstall)
+    (n, clauses) = get_clauses(rep,tupletoinstall, [], clauses)
     
 #    for item in n :
 #        print(item)
