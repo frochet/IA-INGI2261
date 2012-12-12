@@ -1,25 +1,25 @@
 #!/bin/bash  
 cat /dev/null > test_random  
 algos=(randomwalk.py randomize_maxvalue.py)
-tsp=(att48.tsp bayg29.tsp bays29.tsp berlin52.tsp dantzig42.tsp)  
+#tsp=(att48.tsp bayg29.tsp bays29.tsp berlin52.tsp dantzig42.tsp)  
 for alg in "${algos[@]}"; do
   echo "${alg}"
   #echo "${alg}" >> test_random
-  for tspinst in "${tsp[@]}"; do
+  #for tspinst in "${tsp[@]}"; do
     echo "${tspinst}"
     #echo -e "\n" >> test_random
     #echo "${tspinst}" >> test_random
     for i in `seq 0 4`; do
       #echo "Try" $i >> test_random
-      python3 "${alg}" "tsp_instances/${tspinst}" >> test_random
-      echo -e "\n" >> test_random
+      python3 "${alg}" "tsp_instances/att48.tsp" >> test_random
+      #echo -e "\n" >> test_random
     done
-    echo -e "\n" >> test_random
-    echo "Break" >> test_random
-    echo -e "\n" >> test_random
     #echo -e "\n" >> test_random
-  done
+    echo "Break" >> test_random
+    #echo -e "\n" >> test_random
+    #echo -e "\n" >> test_random
+  #done
   #echo -e "\n" >> test_random
-  echo -e "\n"
+  #echo -e "\n"
 done 
 

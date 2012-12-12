@@ -92,11 +92,11 @@ The implementation of the tree different strategies are in the python modules: \
 \hline 
 att48.tsp & Algo1 & Algo2 & Algo3 \\ 
 \hline 
-Comp time [s] & 0.45 & 2.76 & 3.035 \\ 
+Comp time [s] & 0.57 & 3.39 & 3.468 \\ 
 \hline 
-Best sol. & 125431.15 & 41881 & 40692.82 \\ 
+Best sol. & 130045.8 & 45336.2 & 42241.96 \\ 
 \hline 
-\# Steps & 34.6 & 28 & 96.2 \\ 
+\# Steps & 21.6 & 37 & 92.6 \\ 
 \hline 
 \end{tabular} 
 \end{center}
@@ -105,11 +105,11 @@ Best sol. & 125431.15 & 41881 & 40692.82 \\
 \hline 
 bayg29.tsp & Algo1 & Algo2 & Algo3 \\ 
 \hline 
-Comp time [s] & 0.141 & 0.64 & 0.666 \\ 
+Comp time [s] & 0.192 & 0.82 & 0.852 \\ 
 \hline 
-Best sol. & 21870.78 & 9003.8 & 9848.76 \\ 
+Best sol. & 21735.1 & 9487.1 & 10413.2 \\ 
 \hline 
-\# Steps & 28.6 & 30 & 76.4 \\ 
+\# Steps & 34.8 & 21 & 63.2 \\ 
 \hline 
 \end{tabular} 
 \end{center}
@@ -118,11 +118,11 @@ Best sol. & 21870.78 & 9003.8 & 9848.76 \\
 \hline 
 bays29.tsp & Algo1 & Algo2 & Algo3 \\ 
 \hline 
-Comp time [s] & 0.145 & 0.63 & 0.687 \\ 
+Comp time [s] & 0.186 & 0.8 & 0.857 \\ 
 \hline 
-Best sol. & 22064.32 & 9003.8 & 10786.66 \\ 
+Best sol. & 21477.46 & 9487.1 & 10165.5 \\ 
 \hline 
-\# Steps & 43.4 & 30 & 65 \\ 
+\# Steps & 58.8 & 21 & 92.4 \\ 
 \hline 
 \end{tabular} 
 \end{center}
@@ -131,11 +131,11 @@ Best sol. & 22064.32 & 9003.8 & 10786.66 \\
 \hline 
 berlin52.tsp & Algo1 & Algo2 & Algo3 \\ 
 \hline 
-Comp time [s] & 0.546 & 3.45 & 3.73 \\ 
+Comp time [s] & 0.703 & 4.17 & 4.29 \\ 
 \hline 
-Best sol. & 23485.24 & 10075.2 & 9681.88 \\ 
+Best sol. & 24105.5 & 9920.1 & 9240.22 \\ 
 \hline 
-\# Steps & 61 & 21 & 92.6 \\ 
+\# Steps & 7.8 & 42 & 86.8 \\ 
 \hline 
 \end{tabular} 
 \end{center}
@@ -144,44 +144,32 @@ Best sol. & 23485.24 & 10075.2 & 9681.88 \\
 \hline 
 dantzig42.tsp & Algo1 & Algo2 & Algo3 \\ 
 \hline 
-Comp time [s] & 0.327 & 1.85 & 1.97 \\ 
+Comp time [s] & 0.424 & 2.27 & 2.33 \\ 
 \hline 
-Best sol. & 912.24 & 650.1 & 712.72 \\ 
+Best sol. & 946 & 720.8 & 707.5 \\ 
 \hline 
-\# Steps & 44.2 & 17 & 73 \\ 
+\# Steps & 0.0 & 14 & 68.8 \\ 
 \hline 
 \end{tabular} 
 \end{center}
 
 \subsubsection{Question 4}
 \begin{center}
-\begin{figure}[!ht]
-		\includegraphics[scale=.4]{randomwalk.png}
-	\caption{randomwalk.py}
+\begin{figure}[ht]
+		\includegraphics[scale=.35]{mile4_1_1.png}
+	\caption{Value by step.py}
 \end{figure}
 \end{center}
-\begin{center}
-\begin{figure}[!ht]
-		\includegraphics[scale=.4]{maxvalue.png}
-	\caption{maxvalue.py}
-\end{figure}
-\end{center}
-\begin{center}
-\begin{figure}[!ht]
-		\includegraphics[scale=.4]{randomized_maxvalue.png}
-	\caption{randomized\_maxvalue.py}
-\end{figure}
-\end{center}
-When randomness was part of the algorithms, there were 5 tests for each one (like we did for the third question).
+When randomness was part of the algorithms, there were 5 tests for each one (like we did for the third question). The red curve is the \texttt{randomwalk}, the green one is \texttt{maxvalue} and the blue one is \texttt{randomized\_maxvalue}.
 
 \subsubsection{Question 5}
 	\begin{enumerate}[(a)]
-		\item \textit{maxvalue} and r\texttt{andomized\_maxvalue both} seem to work well. There no real winner between those two.
-		\item Well because our tests show that two strategies are quite good, the only suitable reason for them to beat \texttt{randomwalk} is that it does not look for a best path when choosing a step.
+		\item \texttt{randomized\_maxvalue both} wins by a few over \texttt{maxvalue} and \texttt{randomwalk} is realy bad.
+		\item \texttt{randomize\_maxvalue} wins because it mixes randomness and going for the best path, so it will avoid local optima.
 		\item The limitation of \texttt{randomwalk} is that it does not look for a good path, so there is less chance to find the best one.\\
-		Concerning \texttt{maxvalue}, it might fall into a local optimum {\Huge and have difficulties to go out of it.}\\
+		Concerning \texttt{maxvalue}, it falls into a local optimum and is stuck in it.
 		\texttt{randomized\_maxvalue} should be the best as it can easily avoid local optima and so, have a chance to find the global one.
-		\item {\Huge ASK FLO}
+		\item It continues to look for a step only to improve the current solution, but as none exists, the current states stays the same for the remaining steps.
 		\item There must be a trade off between intensification and diversification because intensification ensures that we go for a good solution, while diversification ensures that we explore several possibilities. \\
 		Intensification alone (\verb@maxvalue.py@) would cause the solution to find a local optimum without considering others paths to better solutions and diversification alone (\verb@randomwalk.py@) would cause to explore other paths but no necessarily the good ones.
 	\end{enumerate}
@@ -190,10 +178,90 @@ When randomness was part of the algorithms, there were 5 tests for each one (lik
 \subsubsection{Question 1}
 \subsubsection{Question 2}
 \subsubsection{Question 3}
-\subsubsection{Question 4}
-\subsubsection{Question 5}
-\subsubsection{Question 6}
 
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+att48.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann \\ 
+\hline 
+Comp time [s] & 3.52 & 3.52 & 3.51 & 3.5 & 0.59 \\ 
+\hline 
+Best sol. & 42603.84 & 40772.16 & 42079.8 & 42278.1 & 93831.16 \\ 
+\hline 
+\# Steps & 91.8 & 89.4 & 96.2 & 88.8 & 97.2 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+bayg29.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann\\ 
+\hline 
+Comp time [s] & 0.88 & 0.89 & 0.886 & 0.89 & 0.19 \\ 
+\hline 
+Best sol. & 10020.96 & 9773.64 & 9930.78 & 10082.56 & 16493.74 \\ 
+\hline 
+\# Steps & 77.2 & 80.2 & 84.8 & 91 & 89.6 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+bays29.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann\\ 
+\hline 
+Comp time [s] & 0.89 & 0.88 & 0.88 & 0.88 & 0.19 \\ 
+\hline 
+Best sol. & 10399.12 & 9938.8 & 10067.76 & 10410.68 & 15445.54 \\ 
+\hline 
+\# Steps & 71.6 & 72 & 94.6 & 83.4 & 88.2 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+berlin52.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann\\ 
+\hline 
+Comp time [s] & 4.45 & 4.39 & 4.45 & 4.43 & 0.7 \\ 
+\hline 
+Best sol. & 9737.52 & 9681.32 & 9709.02 & 9481.64 & 19083.78 \\ 
+\hline 
+\# Steps & 91.6 & 84 & 89.8 & 91.8 & 96.4\\ 
+\hline 
+\end{tabular} 
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+dantzig42.tsp & Tabu3 & Tabu3 & Tabu3 & Tabu3 & Sim\_ann\\ 
+\hline 
+Comp time [s] & 2.42 & 2.47 & 2.42 & 2.46 & 0.42 \\ 
+\hline 
+Best sol. & 706.02 & 715.5 & 713.58 & 716.36 & 929 \\ 
+\hline 
+\# Steps & 76 & 75.6 & 60.2 & 56.4 & 45.4 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\texttt{tabu} presents similar results to the previous methods while simulated annealing does not perform so well. We ran for each instance and each algorithm 5 times to have a mean in order to better represent the performance of the algorithms.
+\subsubsection{Question 4}
+\begin{center}
+\begin{figure}[ht]
+		\includegraphics[scale=.35]{tabu_sa.png}
+	\caption{Value by step.py}
+\end{figure}
+\end{center}
+In the figure 2, all five algorithms were ran five times to give a mean. The green line is \texttt{tabu3}, the blue one is \texttt{tabu5}, the red one is \texttt{tabu10}, the orange is \texttt{tabu20} and the brown is \texttt{simulated\_annealing}.
+\subsubsection{Question 5}
+The temperature has an effect on the capability of the value of the found solution to "oscillate". When can thus act on the capability to get out or avoid local optima.
+\subsubsection{Question 6}
+The higher the length, the less probable it will be for the algorithm to see several times the same solution. It allows also lots of degradation of the value so that getting out of local optima will be easier.
+High length or small length both work well as another good path after a local optimum does not require lots of degradation steps.
 
 
 	
