@@ -395,7 +395,13 @@ The point is to have conjunctions of disjunction, we get :
 \subsubsection{Question 3 : An extension of the problem deals with disjunctive dependencies. For example, package A may depend on B or C, meaning A may be installed if either B or C (or both) is also installed. How can you transform this problem into the basic problem without disjunctive dependencies?}
 We can simply write A depends on B or C as : $I_{A} \Rightarrow (I_{B} \vee I_{C})$, which gives as CNF : $\neg I_{A} \vee I_{B} \vee I_{C}$
 
+\subsubsection{Question 4 : Create a program install.py which takes as first argument the repository’s file- name (e.g., Packages.gz or Packages\_tiny.gz). All following arguments are the packages that the user wants to install. Your program shall print the packages that need to be installed.}
+The code is available in the install.py file :-)
+
+\subsubsection{Question 5 : What is the output of your program when asking to install “aima-python3” using the Packages\_tiny.gz repository? How many variables and how many clauses did you generate to get this result?}
+
 \subsubsection{Question 7 : To reduce the search space and avoid some unneeded packages in the solution,can you think of lower and upper bounds? Given a list of packages to install, the lower bound are packages that will certainly need to be installed. Every package outside the upper bound is certainly not needed.}
+{\huge or dependencies}
 To find a lower bound, when a virtual package is needed, be should make sure that no more than one package providing this virtual package is installed. We can use a \texttt{XOR} statement between the providing package which, for two providers A and B, is written as:
 $$(I_{A} \vee I_{B}) \wedge \neg (I_{A} \wedge I_{B})$$
 The CNF is : $(I_{A} \vee I_{B}) \wedge (\neg I_{A} \vee \neg I_{B})$\\

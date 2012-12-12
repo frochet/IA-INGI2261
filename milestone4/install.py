@@ -82,20 +82,22 @@ if __name__ == "__main__":
     rep = Repository(sys.argv[1])
     toinstall = sys.argv[2:]
     tupletoinstall = []
-#    variables = []
-#    clauses = []
     for pck in toinstall:
 #        variables += [pck]
 #        clauses += [(variables.index(pck)+1,)]
         tupletoinstall += [(rep[pck],)]
     (n, clauses) = get_clauses(rep, tupletoinstall, init = True)
     
-#    for item in n :
-#        print(item)
+    print("Packages related to the package to be installed")
+    for item in n :
+        print(item)
+    print("Clauses :")
     print(clauses)
+    print("Number of package :")
     print(len(n))
     
-#    computation = minisat(len(n),clauses)
-#    print(computation)
-#    for indice in computation :
-#        print(n[indice-1])
+    computation = minisat(len(n),clauses)
+    print(computation)
+    print("Package which must be installed : ")
+    for indice in computation :
+        print(n[indice-1])
