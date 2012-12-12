@@ -409,11 +409,15 @@ Number of packages related to ubuntu-desktop : 2632
 
 
 \subsubsection{Question 7 : To reduce the search space and avoid some unneeded packages in the solution,can you think of lower and upper bounds? Given a list of packages to install, the lower bound are packages that will certainly need to be installed. Every package outside the upper bound is certainly not needed.}
-{\huge or dependencies}
-To find a lower bound, when a virtual package is needed, be should make sure that no more than one package providing this virtual package is installed. We can use a \texttt{XOR} statement between the providing package which, for two providers A and B, is written as:
+To find a \textbf{lower bound}, at first when a virtual package is needed, be should make sure that no more than one package providing this virtual package is installed. We can use a \texttt{XOR} statement between the providing package which, for two providers A and B, is written as:
 $$(I_{A} \vee I_{B}) \wedge \neg (I_{A} \wedge I_{B})$$
 The CNF is : $(I_{A} \vee I_{B}) \wedge (\neg I_{A} \vee \neg I_{B})$\\
-To find an upper bound, we can do the opposite by requesting the installation of all providing package for each needed virtual package. We should replace the prodives condition by (for A provided by B and C): 
+Also, we could make sure that only one dependency in an or dependency is installed.
+We would use the same \texttt{XOR} statment as before, but this time, A and B would be the dependencies of the or dependency. \\
+Of course, those clauses should be add to all the others in the model.\\
+
+To find an \textbf{upper bound}, at first, we can do the opposite by requesting the installation of all providing package for each needed virtual package. We should replace the prodives condition by (for A provided by B and C): 
 $$(I_{A} \Rightarrow I_{B}) \wedge (I_{A} \Rightarrow I_{C})$$ 
-The CNF is : $(\neg I_{A} \vee I_{B}) \wedge (\neg I_{A} \vee I_{C})$
+The CNF is : $(\neg I_{A} \vee I_{B}) \wedge (\neg I_{A} \vee I_{C})$\\
+We can also force to install all the packages in an or dependency. Let's use A which depends on (B | C). We add the same clause as for the virtual package but with the latter variables.
 \end{document}
